@@ -153,8 +153,8 @@ public class Login extends JFrame {
 		});
 		lblExit.setForeground(Color.WHITE);
 		lblExit.setHorizontalAlignment(SwingConstants.CENTER);
-		lblExit.setFont(new Font("Leelawadee", Font.BOLD, 24));
-		lblExit.setBounds(1054, 11, 73, 28);
+		lblExit.setFont(new Font("Leelawadee", Font.BOLD, 20));
+		lblExit.setBounds(1064, 0, 73, 28);
 		contentPane.add(lblExit);
 		
 		JButton btnLogin = new JButton("Logar");
