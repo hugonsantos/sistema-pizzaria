@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
@@ -16,17 +18,18 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import javax.swing.JButton;
+
 import java.awt.Cursor;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-
-import views.internos.Teste;
+import views.internos.Vender;
 
 import java.awt.Component;
-import javax.swing.JInternalFrame;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Main extends JFrame {
 
@@ -59,6 +62,7 @@ public class Main extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
+		contentPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
@@ -81,9 +85,9 @@ public class Main extends JFrame {
 				
 				btnMinimizar.setBackground(Color.DARK_GRAY);
 			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		});
+		btnMinimizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				
 				frame.setState(Frame.ICONIFIED);
 			}
@@ -103,6 +107,7 @@ public class Main extends JFrame {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+
 				btnExit.setBackground(Color.RED);
 			}
 
@@ -111,9 +116,9 @@ public class Main extends JFrame {
 				
 				btnExit.setBackground(Color.DARK_GRAY);
 			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		});
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				
 				System.exit(0);
 			}
@@ -129,26 +134,31 @@ public class Main extends JFrame {
 		panelTopo.add(btnExit);
 		
 		JPanel panelLateral = new JPanel();
+		panelLateral.setPreferredSize(new Dimension(250, 55));
 		panelLateral.setBackground(Color.DARK_GRAY);
-		contentPane.add(panelLateral, BorderLayout.WEST);
 		panelLateral.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scroll = new JScrollPane(panelLateral);
+		scroll.setBorder(null);
+		contentPane.add(scroll, BorderLayout.WEST);
 		
 		JLabel lblMenu = new JLabel("Menu");
 		lblMenu.setForeground(Color.WHITE);
 		lblMenu.setFont(new Font("Leelawadee", Font.BOLD, 25));
-		lblMenu.setPreferredSize(new Dimension(300, 55));
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLateral.add(lblMenu, BorderLayout.NORTH);
 		
 		JPanel panelGrid = new JPanel();
+		panelGrid.setAutoscrolls(true);
 		panelGrid.setBorder(new EmptyBorder(0, 0, 0, 0));
 		panelGrid.setForeground(Color.DARK_GRAY);
 		panelGrid.setBackground(Color.DARK_GRAY);
 		panelLateral.add(panelGrid, BorderLayout.CENTER);
-		panelGrid.setLayout(new GridLayout(5, 1));
+		panelGrid.setLayout(new GridLayout(6, 1));
 		
 		//Linha 1 do GRID
 		JPanel panelGridLinha1 = new JPanel();
+		panelGridLinha1.setToolTipText("Tela para vender os produtos!");
 		panelGridLinha1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha1.addMouseListener(new MouseAdapter() {
 			
@@ -167,33 +177,30 @@ public class Main extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				JInternalFrame teste = telaInterna(new JInternalFrame());
-				teste.add(new Teste());
-				contentPane.add(teste, BorderLayout.CENTER);
-				teste.setVisible(true);
+				Vender vender = new Vender();
+				contentPane.add(vender, BorderLayout.CENTER);
+				vender.setVisible(true);
 			}
 		});
 		panelGridLinha1.setBackground(Color.DARK_GRAY);
 		panelGridLinha1.setFocusable(false);
 		panelGrid.add(panelGridLinha1);
-		panelGridLinha1.setLayout(null);
+		panelGridLinha1.setLayout(new GridLayout(1, 2));
 		
 		JLabel lblIconVender = new JLabel("");
+		lblIconVender.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblIconVender.setBorder(null);
 		lblIconVender.setIcon(new ImageIcon(Main.class.getResource("/imagens/carrinho-de-compras-64.png")));
 		lblIconVender.setFocusable(false);
-		lblIconVender.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconVender.setBounds(0, 0, 300, 199);
+		lblIconVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha1.add(lblIconVender);
 		
 		JLabel lblVender = new JLabel("Vender");
-		lblVender.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		lblVender.setBackground(Color.WHITE);
-		lblVender.setBorder(new EmptyBorder(0, 0, 0, 15));
+		lblVender.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblVender.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblVender.setForeground(Color.WHITE);
 		lblVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVender.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblVender.setBounds(0, 163, 300, 36);
 		panelGridLinha1.add(lblVender);
 		
 		//Linha 2 do GRID
@@ -216,22 +223,21 @@ public class Main extends JFrame {
 		panelGridLinha2.setBackground(Color.DARK_GRAY);
 		panelGridLinha2.setFocusable(false);
 		panelGrid.add(panelGridLinha2);
-		panelGridLinha2.setLayout(null);
+		panelGridLinha2.setLayout(new GridLayout(1, 2));
 		
 		JLabel lblIconClientes = new JLabel("");
 		lblIconClientes.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblIconClientes.setIcon(new ImageIcon(Main.class.getResource("/imagens/cliente-64.png")));
 		lblIconClientes.setFocusable(false);
-		lblIconClientes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconClientes.setBounds(0, 0, 300, 199);
+		lblIconClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha2.add(lblIconClientes);
 		
 		JLabel lblClientes = new JLabel("Clientes");
-		lblClientes.setBorder(new EmptyBorder(0, 0, 0, 15));
+		lblClientes.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblClientes.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblClientes.setForeground(Color.WHITE);
 		lblClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblClientes.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblClientes.setBounds(0, 163, 300, 36);
 		panelGridLinha2.add(lblClientes);
 		
 		//Linha 3 do GRID
@@ -254,21 +260,20 @@ public class Main extends JFrame {
 		panelGridLinha3.setBackground(Color.DARK_GRAY);
 		panelGridLinha3.setFocusable(false);
 		panelGrid.add(panelGridLinha3);
-		panelGridLinha3.setLayout(null);
+		panelGridLinha3.setLayout(new GridLayout(1, 2));
 		
 		JLabel lblIconRelatorios = new JLabel("");
 		lblIconRelatorios.setIcon(new ImageIcon(Main.class.getResource("/imagens/grafico-de-barras-64.png")));
 		lblIconRelatorios.setFocusable(false);
-		lblIconRelatorios.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconRelatorios.setBounds(0, 0, 300, 199);
+		lblIconRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha3.add(lblIconRelatorios);
 		
 		JLabel lblRelatorios = new JLabel("Relatórios");
-		lblRelatorios.setBorder(new EmptyBorder(0, 0, 0, 15));
+		lblRelatorios.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblRelatorios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblRelatorios.setForeground(Color.WHITE);
 		lblRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRelatorios.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblRelatorios.setBounds(0, 163, 300, 36);
 		panelGridLinha3.add(lblRelatorios);
 		
 		//Linha 4 do GRID
@@ -291,21 +296,20 @@ public class Main extends JFrame {
 		panelGridLinha4.setBackground(Color.DARK_GRAY);
 		panelGridLinha4.setFocusable(false);
 		panelGrid.add(panelGridLinha4);
-		panelGridLinha4.setLayout(null);
+		panelGridLinha4.setLayout(new GridLayout(1, 2));
 		
 		JLabel lblIconFuncionarios = new JLabel("");
 		lblIconFuncionarios.setIcon(new ImageIcon(Main.class.getResource("/imagens/equipe-64.png")));
 		lblIconFuncionarios.setFocusable(false);
-		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconFuncionarios.setBounds(0, 0, 300, 199);
+		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha4.add(lblIconFuncionarios);
 		
 		JLabel lblFuncionarios = new JLabel("Funcionários");
-		lblFuncionarios.setBorder(new EmptyBorder(0, 0, 0, 15));
+		lblFuncionarios.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblFuncionarios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblFuncionarios.setForeground(Color.WHITE);
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFuncionarios.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblFuncionarios.setBounds(0, 163, 300, 36);
 		panelGridLinha4.add(lblFuncionarios);
 		
 		//Linha 5 do GRID
@@ -328,36 +332,56 @@ public class Main extends JFrame {
 		panelGridLinha5.setBackground(Color.DARK_GRAY);
 		panelGridLinha5.setFocusable(false);
 		panelGrid.add(panelGridLinha5);
-		panelGridLinha5.setLayout(null);
+		panelGridLinha5.setLayout(new GridLayout(1, 2));
+		
+		JLabel lblIconEstoque = new JLabel("");
+		lblIconEstoque.setIcon(new ImageIcon(Main.class.getResource("/imagens/inventario-64.png")));
+		lblIconEstoque.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblIconEstoque.setFocusable(false);
+		panelGridLinha5.add(lblIconEstoque);
+		
+		JLabel lblEstoque = new JLabel("Estoque");
+		lblEstoque.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblEstoque.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEstoque.setForeground(Color.WHITE);
+		lblEstoque.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblEstoque.setBorder(new EmptyBorder(0, 0, 10, 15));
+		panelGridLinha5.add(lblEstoque);
+		
+		//Linha 6 do GRID
+		JPanel panelGridLinha6 = new JPanel();
+		panelGridLinha6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panelGridLinha6.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				panelGridLinha6.setBackground(Color.BLACK);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				panelGridLinha6.setBackground(Color.DARK_GRAY);
+			}
+		});
+		panelGridLinha6.setFocusable(false);
+		panelGridLinha6.setBackground(Color.DARK_GRAY);
+		panelGrid.add(panelGridLinha6);
+		panelGridLinha6.setLayout(new GridLayout(1, 2));
 		
 		JLabel lblIconConfig = new JLabel("");
 		lblIconConfig.setIcon(new ImageIcon(Main.class.getResource("/imagens/configuracoes-64.png")));
 		lblIconConfig.setFocusable(false);
-		lblIconConfig.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconConfig.setBounds(0, 0, 300, 199);
-		panelGridLinha5.add(lblIconConfig);
+		lblIconConfig.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelGridLinha6.add(lblIconConfig);
 		
 		JLabel lblConfig = new JLabel("Configurações");
-		lblConfig.setBorder(new EmptyBorder(0, 0, 0, 15));
+		lblConfig.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblConfig.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblConfig.setForeground(Color.WHITE);
 		lblConfig.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblConfig.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblConfig.setBounds(0, 163, 300, 36);
-		panelGridLinha5.add(lblConfig);
-	}
-	
-	public JInternalFrame telaInterna(JInternalFrame internalFrame) {
-		
-		internalFrame = new JInternalFrame();
-		BasicInternalFrameUI basicUI = (BasicInternalFrameUI) internalFrame.getUI();
-		basicUI.setNorthPane(null);
-		internalFrame.setBorder(null);
-		
-		JPanel jifPanelTopo = new JPanel();
-		jifPanelTopo.setPreferredSize(new Dimension(10, 25));
-		jifPanelTopo.setBackground(Color.GRAY);
-		internalFrame.getContentPane().add(jifPanelTopo, BorderLayout.NORTH);
-		
-		return internalFrame;
+		panelGridLinha6.add(lblConfig);
 	}
 }
