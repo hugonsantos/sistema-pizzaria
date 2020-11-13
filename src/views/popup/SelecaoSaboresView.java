@@ -11,16 +11,15 @@ import java.awt.BorderLayout;
 import javax.swing.JList;
 import javax.swing.JLabel;
 
-public class SelecaoSabores extends PopupCustom {
+public class SelecaoSaboresView extends PopupCustom {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final JPanel contentPanel = new JPanel();
 	private static Point point = new Point();
 
 	public static void main(String[] args) {
 		
-		PopupCustom popup = new SelecaoSabores();
+		PopupCustom popup = new SelecaoSaboresView();
 		popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		popup.setVisible(true);
 		
@@ -49,7 +48,7 @@ public class SelecaoSabores extends PopupCustom {
 		}
 	}
 
-	public SelecaoSabores() {
+	public SelecaoSaboresView() {
 		
 		JList<?> list = new JList<>();
 		getContentPane().add(list, BorderLayout.WEST);

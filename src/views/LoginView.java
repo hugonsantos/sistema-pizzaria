@@ -24,7 +24,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Login extends JFrame {
+public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +32,7 @@ public class Login extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField passSenha;
 	
-	private static Login frame;
+	private static LoginView frame;
 	private static Point point = new Point();
 
 	public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					
-					frame = new Login();
+					frame = new LoginView();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 					
@@ -68,7 +68,7 @@ public class Login extends JFrame {
 		});
 	}
 
-	public Login() {
+	public LoginView() {
 		
 		setResizable(false);
 		setUndecorated(true);
@@ -90,7 +90,7 @@ public class Login extends JFrame {
 		lblImagem.setIconTextGap(2);
 		lblImagem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblImagem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImagem.setIcon(new ImageIcon(Login.class.getResource("/imagens/preparo.gif")));
+		lblImagem.setIcon(new ImageIcon(LoginView.class.getResource("/imagens/preparo.gif")));
 		lblImagem.setBounds(0, 0, 725, 600);
 		panelImagem.add(lblImagem);
 		
@@ -128,6 +128,7 @@ public class Login extends JFrame {
 		contentPane.add(passSenha);
 		
 		JLabel lblExit = new JLabel("X");
+		lblExit.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblExit.setOpaque(true);
 		lblExit.setBackground(Color.DARK_GRAY);
@@ -153,8 +154,8 @@ public class Login extends JFrame {
 		});
 		lblExit.setForeground(Color.WHITE);
 		lblExit.setHorizontalAlignment(SwingConstants.CENTER);
-		lblExit.setFont(new Font("Leelawadee", Font.BOLD, 20));
-		lblExit.setBounds(1064, 0, 73, 28);
+		lblExit.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblExit.setBounds(1075, 0, 62, 28);
 		contentPane.add(lblExit);
 		
 		JButton btnLogin = new JButton("Logar");
