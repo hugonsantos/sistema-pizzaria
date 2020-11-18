@@ -1,41 +1,39 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-
-import javax.swing.SwingConstants;
-
-import java.awt.FlowLayout;
-import java.awt.Dimension;
-import javax.swing.JButton;
-
-import java.awt.Cursor;
-import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import views.internos.VenderView;
 
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import views.internos.EstoqueView;
+import views.internos.VenderView;
 
 public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
+	private VenderView vender;
+	private EstoqueView estoque;
 	private static MainView frame;
 
 	public static void main(String[] args) {
@@ -133,6 +131,10 @@ public class MainView extends JFrame {
 		btnExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelTopo.add(btnExit);
 		
+		JPanel panelViewsInternas = new JPanel();
+		contentPane.add(panelViewsInternas, BorderLayout.CENTER);
+		panelViewsInternas.setLayout(new BorderLayout(0, 0));
+		
 		JPanel panelLateral = new JPanel();
 		panelLateral.setPreferredSize(new Dimension(250, 55));
 		panelLateral.setBackground(Color.DARK_GRAY);
@@ -177,9 +179,16 @@ public class MainView extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				VenderView vender = new VenderView();
-				contentPane.add(vender, BorderLayout.CENTER);
+				panelViewsInternas.removeAll();
+				
+				if(vender == null) {
+					vender = new VenderView();
+				}
+				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
+				
+				panelViewsInternas.repaint();
+				panelViewsInternas.validate();
 			}
 		});
 		panelGridLinha1.setBackground(Color.DARK_GRAY);
@@ -327,6 +336,21 @@ public class MainView extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				
 				panelGridLinha5.setBackground(Color.DARK_GRAY);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				panelViewsInternas.removeAll();
+				
+				if(estoque == null) {
+					estoque = new EstoqueView();
+				}
+				panelViewsInternas.add(estoque, BorderLayout.CENTER);
+				estoque.setVisible(true);
+				
+				panelViewsInternas.repaint();
+				panelViewsInternas.validate();
 			}
 		});
 		panelGridLinha5.setBackground(Color.DARK_GRAY);

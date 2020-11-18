@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import views.internos.produtos.LanchesView;
 import views.internos.produtos.PizzasView;
 
 public class VenderView extends TelaInternaCustom {
@@ -30,6 +31,8 @@ public class VenderView extends TelaInternaCustom {
 	private static final long serialVersionUID = 1L;
 	
 	private static VenderView frame;
+	private PizzasView pizzasView;
+	private LanchesView lanchesView;
 	private final ButtonGroup grupoBotoesLaterais = new ButtonGroup();
 	
 	public static void main(String[] args) {
@@ -84,12 +87,6 @@ public class VenderView extends TelaInternaCustom {
 		getContentPane().add(panelProdutos, BorderLayout.CENTER);
 		panelProdutos.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblProdutos = new JLabel("Produtos");
-		lblProdutos.setBorder(new EmptyBorder(10, 0, 10, 0));
-		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 22));
-		lblProdutos.setHorizontalAlignment(SwingConstants.CENTER);
-		panelProdutos.add(lblProdutos, BorderLayout.NORTH);
-		
 		JPanel panelLateral = new JPanel();
 		panelLateral.setFocusable(false);
 		panelLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -105,25 +102,23 @@ public class VenderView extends TelaInternaCustom {
 		btnPizzas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				PizzasView pizzas = new PizzasView();
-				panelProdutos.add(pizzas);
-				pizzas.setVisible(true);
+				panelProdutos.removeAll();
+				
+				if(pizzasView == null) {
+					pizzasView = new PizzasView();
+				}
+				panelProdutos.add(pizzasView);
+				pizzasView.setVisible(true);
+				
+				panelProdutos.repaint();
+				panelProdutos.validate();
 			}
 		});
-		btnPizzas.setContentAreaFilled(false);
-		grupoBotoesLaterais.add(btnPizzas);
-		btnPizzas.setRolloverEnabled(false);
-		btnPizzas.setRequestFocusEnabled(false);
-		btnPizzas.setFocusTraversalKeysEnabled(false);
-		btnPizzas.setFocusPainted(false);
-		btnPizzas.setBorderPainted(false);
 		btnPizzas.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				
-
-				btnPizzas.setContentAreaFilled(true);
 				btnPizzas.setForeground(Color.BLACK);
 				btnPizzas.setBackground(Color.WHITE);
 			}
@@ -131,11 +126,13 @@ public class VenderView extends TelaInternaCustom {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				
-				btnPizzas.setContentAreaFilled(false);
 				btnPizzas.setForeground(Color.WHITE);
 				btnPizzas.setBackground(Color.GRAY);
 			}
 		});
+		grupoBotoesLaterais.add(btnPizzas);
+		btnPizzas.setFocusPainted(false);
+		btnPizzas.setBorderPainted(false);
 		btnPizzas.setForeground(Color.WHITE);
 		btnPizzas.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		btnPizzas.setBackground(Color.GRAY);
@@ -146,9 +143,21 @@ public class VenderView extends TelaInternaCustom {
 		panelLateral.add(btnPizzas);
 		
 		JButton btnLanches = new JButton("Lanches");
-		btnLanches.setContentAreaFilled(false);
-		grupoBotoesLaterais.add(btnLanches);
-		btnLanches.setBorderPainted(false);
+		btnLanches.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panelProdutos.removeAll();
+				
+				if(lanchesView == null) {
+					lanchesView = new LanchesView();
+				}
+				panelProdutos.add(lanchesView);
+				lanchesView.setVisible(true);
+				
+				panelProdutos.repaint();
+				panelProdutos.validate();
+			}
+		});
 		btnLanches.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -165,6 +174,8 @@ public class VenderView extends TelaInternaCustom {
 				btnLanches.setBackground(Color.GRAY);
 			}
 		});
+		grupoBotoesLaterais.add(btnLanches);
+		btnLanches.setBorderPainted(false);
 		btnLanches.setForeground(Color.WHITE);
 		btnLanches.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		btnLanches.setBackground(Color.GRAY);
@@ -175,9 +186,6 @@ public class VenderView extends TelaInternaCustom {
 		panelLateral.add(btnLanches);
 		
 		JButton btnPorcoes = new JButton("Porções");
-		btnPorcoes.setContentAreaFilled(false);
-		grupoBotoesLaterais.add(btnPorcoes);
-		btnPorcoes.setBorderPainted(false);
 		btnPorcoes.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -200,6 +208,8 @@ public class VenderView extends TelaInternaCustom {
 				
 			}
 		});
+		grupoBotoesLaterais.add(btnPorcoes);
+		btnPorcoes.setBorderPainted(false);
 		btnPorcoes.setForeground(Color.WHITE);
 		btnPorcoes.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		btnPorcoes.setBackground(Color.GRAY);
@@ -210,9 +220,6 @@ public class VenderView extends TelaInternaCustom {
 		panelLateral.add(btnPorcoes);
 		
 		JButton btnBebidas = new JButton("Bebidas");
-		btnBebidas.setContentAreaFilled(false);
-		grupoBotoesLaterais.add(btnBebidas);
-		btnBebidas.setBorderPainted(false);
 		btnBebidas.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -229,6 +236,8 @@ public class VenderView extends TelaInternaCustom {
 				btnBebidas.setBackground(Color.GRAY);
 			}
 		});
+		grupoBotoesLaterais.add(btnBebidas);
+		btnBebidas.setBorderPainted(false);
 		btnBebidas.setForeground(Color.WHITE);
 		btnBebidas.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		btnBebidas.setBackground(Color.GRAY);

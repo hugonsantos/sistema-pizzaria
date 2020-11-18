@@ -1,15 +1,14 @@
 package views.popup;
 
+import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JList;
 import javax.swing.JLabel;
+import javax.swing.JList;
 
 public class SelecaoSaboresView extends PopupCustom {
 
@@ -55,7 +54,5 @@ public class SelecaoSaboresView extends PopupCustom {
 		
 		JLabel lblNewLabel = new JLabel("Imagem");
 		getContentPane().add(lblNewLabel, BorderLayout.CENTER);
-		
-		
 	}
 }

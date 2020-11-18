@@ -1,33 +1,32 @@
 package views.internos.produtos;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import java.awt.Insets;
-import java.awt.FlowLayout;
-import java.awt.Cursor;
-import java.awt.CardLayout;
-import java.awt.Point;
-import java.awt.Color;
 
 public final class PizzasView extends JInternalFrame {
 
@@ -51,6 +50,7 @@ public final class PizzasView extends JInternalFrame {
 	}
 
 	 public PizzasView() {
+		 
 	 	setSize(new Dimension(900, 800));
 	 	setPreferredSize(new Dimension(900, 800));
 	 	setMinimumSize(new Dimension(600, 800));
