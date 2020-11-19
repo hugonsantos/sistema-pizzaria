@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import views.internos.EstoqueView;
+import views.internos.ProdutosView;
 import views.internos.VenderView;
 
 public class MainView extends JFrame {
@@ -33,7 +33,7 @@ public class MainView extends JFrame {
 	
 	private JPanel contentPane;
 	private VenderView vender;
-	private EstoqueView estoque;
+	private ProdutosView produtos;
 	private static MainView frame;
 
 	public static void main(String[] args) {
@@ -182,8 +182,10 @@ public class MainView extends JFrame {
 				panelViewsInternas.removeAll();
 				
 				if(vender == null) {
+					
 					vender = new VenderView();
 				}
+				
 				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
 				
@@ -343,11 +345,11 @@ public class MainView extends JFrame {
 				
 				panelViewsInternas.removeAll();
 				
-				if(estoque == null) {
-					estoque = new EstoqueView();
+				if(produtos == null) {
+					produtos = new ProdutosView();
 				}
-				panelViewsInternas.add(estoque, BorderLayout.CENTER);
-				estoque.setVisible(true);
+				panelViewsInternas.add(produtos, BorderLayout.CENTER);
+				produtos.setVisible(true);
 				
 				panelViewsInternas.repaint();
 				panelViewsInternas.validate();
@@ -358,19 +360,19 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha5);
 		panelGridLinha5.setLayout(new GridLayout(1, 2));
 		
-		JLabel lblIconEstoque = new JLabel("");
-		lblIconEstoque.setIcon(new ImageIcon(MainView.class.getResource("/imagens/inventario-64.png")));
-		lblIconEstoque.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblIconEstoque.setFocusable(false);
-		panelGridLinha5.add(lblIconEstoque);
+		JLabel lblIconProdutos = new JLabel("");
+		lblIconProdutos.setIcon(new ImageIcon(MainView.class.getResource("/imagens/inventario-64.png")));
+		lblIconProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblIconProdutos.setFocusable(false);
+		panelGridLinha5.add(lblIconProdutos);
 		
-		JLabel lblEstoque = new JLabel("Estoque");
-		lblEstoque.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblEstoque.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEstoque.setForeground(Color.WHITE);
-		lblEstoque.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		lblEstoque.setBorder(new EmptyBorder(0, 0, 10, 15));
-		panelGridLinha5.add(lblEstoque);
+		JLabel lblProdutos = new JLabel("Produtos");
+		lblProdutos.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblProdutos.setForeground(Color.WHITE);
+		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
+		panelGridLinha5.add(lblProdutos);
 		
 		//Linha 6 do GRID
 		JPanel panelGridLinha6 = new JPanel();
