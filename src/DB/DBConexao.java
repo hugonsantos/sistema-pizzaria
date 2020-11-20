@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class DataBaseConnection {
+public class DBConexao {
 
 	private static Connection con = null;
 	
@@ -25,7 +25,7 @@ public class DataBaseConnection {
 				con = DriverManager.getConnection(url, properties);
 			}
 			catch(SQLException e) {
-				throw new DBException(e.getMessage());
+				throw new DBExcecao(e.getMessage());
 			}
 		}
 		
@@ -41,7 +41,7 @@ public class DataBaseConnection {
 				con.close();
 			}
 			catch(SQLException e) {
-				throw new DBException(e.getMessage());
+				throw new DBExcecao(e.getMessage());
 			}
 		}
 		
@@ -57,14 +57,14 @@ public class DataBaseConnection {
 				statement.close();
 			}
 			catch(SQLException e) {
-				throw new DBException(e.getMessage());
+				throw new DBExcecao(e.getMessage());
 			}
 		}
 		
 		return statement;
 	}
 	
-	public static ResultSet closeStatment(ResultSet resultSet) {
+	public static ResultSet closeResultSet(ResultSet resultSet) {
 		
 		if(resultSet != null) {
 			
@@ -73,7 +73,7 @@ public class DataBaseConnection {
 				resultSet.close();
 			}
 			catch(SQLException e) {
-				throw new DBException(e.getMessage());
+				throw new DBExcecao(e.getMessage());
 			}
 		}
 		
@@ -89,7 +89,7 @@ public class DataBaseConnection {
 			return properties;
 		}
 		catch(IOException e) {
-			throw new DBException(e.getMessage());
+			throw new DBExcecao(e.getMessage());
 		}
 	}
 }

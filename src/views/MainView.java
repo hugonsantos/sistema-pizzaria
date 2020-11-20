@@ -24,27 +24,31 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import views.internos.FuncionariosView;
 import views.internos.ProdutosView;
 import views.internos.VenderView;
 
 public class MainView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel contentPane;
+
 	private VenderView vender;
 	private ProdutosView produtos;
+	private FuncionariosView funcionarios;
+
 	private static MainView frame;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
+
 					frame = new MainView();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,7 +57,7 @@ public class MainView extends JFrame {
 	}
 
 	public MainView() {
-		
+
 		setMinimumSize(new Dimension(1024, 768));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);
@@ -63,30 +67,30 @@ public class MainView extends JFrame {
 		contentPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JPanel panelTopo = new JPanel();
 		panelTopo.setBackground(Color.DARK_GRAY);
 		contentPane.add(panelTopo, BorderLayout.NORTH);
 		panelTopo.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-		
+
 		JButton btnMinimizar = new JButton("-");
 		btnMinimizar.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				btnMinimizar.setBackground(new Color(173, 216, 230));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				btnMinimizar.setBackground(Color.DARK_GRAY);
 			}
 		});
 		btnMinimizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				frame.setState(Frame.ICONIFIED);
 			}
 		});
@@ -99,10 +103,10 @@ public class MainView extends JFrame {
 		btnMinimizar.setFont(new Font("Leelawadee", Font.BOLD, 24));
 		btnMinimizar.setHorizontalTextPosition(SwingConstants.CENTER);
 		panelTopo.add(btnMinimizar);
-		
+
 		JButton btnExit = new JButton("X");
 		btnExit.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 
@@ -111,13 +115,13 @@ public class MainView extends JFrame {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				btnExit.setBackground(Color.DARK_GRAY);
 			}
 		});
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				System.exit(0);
 			}
 		});
@@ -130,26 +134,26 @@ public class MainView extends JFrame {
 		btnExit.setFont(new Font("Leelawadee", Font.BOLD, 20));
 		btnExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelTopo.add(btnExit);
-		
+
 		JPanel panelViewsInternas = new JPanel();
 		contentPane.add(panelViewsInternas, BorderLayout.CENTER);
 		panelViewsInternas.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelLateral = new JPanel();
 		panelLateral.setPreferredSize(new Dimension(250, 55));
 		panelLateral.setBackground(Color.DARK_GRAY);
 		panelLateral.setLayout(new BorderLayout(0, 0));
-		
+
 		JScrollPane scroll = new JScrollPane(panelLateral);
 		scroll.setBorder(null);
 		contentPane.add(scroll, BorderLayout.WEST);
-		
+
 		JLabel lblMenu = new JLabel("Menu");
 		lblMenu.setForeground(Color.WHITE);
 		lblMenu.setFont(new Font("Leelawadee", Font.BOLD, 25));
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLateral.add(lblMenu, BorderLayout.NORTH);
-		
+
 		JPanel panelGrid = new JPanel();
 		panelGrid.setAutoscrolls(true);
 		panelGrid.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -157,38 +161,38 @@ public class MainView extends JFrame {
 		panelGrid.setBackground(Color.DARK_GRAY);
 		panelLateral.add(panelGrid, BorderLayout.CENTER);
 		panelGrid.setLayout(new GridLayout(6, 1));
-		
-		//Linha 1 do GRID
+
+		// Linha 1 do GRID
 		JPanel panelGridLinha1 = new JPanel();
 		panelGridLinha1.setToolTipText("Tela para vender os produtos!");
 		panelGridLinha1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha1.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha1.setBackground(new Color(173, 216, 230));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha1.setBackground(Color.DARK_GRAY);
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				panelViewsInternas.removeAll();
-				
-				if(vender == null) {
-					
+
+				if (vender == null) {
+
 					vender = new VenderView();
 				}
-				
+
 				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
-				
+
 				panelViewsInternas.repaint();
 				panelViewsInternas.validate();
 			}
@@ -197,7 +201,7 @@ public class MainView extends JFrame {
 		panelGridLinha1.setFocusable(false);
 		panelGrid.add(panelGridLinha1);
 		panelGridLinha1.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconVender = new JLabel("");
 		lblIconVender.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblIconVender.setBorder(null);
@@ -205,7 +209,7 @@ public class MainView extends JFrame {
 		lblIconVender.setFocusable(false);
 		lblIconVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha1.add(lblIconVender);
-		
+
 		JLabel lblVender = new JLabel("Vender");
 		lblVender.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblVender.setBorder(new EmptyBorder(0, 0, 10, 15));
@@ -213,21 +217,21 @@ public class MainView extends JFrame {
 		lblVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVender.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		panelGridLinha1.add(lblVender);
-		
-		//Linha 2 do GRID
+
+		// Linha 2 do GRID
 		JPanel panelGridLinha2 = new JPanel();
 		panelGridLinha2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha2.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha2.setBackground(new Color(219, 112, 147));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha2.setBackground(Color.DARK_GRAY);
 			}
 		});
@@ -235,14 +239,14 @@ public class MainView extends JFrame {
 		panelGridLinha2.setFocusable(false);
 		panelGrid.add(panelGridLinha2);
 		panelGridLinha2.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconClientes = new JLabel("");
 		lblIconClientes.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblIconClientes.setIcon(new ImageIcon(MainView.class.getResource("/imagens/cliente-64.png")));
 		lblIconClientes.setFocusable(false);
 		lblIconClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha2.add(lblIconClientes);
-		
+
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblClientes.setBorder(new EmptyBorder(0, 0, 10, 15));
@@ -250,21 +254,21 @@ public class MainView extends JFrame {
 		lblClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblClientes.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		panelGridLinha2.add(lblClientes);
-		
-		//Linha 3 do GRID
+
+		// Linha 3 do GRID
 		JPanel panelGridLinha3 = new JPanel();
 		panelGridLinha3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha3.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha3.setBackground(new Color(173, 216, 230));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha3.setBackground(Color.DARK_GRAY);
 			}
 		});
@@ -272,13 +276,13 @@ public class MainView extends JFrame {
 		panelGridLinha3.setFocusable(false);
 		panelGrid.add(panelGridLinha3);
 		panelGridLinha3.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconRelatorios = new JLabel("");
 		lblIconRelatorios.setIcon(new ImageIcon(MainView.class.getResource("/imagens/grafico-de-barras-64.png")));
 		lblIconRelatorios.setFocusable(false);
 		lblIconRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha3.add(lblIconRelatorios);
-		
+
 		JLabel lblRelatorios = new JLabel("Relatórios");
 		lblRelatorios.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblRelatorios.setBorder(new EmptyBorder(0, 0, 10, 15));
@@ -286,35 +290,52 @@ public class MainView extends JFrame {
 		lblRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRelatorios.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		panelGridLinha3.add(lblRelatorios);
-		
-		//Linha 4 do GRID
+
+		// Linha 4 do GRID
 		JPanel panelGridLinha4 = new JPanel();
 		panelGridLinha4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha4.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha4.setBackground(new Color(219, 112, 147));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha4.setBackground(Color.DARK_GRAY);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				panelViewsInternas.removeAll();
+
+				if (funcionarios == null) {
+
+					funcionarios = new FuncionariosView();
+				}
+
+				panelViewsInternas.add(funcionarios, BorderLayout.CENTER);
+				funcionarios.setVisible(true);
+
+				panelViewsInternas.repaint();
+				panelViewsInternas.validate();
 			}
 		});
 		panelGridLinha4.setBackground(Color.DARK_GRAY);
 		panelGridLinha4.setFocusable(false);
 		panelGrid.add(panelGridLinha4);
 		panelGridLinha4.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconFuncionarios = new JLabel("");
 		lblIconFuncionarios.setIcon(new ImageIcon(MainView.class.getResource("/imagens/equipe-64.png")));
 		lblIconFuncionarios.setFocusable(false);
 		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha4.add(lblIconFuncionarios);
-		
+
 		JLabel lblFuncionarios = new JLabel("Funcionários");
 		lblFuncionarios.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblFuncionarios.setBorder(new EmptyBorder(0, 0, 10, 15));
@@ -322,35 +343,35 @@ public class MainView extends JFrame {
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFuncionarios.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		panelGridLinha4.add(lblFuncionarios);
-		
-		//Linha 5 do GRID
+
+		// Linha 5 do GRID
 		JPanel panelGridLinha5 = new JPanel();
 		panelGridLinha5.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha5.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha5.setBackground(new Color(173, 216, 230));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha5.setBackground(Color.DARK_GRAY);
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				panelViewsInternas.removeAll();
-				
-				if(produtos == null) {
+
+				if (produtos == null) {
 					produtos = new ProdutosView();
 				}
 				panelViewsInternas.add(produtos, BorderLayout.CENTER);
 				produtos.setVisible(true);
-				
+
 				panelViewsInternas.repaint();
 				panelViewsInternas.validate();
 			}
@@ -359,13 +380,13 @@ public class MainView extends JFrame {
 		panelGridLinha5.setFocusable(false);
 		panelGrid.add(panelGridLinha5);
 		panelGridLinha5.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconProdutos = new JLabel("");
 		lblIconProdutos.setIcon(new ImageIcon(MainView.class.getResource("/imagens/inventario-64.png")));
 		lblIconProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIconProdutos.setFocusable(false);
 		panelGridLinha5.add(lblIconProdutos);
-		
+
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -373,21 +394,21 @@ public class MainView extends JFrame {
 		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
 		panelGridLinha5.add(lblProdutos);
-		
-		//Linha 6 do GRID
+
+		// Linha 6 do GRID
 		JPanel panelGridLinha6 = new JPanel();
 		panelGridLinha6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha6.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				panelGridLinha6.setBackground(Color.BLACK);
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				panelGridLinha6.setBackground(Color.DARK_GRAY);
 			}
 		});
@@ -395,13 +416,13 @@ public class MainView extends JFrame {
 		panelGridLinha6.setBackground(Color.DARK_GRAY);
 		panelGrid.add(panelGridLinha6);
 		panelGridLinha6.setLayout(new GridLayout(1, 2));
-		
+
 		JLabel lblIconConfig = new JLabel("");
 		lblIconConfig.setIcon(new ImageIcon(MainView.class.getResource("/imagens/configuracoes-64.png")));
 		lblIconConfig.setFocusable(false);
 		lblIconConfig.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha6.add(lblIconConfig);
-		
+
 		JLabel lblConfig = new JLabel("Configurações");
 		lblConfig.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblConfig.setBorder(new EmptyBorder(0, 0, 10, 15));

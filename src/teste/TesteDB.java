@@ -2,16 +2,16 @@ package teste;
 
 import java.sql.Connection;
 
-import DB.DataBaseConnection;
+import DB.DBConexao;
 
 public class TesteDB {
 
 	public static void main(String[] args) {
 
-		Connection con = DataBaseConnection.connection();
+		Connection con = DBConexao.connection();
 		
 		System.out.println("Success: " + con);
 		
-		DataBaseConnection.closeConnection();
+		DBConexao.closeConnection();
 	}
 }

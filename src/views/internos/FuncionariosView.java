@@ -6,6 +6,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,19 +16,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
-public class ProdutosView extends TelaInternaCustom {
+import model.util.ModalUtil;
+import views.modal.ModalFuncionario;
 
+public class FuncionariosView extends TelaInternaCustom {
+	
 	private static final long serialVersionUID = 1L;
+	
+	private ModalFuncionario modalFuncionario;
+	
+	private ModalUtil modalutil = new ModalUtil();
+	
 	private JTable table;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProdutosView frame = new ProdutosView();
+					FuncionariosView frame = new FuncionariosView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,37 +44,44 @@ public class ProdutosView extends TelaInternaCustom {
 		});
 	}
 
-	public ProdutosView() {
+	public FuncionariosView() {
 		
-		JPanel panelProdutos = new JPanel();
-		panelProdutos.setBackground(Color.WHITE);
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
 		
-		JScrollPane scrollPane = new JScrollPane(panelProdutos);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(panel);
+		panel.setLayout(new BorderLayout(0, 0));
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
-		panelProdutos.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblProdutos = new JLabel("Produtos");
-		lblProdutos.setBackground(Color.WHITE);
-		lblProdutos.setPreferredSize(new Dimension(43, 100));
-		lblProdutos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProdutos.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
-		panelProdutos.add(lblProdutos, BorderLayout.NORTH);
-		
-		JPanel panelListaProdutos = new JPanel();
-		panelListaProdutos.setBackground(Color.WHITE);
-		panelProdutos.add(panelListaProdutos, BorderLayout.CENTER);
+		JLabel lblFuncionarios = new JLabel("Funcion\u00E1rios");
+		lblFuncionarios.setBackground(Color.WHITE);
+		lblFuncionarios.setPreferredSize(new Dimension(60, 60));
+		lblFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
+		lblFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lblFuncionarios, BorderLayout.NORTH);
 		
 		table = new JTable();
-		panelListaProdutos.add(table);
+		panel.add(table, BorderLayout.CENTER);
 		
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBackground(Color.WHITE);
 		panelAcoes.setPreferredSize(new Dimension(10, 100));
-		panelProdutos.add(panelAcoes, BorderLayout.SOUTH);
+		panel.add(panelAcoes, BorderLayout.SOUTH);
 		
 		JButton btnIncluirProduto = new JButton("Incluir novo");
-		btnIncluirProduto.setBorderPainted(false);
+		btnIncluirProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(modalFuncionario == null) {
+					
+					modalFuncionario = new ModalFuncionario();
+				}
+				
+				modalutil.MovimentacaoModal(modalFuncionario);
+				modalFuncionario.setLocationRelativeTo(null);
+				modalFuncionario.setVisible(true);
+			}
+		});
 		btnIncluirProduto.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -82,6 +98,7 @@ public class ProdutosView extends TelaInternaCustom {
 				btnIncluirProduto.setBackground(Color.WHITE);
 			}
 		});
+		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.setFocusable(false);
 		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.setBackground(Color.WHITE);

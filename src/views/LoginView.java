@@ -1,28 +1,29 @@
 package views;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+import java.awt.Cursor;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Point;
-
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.Cursor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import model.dao.FabricaDao;
+import model.dao.LoginDao;
+import model.entities.Funcionarios;
 
 public class LoginView extends JFrame {
 
@@ -30,7 +31,7 @@ public class LoginView extends JFrame {
 	
 	private JPanel contentPane;
 	private JTextField txtUsuario;
-	private JPasswordField passSenha;
+	private JPasswordField ptxtSenha;
 	
 	private static LoginView frame;
 	private static Point point = new Point();
@@ -121,11 +122,11 @@ public class LoginView extends JFrame {
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
-		passSenha = new JPasswordField();
-		passSenha.setFont(new Font("Leelawadee", Font.PLAIN, 18));
-		passSenha.setBorder(new EmptyBorder(0, 0, 0, 0));
-		passSenha.setBounds(765, 346, 335, 38);
-		contentPane.add(passSenha);
+		ptxtSenha = new JPasswordField();
+		ptxtSenha.setFont(new Font("Leelawadee", Font.PLAIN, 18));
+		ptxtSenha.setBorder(new EmptyBorder(0, 0, 0, 0));
+		ptxtSenha.setBounds(765, 346, 335, 38);
+		contentPane.add(ptxtSenha);
 		
 		JLabel lblExit = new JLabel("X");
 		lblExit.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -162,7 +163,40 @@ public class LoginView extends JFrame {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				Funcionarios funcionario = new Funcionarios();
+				LoginDao loginDao = FabricaDao.createLoginDao();
 				
+				funcionario.setApelido(txtUsuario.getText());
+				funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
+				
+				Boolean autenticacao = loginDao.AutenticacaoLogin(funcionario);
+				
+				if(autenticacao.booleanValue() == true) {
+					
+					MainView frame = new MainView();
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				}
+				else {
+					
+					System.out.println("O usuário ou a senha digitada não confere, por favor verifique o que foi digitado!");
+				}
+			}
+		});
+		btnLogin.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				btnLogin.setBackground(Color.GREEN);
+				btnLogin.setForeground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				btnLogin.setBackground(Color.WHITE);
+				btnLogin.setForeground(Color.BLACK);
 			}
 		});
 		btnLogin.setFocusable(false);
