@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-import DB.DBExcecao;
 import DB.DBConexao;
+import DB.DBExcecao;
 import model.dao.FuncionariosDao;
 import model.entities.Funcionarios;
 
@@ -17,11 +18,13 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 	private Statement statement;
 	private PreparedStatement prepared;
 	private ResultSet resultSet;
+	private String sql;
+	private Funcionarios funcionarios;
 	
 	@Override
 	public void inserir(Funcionarios funcionarios) {
 		
-		String sql = "insert into funcionarios(nome, email, dataNascimento, cpf, apelido, senha, administrador) values(?, ?, ?, ?, ?, ?, ?)";
+		sql = "insert into funcionarios(nome, email, dataNascimento, cpf, apelido, senha, administrador) values(?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			
@@ -69,9 +72,35 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 
 	@Override
 	public List<Funcionarios> listarTodos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	
+		List<Funcionarios> list = new ArrayList<>();
+		
+		sql = "select * from funcionarios";
+		
+		try {
+			
+			statement = DBConexao.connection().createStatement();
+			resultSet = statement.executeQuery(sql);
+			
+			while(resultSet.next()) {
+				
+				funcionarios = new Funcionarios();
+				
+				funcionarios.setId(resultSet.getInt("id"));
+				funcionarios.setNome(resultSet.getString("nome"));
+				funcionarios.setEmail(resultSet.getString("email"));
+				funcionarios.setDataNascimento(resultSet.getDate("dataNascimento"));
+				funcionarios.setCpf(resultSet.getString("cpf"));
+				funcionarios.setApelido(resultSet.getString("apelido"));
+				funcionarios.setAdministrador(resultSet.getString("administrador"));
+				
+				list.add(funcionarios);
+			}
+			
+			return list;
+		}
+		catch(SQLException e) {
+			throw new DBExcecao(e.getMessage());
+		}
+	}
 }

@@ -181,6 +181,7 @@ public final class ModalFuncionario extends ModalCustom {
 
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				
 				Funcionarios funcionario = new Funcionarios();
