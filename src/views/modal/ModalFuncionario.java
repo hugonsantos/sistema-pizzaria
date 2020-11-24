@@ -25,9 +25,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import model.dao.FabricaDao;
-import model.dao.FuncionariosDao;
 import model.entities.Funcionarios;
+import model.table.FuncionariosTableModel;
 
 public final class ModalFuncionario extends ModalCustom {
 
@@ -44,7 +43,7 @@ public final class ModalFuncionario extends ModalCustom {
 
 	private ButtonGroup administradorBtns = new ButtonGroup();
 
-	public ModalFuncionario() {
+	public ModalFuncionario(FuncionariosTableModel funcionariosTableModel) {
 
 		JPanel panelDadosCadastrais = new JPanel();
 		getContentPane().add(panelDadosCadastrais, BorderLayout.CENTER);
@@ -185,7 +184,6 @@ public final class ModalFuncionario extends ModalCustom {
 			public void actionPerformed(ActionEvent e) {
 				
 				Funcionarios funcionario = new Funcionarios();
-				FuncionariosDao funcionariosDao = FabricaDao.createFuncionariosDao();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				
 				try {
@@ -198,7 +196,7 @@ public final class ModalFuncionario extends ModalCustom {
 					funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
 					if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
 					
-					funcionariosDao.inserir(funcionario);
+					funcionariosTableModel.adicionarFuncionario(funcionario);
 					
 					txtNome.setText("");
 					txtEmail.setText("");
@@ -207,7 +205,6 @@ public final class ModalFuncionario extends ModalCustom {
 					txtApelido.setText("");
 					ptxtSenha.setText("");
 					administradorBtns.clearSelection();
-					
 					
 				} catch (ParseException pe) {
 					pe.printStackTrace();

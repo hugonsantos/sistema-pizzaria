@@ -30,6 +30,7 @@ public class FuncionariosView extends TelaInternaCustom {
 	private ModalFuncionario modalFuncionario;
 
 	private ModalUtil modalUtil = new ModalUtil();
+	private FuncionariosTableModel funcionariosTableModel = new FuncionariosTableModel();
 	private TableModelUtil tableModelUtil = new TableModelUtil();
 
 	private JTable tableFuncionarios;
@@ -58,6 +59,8 @@ public class FuncionariosView extends TelaInternaCustom {
 			public void mouseClicked(MouseEvent e) {
 
 				tableFuncionarios.clearSelection();
+				btnEditar.setEnabled(false);
+				btnDeletar.setEnabled(false);
 			}
 		});
 		panelFuncionariosView.setBackground(Color.WHITE);
@@ -73,7 +76,19 @@ public class FuncionariosView extends TelaInternaCustom {
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
 		panelFuncionariosView.add(lblFuncionarios, BorderLayout.NORTH);
 
-		tableFuncionarios = new JTable(new FuncionariosTableModel());
+		tableFuncionarios = new JTable();
+		tableFuncionarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if (tableFuncionarios.getSelectedRow() != -1) {
+
+					btnEditar.setEnabled(true);
+					btnDeletar.setEnabled(true);
+				}
+			}
+		});
+		tableFuncionarios.setModel(funcionariosTableModel);
 		tableFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		tableFuncionarios.setBorder(null);
 		tableFuncionarios.setShowVerticalLines(false);
@@ -84,6 +99,7 @@ public class FuncionariosView extends TelaInternaCustom {
 		tableModelUtil.customizarTable(tableFuncionarios.getTableHeader());
 
 		JScrollPane scrollPaneTableFuncionarios = new JScrollPane(tableFuncionarios);
+		scrollPaneTableFuncionarios.setViewportBorder(null);
 		scrollPaneTableFuncionarios.setBorder(null);
 		panelFuncionariosView.add(scrollPaneTableFuncionarios, BorderLayout.CENTER);
 
@@ -98,7 +114,7 @@ public class FuncionariosView extends TelaInternaCustom {
 
 				if (modalFuncionario == null) {
 
-					modalFuncionario = new ModalFuncionario();
+					modalFuncionario = new ModalFuncionario(funcionariosTableModel);
 				}
 
 				modalUtil.MovimentacaoModal(modalFuncionario);
@@ -142,6 +158,7 @@ public class FuncionariosView extends TelaInternaCustom {
 			public void mouseEntered(MouseEvent e) {
 
 				if (tableFuncionarios.getSelectedRow() != -1) {
+
 					btnEditar.setForeground(Color.WHITE);
 					btnEditar.setBackground(Color.GREEN);
 				}
@@ -150,11 +167,8 @@ public class FuncionariosView extends TelaInternaCustom {
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				if (tableFuncionarios.getSelectedRow() != -1) {
-					btnEditar.setForeground(Color.BLACK);
-					btnEditar.setBackground(Color.WHITE);
-				}
-
+				btnEditar.setForeground(Color.BLACK);
+				btnEditar.setBackground(Color.WHITE);
 			}
 		});
 
@@ -168,6 +182,7 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelAcoes.add(btnEditar);
 
 		btnDeletar = new JButton("Deletar");
+		btnDeletar.setEnabled(false);
 		btnDeletar.setBorderPainted(false);
 		btnDeletar.addMouseListener(new MouseAdapter() {
 
@@ -175,6 +190,7 @@ public class FuncionariosView extends TelaInternaCustom {
 			public void mouseEntered(MouseEvent e) {
 
 				if (tableFuncionarios.getSelectedRow() != -1) {
+
 					btnDeletar.setForeground(Color.WHITE);
 					btnDeletar.setBackground(Color.RED);
 				}
@@ -183,10 +199,8 @@ public class FuncionariosView extends TelaInternaCustom {
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				if (tableFuncionarios.getSelectedRow() != -1) {
-					btnDeletar.setForeground(Color.BLACK);
-					btnDeletar.setBackground(Color.WHITE);
-				}
+				btnDeletar.setForeground(Color.BLACK);
+				btnDeletar.setBackground(Color.WHITE);
 			}
 		});
 		btnDeletar.setFocusable(false);
