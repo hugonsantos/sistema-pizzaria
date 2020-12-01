@@ -24,6 +24,7 @@ public abstract class ModalCustom extends JDialog {
 	public ModalCustom() {
 		
 		setUndecorated(true);
+		setModal(true);
 		setBounds(100, 100, 950, 600);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.SOUTH);

@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import views.internos.ClientesView;
 import views.internos.FuncionariosView;
 import views.internos.ProdutosView;
 import views.internos.VenderView;
@@ -35,8 +36,9 @@ public class MainView extends JFrame {
 	private JPanel contentPane;
 
 	private VenderView vender;
-	private ProdutosView produtos;
+	private ClientesView clientes;
 	private FuncionariosView funcionarios;
+	private ProdutosView produtos;
 
 	private static MainView frame;
 
@@ -220,6 +222,7 @@ public class MainView extends JFrame {
 
 		// Linha 2 do GRID
 		JPanel panelGridLinha2 = new JPanel();
+		panelGridLinha2.setToolTipText("Lista de todos os cliente cadastrados.");
 		panelGridLinha2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha2.addMouseListener(new MouseAdapter() {
 
@@ -233,6 +236,23 @@ public class MainView extends JFrame {
 			public void mouseExited(MouseEvent e) {
 
 				panelGridLinha2.setBackground(Color.DARK_GRAY);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				panelViewsInternas.removeAll();
+
+				if (clientes == null) {
+
+					clientes = new ClientesView();
+				}
+
+				panelViewsInternas.add(clientes, BorderLayout.CENTER);
+				clientes.setVisible(true);
+
+				panelViewsInternas.repaint();
+				panelViewsInternas.validate();
 			}
 		});
 		panelGridLinha2.setBackground(Color.DARK_GRAY);
@@ -257,6 +277,7 @@ public class MainView extends JFrame {
 
 		// Linha 3 do GRID
 		JPanel panelGridLinha3 = new JPanel();
+		panelGridLinha3.setToolTipText("Gere seus relatórios e fique por dentro das suas vendas!");
 		panelGridLinha3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha3.addMouseListener(new MouseAdapter() {
 
@@ -293,6 +314,7 @@ public class MainView extends JFrame {
 
 		// Linha 4 do GRID
 		JPanel panelGridLinha4 = new JPanel();
+		panelGridLinha4.setToolTipText("Lista de todos os funcionários cadastrados.");
 		panelGridLinha4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha4.addMouseListener(new MouseAdapter() {
 
@@ -346,6 +368,7 @@ public class MainView extends JFrame {
 
 		// Linha 5 do GRID
 		JPanel panelGridLinha5 = new JPanel();
+		panelGridLinha5.setToolTipText("Lista de todos os produtos cadastrados.");
 		panelGridLinha5.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha5.addMouseListener(new MouseAdapter() {
 
@@ -367,8 +390,10 @@ public class MainView extends JFrame {
 				panelViewsInternas.removeAll();
 
 				if (produtos == null) {
+					
 					produtos = new ProdutosView();
 				}
+				
 				panelViewsInternas.add(produtos, BorderLayout.CENTER);
 				produtos.setVisible(true);
 
@@ -397,6 +422,7 @@ public class MainView extends JFrame {
 
 		// Linha 6 do GRID
 		JPanel panelGridLinha6 = new JPanel();
+		panelGridLinha6.setToolTipText("Configure ou personalize o sistema para se adaptar ao estabelecimento.");
 		panelGridLinha6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelGridLinha6.addMouseListener(new MouseAdapter() {
 

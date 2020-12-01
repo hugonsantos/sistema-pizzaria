@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import DB.DBConexao;
 import DB.DBExcecao;
 import model.dao.LoginDao;
-import model.entities.Funcionarios;
+import model.entities.Funcionario;
 
 public class LoginSourceDao implements LoginDao {
 	
@@ -15,7 +15,7 @@ public class LoginSourceDao implements LoginDao {
 	private ResultSet resultSet;
 
 	@Override
-	public Boolean AutenticacaoLogin(Funcionarios funcionario) {
+	public Boolean AutenticacaoLogin(Funcionario funcionario) {
 		
 		String sql = "select cpf, apelido, senha from funcionarios where cpf = ? or apelido = ?";
 		
@@ -30,17 +30,29 @@ public class LoginSourceDao implements LoginDao {
 			
 			if(resultSet.next()) {
 				
-				if(resultSet.getString("apelido").equals(funcionario.getApelido()) || resultSet.getString("cpf").equals(funcionario.getCpf()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
+				if(resultSet.getString("apelido").equals(funcionario.getApelido()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
 					
 					return true;
+				}
+				else if(resultSet.getString("cpf").equals(funcionario.getCpf()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
 					
+					return true;
+				}
+				else {
+					
+					return false;
 				}
 			}
+			
+			return false;
 		}
 		catch(SQLException e) {
 			throw new DBExcecao(e.getMessage());
 		}
-		
-		return false;
+		finally {
+			
+			DBConexao.closeStatment(prepared);
+			DBConexao.closeResultSet(resultSet);
+		}
 	}
 }

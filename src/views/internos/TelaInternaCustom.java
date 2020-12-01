@@ -43,40 +43,7 @@ public abstract class TelaInternaCustom extends JInternalFrame {
 		jifPanelTopo.setBackground(Color.GRAY);
 		jifPanelTopo.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		jifPanelTopo.setBorder(new EmptyBorder(0, 0, 0, 0));
-		this.getContentPane().add(jifPanelTopo, BorderLayout.NORTH);
-		
-		JButton btnMinimizar = new JButton("-");
-		btnMinimizar.setContentAreaFilled(false);
-		btnMinimizar.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnMinimizar.setBackground(new Color(173, 216, 230));
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnMinimizar.setBackground(Color.GRAY);
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				
-			}
-		});
-		btnMinimizar.setFocusable(false);
-		btnMinimizar.setForeground(Color.WHITE);
-		btnMinimizar.setBackground(Color.GRAY);
-		btnMinimizar.setPreferredSize(new Dimension(50, 20));
-		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnMinimizar.setMargin(new Insets(0, 0, 0, 0));
-		btnMinimizar.setBorder(null);
-		btnMinimizar.setFont(new Font("Leelawadee", Font.BOLD, 21));
-		btnMinimizar.setHorizontalTextPosition(SwingConstants.CENTER);
-		jifPanelTopo.add(btnMinimizar);
+		getContentPane().add(jifPanelTopo, BorderLayout.NORTH);
 		
 		JButton btnExit = new JButton("X");
 		btnExit.setContentAreaFilled(false);

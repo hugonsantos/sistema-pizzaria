@@ -7,18 +7,18 @@ import javax.swing.table.AbstractTableModel;
 
 import model.dao.FabricaDao;
 import model.dao.FuncionariosDao;
-import model.entities.Funcionarios;
+import model.entities.Funcionario;
 
-public class FuncionariosTableModel extends AbstractTableModel{
+public final class FuncionariosTableModel extends AbstractTableModel{
 
 	private static final long serialVersionUID = 1L;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private String[] colunas = {"Id", "Nome", "Email", "Data de Nascimento", "CPF", "Apelido", "Administrador"};
+	private String[] colunas = {"Id", "Nome", "Email", "Data de Nascimento", "CPF", "Apelido", "Senha", "Administrador"};
 	
 	private FuncionariosDao funcionariosDao = FabricaDao.createFuncionariosDao();
-	List<Funcionarios> list = funcionariosDao.listarTodos();
+	private List<Funcionario> list = funcionariosDao.listarTodos();
 	
 	@Override
 	public int getRowCount() {
@@ -49,6 +49,8 @@ public class FuncionariosTableModel extends AbstractTableModel{
 			return colunas[5];
 		case 6:
 			return colunas[6];
+		case 7:
+			return colunas[7];
 		default:
 			return "";
 		}
@@ -57,7 +59,7 @@ public class FuncionariosTableModel extends AbstractTableModel{
 	@Override
 	public Object getValueAt(int linha, int coluna) {
 		
-		Funcionarios funcionarios = list.get(linha);
+		Funcionario funcionarios = list.get(linha);
 		
 		switch(coluna) {
 		
@@ -74,9 +76,37 @@ public class FuncionariosTableModel extends AbstractTableModel{
 		case 5:
 			return funcionarios.getApelido();
 		case 6:
+			return funcionarios.getSenha();
+		case 7:
 			return funcionarios.getAdministrador();
 		default:
 			return "";
 		}	
+	}
+	
+	public final void adicionarFuncionario(Funcionario funcionarios) {
+		
+		Integer id = funcionariosDao.inserir(funcionarios);
+		funcionarios.setId(id);
+		list.add(funcionarios);
+		fireTableDataChanged();
+	}
+	
+	public final void alterarFuncionario(Funcionario funcionarios) {
+		
+		funcionariosDao.alterar(funcionarios);
+		fireTableDataChanged();
+	}
+	
+	public final void deletarFuncionario(Funcionario funcionarios) {
+		
+		funcionariosDao.deletar(funcionarios);
+		list.remove(funcionarios);
+	}
+	
+	public Funcionario capturarFuncionarios(Integer linha) {
+		
+		Funcionario funcionarios = list.get(linha);
+		return funcionarios;
 	}
 }

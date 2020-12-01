@@ -23,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import model.dao.FabricaDao;
 import model.dao.LoginDao;
-import model.entities.Funcionarios;
+import model.entities.Funcionario;
 
 public class LoginView extends JFrame {
 
@@ -91,7 +91,7 @@ public class LoginView extends JFrame {
 		lblImagem.setIconTextGap(2);
 		lblImagem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblImagem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImagem.setIcon(new ImageIcon(LoginView.class.getResource("/imagens/preparo.gif")));
+		lblImagem.setIcon(new ImageIcon(LoginView.class.getResource("/imagens/login.gif")));
 		lblImagem.setBounds(0, 0, 725, 600);
 		panelImagem.add(lblImagem);
 		
@@ -161,9 +161,10 @@ public class LoginView extends JFrame {
 		
 		JButton btnLogin = new JButton("Logar");
 		btnLogin.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				
-				Funcionarios funcionario = new Funcionarios();
+				Funcionario funcionario = new Funcionario();
 				LoginDao loginDao = FabricaDao.createLoginDao();
 				
 				funcionario.setApelido(txtUsuario.getText());
@@ -176,6 +177,8 @@ public class LoginView extends JFrame {
 					MainView frame = new MainView();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					
+					dispose();
 				}
 				else {
 					

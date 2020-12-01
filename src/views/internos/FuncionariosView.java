@@ -10,17 +10,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import model.table.FuncionariosTableModel;
+import model.util.MainViewUtil;
 import model.util.ModalUtil;
 import model.util.TableModelUtil;
+import views.modal.ModalAlerta;
+import views.modal.ModalDeletar;
 import views.modal.ModalFuncionario;
 
 public class FuncionariosView extends TelaInternaCustom {
@@ -28,15 +33,22 @@ public class FuncionariosView extends TelaInternaCustom {
 	private static final long serialVersionUID = 1L;
 
 	private ModalFuncionario modalFuncionario;
+	private ModalDeletar modalDeletar;
+	private ModalAlerta modalAlerta;
 
 	private ModalUtil modalUtil = new ModalUtil();
 	private FuncionariosTableModel funcionariosTableModel = new FuncionariosTableModel();
-	private TableModelUtil tableModelUtil = new TableModelUtil();
+	private TableModelUtil tableUtil = new TableModelUtil();
+	private MainViewUtil mainUtil = new MainViewUtil();
 
 	private JTable tableFuncionarios;
 	private JButton btnIncluirProduto;
 	private JButton btnEditar;
 	private JButton btnDeletar;
+	
+	private MouseListener btnIncluirProdutoML;
+	private MouseListener btnEditarML;
+	private MouseListener btnDeletarML;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -59,8 +71,6 @@ public class FuncionariosView extends TelaInternaCustom {
 			public void mouseClicked(MouseEvent e) {
 
 				tableFuncionarios.clearSelection();
-				btnEditar.setEnabled(false);
-				btnDeletar.setEnabled(false);
 			}
 		});
 		panelFuncionariosView.setBackground(Color.WHITE);
@@ -77,17 +87,6 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelFuncionariosView.add(lblFuncionarios, BorderLayout.NORTH);
 
 		tableFuncionarios = new JTable();
-		tableFuncionarios.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				if (tableFuncionarios.getSelectedRow() != -1) {
-
-					btnEditar.setEnabled(true);
-					btnDeletar.setEnabled(true);
-				}
-			}
-		});
 		tableFuncionarios.setModel(funcionariosTableModel);
 		tableFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		tableFuncionarios.setBorder(null);
@@ -96,7 +95,7 @@ public class FuncionariosView extends TelaInternaCustom {
 		tableFuncionarios.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tableFuncionarios.getColumnModel().getColumn(1).setPreferredWidth(300);
 		tableFuncionarios.getColumnModel().getColumn(2).setPreferredWidth(300);
-		tableModelUtil.customizarTable(tableFuncionarios.getTableHeader());
+		tableUtil.customizarTable(tableFuncionarios.getTableHeader());
 
 		JScrollPane scrollPaneTableFuncionarios = new JScrollPane(tableFuncionarios);
 		scrollPaneTableFuncionarios.setViewportBorder(null);
@@ -107,37 +106,20 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelAcoes.setBackground(Color.WHITE);
 		panelAcoes.setPreferredSize(new Dimension(10, 100));
 		panelFuncionariosView.add(panelAcoes, BorderLayout.SOUTH);
-
+		
 		btnIncluirProduto = new JButton("Incluir novo");
 		btnIncluirProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if (modalFuncionario == null) {
-
-					modalFuncionario = new ModalFuncionario(funcionariosTableModel);
-				}
+				modalFuncionario = new ModalFuncionario(funcionariosTableModel, null);
 
 				modalUtil.MovimentacaoModal(modalFuncionario);
 				modalFuncionario.setLocationRelativeTo(null);
 				modalFuncionario.setVisible(true);
 			}
 		});
-		btnIncluirProduto.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				btnIncluirProduto.setForeground(Color.WHITE);
-				btnIncluirProduto.setBackground(Color.GREEN);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				btnIncluirProduto.setForeground(Color.BLACK);
-				btnIncluirProduto.setBackground(Color.WHITE);
-			}
-		});
+		btnIncluirProdutoML = mainUtil.adicionarAcaoMouse(btnIncluirProduto, Color.WHITE, Color.GREEN);
+		btnIncluirProduto.addMouseListener(btnIncluirProdutoML);
 		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.setFocusable(false);
 		btnIncluirProduto.setBorderPainted(false);
@@ -149,29 +131,22 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelAcoes.add(btnIncluirProduto);
 
 		btnEditar = new JButton("Editar");
-		btnEditar.setEnabled(false);
-		btnEditar.setBorderPainted(false);
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(tableFuncionarios.getSelectedRow() != -1) {
+					
+					modalFuncionario = new ModalFuncionario(funcionariosTableModel, funcionariosTableModel.capturarFuncionarios(tableFuncionarios.getSelectedRow()));
 
-		btnEditar.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				if (tableFuncionarios.getSelectedRow() != -1) {
-
-					btnEditar.setForeground(Color.WHITE);
-					btnEditar.setBackground(Color.GREEN);
+					modalUtil.MovimentacaoModal(modalFuncionario);
+					modalFuncionario.setLocationRelativeTo(null);
+					modalFuncionario.setVisible(true);
 				}
 			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				btnEditar.setForeground(Color.BLACK);
-				btnEditar.setBackground(Color.WHITE);
-			}
 		});
-
+		btnEditarML = mainUtil.adicionarAcaoMouse(btnEditar, Color.WHITE, Color.GREEN);
+		btnEditar.addMouseListener(btnEditarML);
+		btnEditar.setBorderPainted(false);
 		btnEditar.setFocusable(false);
 		btnEditar.setBorderPainted(false);
 		btnEditar.setBackground(Color.WHITE);
@@ -182,27 +157,30 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelAcoes.add(btnEditar);
 
 		btnDeletar = new JButton("Deletar");
-		btnDeletar.setEnabled(false);
-		btnDeletar.setBorderPainted(false);
-		btnDeletar.addMouseListener(new MouseAdapter() {
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(tableFuncionarios.getSelectedRow() != -1) {
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				if (tableFuncionarios.getSelectedRow() != -1) {
-
-					btnDeletar.setForeground(Color.WHITE);
-					btnDeletar.setBackground(Color.RED);
+					modalDeletar = new ModalDeletar(tableFuncionarios.getSelectedRow(), "Deseja realmente deletar esse funcionário?");
+					
+					modalUtil.MovimentacaoModal(modalDeletar);
+					modalDeletar.setLocationRelativeTo(null);
+					modalDeletar.setVisible(true);
+				}
+				else {
+					
+					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", JOptionPane.WARNING_MESSAGE);
+					
+					modalUtil.MovimentacaoModal(modalAlerta);
+					modalAlerta.setLocationRelativeTo(null);
+					modalAlerta.setVisible(true);
 				}
 			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				btnDeletar.setForeground(Color.BLACK);
-				btnDeletar.setBackground(Color.WHITE);
-			}
 		});
+		btnDeletarML = mainUtil.adicionarAcaoMouse(btnDeletar, Color.WHITE, Color.RED);
+		btnDeletar.addMouseListener(btnDeletarML);
+		btnDeletar.setBorderPainted(false);
 		btnDeletar.setFocusable(false);
 		btnDeletar.setBorderPainted(false);
 		btnDeletar.setBackground(Color.WHITE);

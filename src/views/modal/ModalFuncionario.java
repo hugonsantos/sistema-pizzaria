@@ -7,7 +7,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +24,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import model.entities.Funcionarios;
+import model.entities.Funcionario;
 import model.table.FuncionariosTableModel;
 
 public final class ModalFuncionario extends ModalCustom {
@@ -42,14 +41,16 @@ public final class ModalFuncionario extends ModalCustom {
 	private JRadioButton rdbtnNao;
 
 	private ButtonGroup administradorBtns = new ButtonGroup();
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-	public ModalFuncionario(FuncionariosTableModel funcionariosTableModel) {
-
+	public ModalFuncionario(FuncionariosTableModel funcionariosTableModel, Funcionario funcionario) {
+		
 		JPanel panelDadosCadastrais = new JPanel();
 		getContentPane().add(panelDadosCadastrais, BorderLayout.CENTER);
-		panelDadosCadastrais.setLayout(new GridLayout(5, 2));
+		panelDadosCadastrais.setLayout(null);
 
 		JPanel panelNome = new JPanel();
+		panelNome.setBounds(0, 2, 475, 107);
 		panelDadosCadastrais.add(panelNome);
 		panelNome.setLayout(null);
 
@@ -67,6 +68,7 @@ public final class ModalFuncionario extends ModalCustom {
 		txtNome.setColumns(10);
 
 		JPanel panelEmail = new JPanel();
+		panelEmail.setBounds(475, 2, 475, 107);
 		panelEmail.setLayout(null);
 		panelDadosCadastrais.add(panelEmail);
 
@@ -84,6 +86,7 @@ public final class ModalFuncionario extends ModalCustom {
 		panelEmail.add(txtEmail);
 
 		JPanel panelDataNascimento = new JPanel();
+		panelDataNascimento.setBounds(0, 109, 475, 107);
 		panelDataNascimento.setLayout(null);
 		panelDadosCadastrais.add(panelDataNascimento);
 
@@ -101,6 +104,7 @@ public final class ModalFuncionario extends ModalCustom {
 		panelDataNascimento.add(txtDataNascimento);
 
 		JPanel panelCpf = new JPanel();
+		panelCpf.setBounds(475, 109, 475, 107);
 		panelCpf.setLayout(null);
 		panelDadosCadastrais.add(panelCpf);
 
@@ -118,6 +122,7 @@ public final class ModalFuncionario extends ModalCustom {
 		panelCpf.add(txtCpf);
 
 		JPanel panelApelido = new JPanel();
+		panelApelido.setBounds(0, 216, 475, 107);
 		panelApelido.setLayout(null);
 		panelDadosCadastrais.add(panelApelido);
 
@@ -135,6 +140,7 @@ public final class ModalFuncionario extends ModalCustom {
 		panelApelido.add(txtApelido);
 
 		JPanel panelSenha = new JPanel();
+		panelSenha.setBounds(475, 216, 475, 107);
 		panelSenha.setLayout(null);
 		panelDadosCadastrais.add(panelSenha);
 
@@ -151,6 +157,7 @@ public final class ModalFuncionario extends ModalCustom {
 		panelSenha.add(ptxtSenha);
 
 		JPanel panelAdministrador = new JPanel();
+		panelAdministrador.setBounds(0, 323, 475, 107);
 		panelAdministrador.setLayout(null);
 		panelDadosCadastrais.add(panelAdministrador);
 
@@ -171,6 +178,10 @@ public final class ModalFuncionario extends ModalCustom {
 
 		administradorBtns.add(rdbtnSim);
 		administradorBtns.add(rdbtnNao);
+		
+		if(funcionario != null) {
+			capturarDados(funcionario);
+		}
 
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBorder(null);
@@ -183,20 +194,36 @@ public final class ModalFuncionario extends ModalCustom {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				Funcionarios funcionario = new Funcionarios();
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				
 				try {
 					
-					funcionario.setNome(txtNome.getText());
-					funcionario.setEmail(txtEmail.getText());
-					funcionario.setDataNascimento(new Date(sdf.parse(txtDataNascimento.getText()).getTime()));
-					funcionario.setCpf(txtCpf.getText());
-					funcionario.setApelido(txtApelido.getText());
-					funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
-					if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
+					if(funcionario == null) {
+						
+						Funcionario funcionario = new Funcionario();
+						
+						funcionario.setNome(txtNome.getText());
+						funcionario.setEmail(txtEmail.getText());
+						funcionario.setDataNascimento(new Date(sdf.parse(txtDataNascimento.getText()).getTime()));
+						funcionario.setCpf(txtCpf.getText());
+						funcionario.setApelido(txtApelido.getText());
+						funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
+						if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
+						
+						funcionariosTableModel.adicionarFuncionario(funcionario);
+					}
+					else {
+						
+						funcionario.setNome(txtNome.getText());
+						funcionario.setEmail(txtEmail.getText());
+						funcionario.setDataNascimento(new Date(sdf.parse(txtDataNascimento.getText()).getTime()));
+						funcionario.setCpf(txtCpf.getText());
+						funcionario.setApelido(txtApelido.getText());
+						funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
+						if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
+						
+						funcionariosTableModel.alterarFuncionario(funcionario);
+					}
 					
-					funcionariosTableModel.adicionarFuncionario(funcionario);
+					funcionariosTableModel.fireTableDataChanged();
 					
 					txtNome.setText("");
 					txtEmail.setText("");
@@ -205,6 +232,8 @@ public final class ModalFuncionario extends ModalCustom {
 					txtApelido.setText("");
 					ptxtSenha.setText("");
 					administradorBtns.clearSelection();
+					
+					dispose();
 					
 				} catch (ParseException pe) {
 					pe.printStackTrace();
@@ -263,5 +292,16 @@ public final class ModalFuncionario extends ModalCustom {
 		btnCancelar.setBorderPainted(false);
 		btnCancelar.setBorder(null);
 		panelAcoes.add(btnCancelar);
+	}
+	
+	protected void capturarDados(Funcionario funcionario) {
+		
+		txtNome.setText(funcionario.getNome());
+		txtEmail.setText(funcionario.getEmail());
+		txtDataNascimento.setText(sdf.format(funcionario.getDataNascimento()));
+		txtCpf.setText(funcionario.getCpf());
+		txtApelido.setText(funcionario.getApelido());
+		ptxtSenha.setText(funcionario.getSenha());
+		if(funcionario.getAdministrador().equals("Sim")) rdbtnSim.setSelected(true); else rdbtnNao.setSelected(true);
 	}
 }
