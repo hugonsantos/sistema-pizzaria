@@ -34,7 +34,7 @@ public void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
 	public MouseListener adicionarAcaoMouse(JButton botao, Color corTexto, Color corFundo) {
 		
 		MouseListener m = new MouseAdapter() {
-	
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
 
@@ -49,6 +49,7 @@ public void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
 				botao.setBackground(corFundo);
 			}
 		};
+		
 		return m;
 	}
 }

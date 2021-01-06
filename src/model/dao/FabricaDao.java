@@ -4,6 +4,7 @@ import model.dao.source.ClientesSourceDao;
 import model.dao.source.EnderecosSourceDao;
 import model.dao.source.FuncionariosSourceDao;
 import model.dao.source.LoginSourceDao;
+import model.dao.source.ProdutosSourceDao;
 
 public class FabricaDao {
 
@@ -21,5 +22,9 @@ public class FabricaDao {
 	
 	public static EnderecosDao createEnderecosDao() {
 		return new EnderecosSourceDao();
+	}
+	
+	public static ProdutosDao createProdutosDao() {
+		return new ProdutosSourceDao();
 	}
 }

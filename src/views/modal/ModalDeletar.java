@@ -28,8 +28,15 @@ public final class ModalDeletar extends ModalCustom {
 	private MouseListener btnOkML;
 	private MouseListener btnCancelarML;
 	
-	public ModalDeletar(Integer linha, String textoConfirmacao) {
+	private int confirmacao;
+	
+	public ModalDeletar() {
 
+		
+	}
+	
+	public int modalComponentes(String textoConfirmacao) {
+		
 		setBounds(100, 100, 700, 300);
 		
 		JLabel lblConfirmacao = new JLabel(textoConfirmacao);
@@ -46,9 +53,10 @@ public final class ModalDeletar extends ModalCustom {
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				confirmacao = 12;
 				dispose();
 			}
 		});
@@ -69,8 +77,10 @@ public final class ModalDeletar extends ModalCustom {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				confirmacao = -12;
 				dispose();
 			}
 		});
@@ -87,5 +97,7 @@ public final class ModalDeletar extends ModalCustom {
 		btnCancelar.setBorderPainted(false);
 		btnCancelar.setBorder(null);
 		panelAcoes.add(btnCancelar);
+		
+		return confirmacao;
 	}
 }

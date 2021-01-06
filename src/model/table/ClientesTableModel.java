@@ -82,15 +82,20 @@ public final class ClientesTableModel extends AbstractTableModel{
 		
 		clientesDao.alterar(clientes);
 		
-		for(Endereco e : enderecos) {
+		for(Endereco endereco : enderecos) {
 
-			enderecosDao.alterar(e);
+			enderecosDao.alterar(endereco);
 		}
 		
 		fireTableDataChanged();
 	}
 	
 	public final void deletarCliente(Cliente clientes, List<Endereco> enderecos) {
+		
+		for(Endereco endereco : enderecos) {
+			
+			enderecosDao.deletar(endereco);
+		}
 		
 		clientesDao.deletar(clientes);
 		list.remove(clientes);
@@ -113,15 +118,15 @@ public final class ClientesTableModel extends AbstractTableModel{
 		enderecosDao.deletar(endereco);
 	}
 	
-	public Cliente capturarClientes(Integer linha) {
+	public Cliente capturarCliente(Integer linha) {
 		
-		Cliente clientes = list.get(linha);
-		return clientes;
+		Cliente cliente = list.get(linha);
+		return cliente;
 	}
 	
-	public List<Endereco> capturarEnderecos(Integer id) {
+	public List<Endereco> capturarEnderecos(Integer idCliente) {
 		
-		List<Endereco> enderecos = enderecosDao.buscarEnderecosCliente(id);
+		List<Endereco> enderecos = enderecosDao.buscarEnderecosCliente(idCliente);
 		return enderecos;
 	}
 }

@@ -272,7 +272,6 @@ public final class ModalCliente extends ModalCustom {
 		panelEnderecoEntrega.add(lblCepEE);
 		
 		txtCepEE = new JTextField();
-		txtCepEE.setEnabled(cliente != null);
 		txtCepEE.setColumns(10);
 		txtCepEE.setBounds(10, 367, 150, 30);
 		panelEnderecoEntrega.add(txtCepEE);
@@ -481,9 +480,12 @@ public final class ModalCliente extends ModalCustom {
 		getRootPane().setDefaultButton(btnSalvar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+			}
+		});
 		btnCancelar.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -498,6 +500,9 @@ public final class ModalCliente extends ModalCustom {
 				btnCancelar.setBackground(Color.DARK_GRAY);
 			}
 		});
+		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("Leelawadee", Font.BOLD, 12));
 		btnCancelar.setFocusable(false);

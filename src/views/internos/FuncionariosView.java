@@ -36,9 +36,7 @@ public class FuncionariosView extends TelaInternaCustom {
 	private ModalDeletar modalDeletar;
 	private ModalAlerta modalAlerta;
 
-	private ModalUtil modalUtil = new ModalUtil();
 	private FuncionariosTableModel funcionariosTableModel = new FuncionariosTableModel();
-	private TableModelUtil tableUtil = new TableModelUtil();
 	private MainViewUtil mainUtil = new MainViewUtil();
 
 	private JTable tableFuncionarios;
@@ -95,7 +93,7 @@ public class FuncionariosView extends TelaInternaCustom {
 		tableFuncionarios.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tableFuncionarios.getColumnModel().getColumn(1).setPreferredWidth(300);
 		tableFuncionarios.getColumnModel().getColumn(2).setPreferredWidth(300);
-		tableUtil.customizarTable(tableFuncionarios.getTableHeader());
+		TableModelUtil.customizarTable(tableFuncionarios.getTableHeader());
 
 		JScrollPane scrollPaneTableFuncionarios = new JScrollPane(tableFuncionarios);
 		scrollPaneTableFuncionarios.setViewportBorder(null);
@@ -113,7 +111,7 @@ public class FuncionariosView extends TelaInternaCustom {
 
 				modalFuncionario = new ModalFuncionario(funcionariosTableModel, null);
 
-				modalUtil.MovimentacaoModal(modalFuncionario);
+				ModalUtil.MovimentacaoModal(modalFuncionario);
 				modalFuncionario.setLocationRelativeTo(null);
 				modalFuncionario.setVisible(true);
 			}
@@ -138,7 +136,7 @@ public class FuncionariosView extends TelaInternaCustom {
 					
 					modalFuncionario = new ModalFuncionario(funcionariosTableModel, funcionariosTableModel.capturarFuncionarios(tableFuncionarios.getSelectedRow()));
 
-					modalUtil.MovimentacaoModal(modalFuncionario);
+					ModalUtil.MovimentacaoModal(modalFuncionario);
 					modalFuncionario.setLocationRelativeTo(null);
 					modalFuncionario.setVisible(true);
 				}
@@ -162,9 +160,9 @@ public class FuncionariosView extends TelaInternaCustom {
 				
 				if(tableFuncionarios.getSelectedRow() != -1) {
 
-					modalDeletar = new ModalDeletar(tableFuncionarios.getSelectedRow(), "Deseja realmente deletar esse funcionário?");
+					modalDeletar = new ModalDeletar();
 					
-					modalUtil.MovimentacaoModal(modalDeletar);
+					ModalUtil.MovimentacaoModal(modalDeletar);
 					modalDeletar.setLocationRelativeTo(null);
 					modalDeletar.setVisible(true);
 				}
@@ -172,7 +170,7 @@ public class FuncionariosView extends TelaInternaCustom {
 					
 					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", JOptionPane.WARNING_MESSAGE);
 					
-					modalUtil.MovimentacaoModal(modalAlerta);
+					ModalUtil.MovimentacaoModal(modalAlerta);
 					modalAlerta.setLocationRelativeTo(null);
 					modalAlerta.setVisible(true);
 				}

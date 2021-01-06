@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,6 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
+import model.entities.Cliente;
+import model.entities.Endereco;
 import model.table.ClientesTableModel;
 import model.util.MainViewUtil;
 import model.util.ModalUtil;
@@ -33,18 +37,19 @@ public class ClientesView extends TelaInternaCustom {
 	private static final long serialVersionUID = 1L;
 
 	private ModalCliente modalCliente;
-	private ModalDeletar modalDeletar;
+	private ModalDeletar modalDeletar = new ModalDeletar();
 	private ModalAlerta modalAlerta;
 
-	private ModalUtil modalUtil = new ModalUtil();
+	private Cliente cliente = new Cliente();
 	private ClientesTableModel clientesTableModel = new ClientesTableModel();
-	private TableModelUtil tableUtil = new TableModelUtil();
 	private MainViewUtil mainUtil = new MainViewUtil();
 
 	private JTable tableClientes;
 	private JButton btnIncluirProduto;
 	private JButton btnEditar;
 	private JButton btnDeletar;
+	
+	private List<Endereco> enderecos = new ArrayList<>();
 	
 	private MouseListener btnIncluirProdutoML;
 	private MouseListener btnEditarML;
@@ -94,7 +99,7 @@ public class ClientesView extends TelaInternaCustom {
 		tableClientes.setFocusable(false);
 		tableClientes.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tableClientes.getColumnModel().getColumn(1).setPreferredWidth(500);
-		tableUtil.customizarTable(tableClientes.getTableHeader());
+		TableModelUtil.customizarTable(tableClientes.getTableHeader());
 
 		JScrollPane scrollPanetableClientes = new JScrollPane(tableClientes);
 		scrollPanetableClientes.setViewportBorder(null);
@@ -112,7 +117,7 @@ public class ClientesView extends TelaInternaCustom {
 
 				modalCliente = new ModalCliente(clientesTableModel, null);
 
-				modalUtil.MovimentacaoModal(modalCliente);
+				ModalUtil.MovimentacaoModal(modalCliente);
 				modalCliente.setLocationRelativeTo(null);
 				modalCliente.setVisible(true);
 			}
@@ -135,9 +140,9 @@ public class ClientesView extends TelaInternaCustom {
 				
 				if(tableClientes.getSelectedRow() != -1) {
 					
-					modalCliente = new ModalCliente(clientesTableModel, clientesTableModel.capturarClientes(tableClientes.getSelectedRow()));
+					modalCliente = new ModalCliente(clientesTableModel, clientesTableModel.capturarCliente(tableClientes.getSelectedRow()));
 
-					modalUtil.MovimentacaoModal(modalCliente);
+					ModalUtil.MovimentacaoModal(modalCliente);
 					modalCliente.setLocationRelativeTo(null);
 					modalCliente.setVisible(true);
 				}
@@ -160,18 +165,27 @@ public class ClientesView extends TelaInternaCustom {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(tableClientes.getSelectedRow() != -1) {
-
-					modalDeletar = new ModalDeletar(tableClientes.getSelectedRow(), "Deseja realmente deletar esse cliente?");
 					
-					modalUtil.MovimentacaoModal(modalDeletar);
+					int conf = modalDeletar.modalComponentes("Realmente deseja deletar esse cliente?");
+					
+					if(conf == 12) {
+						
+						cliente = clientesTableModel.capturarCliente(tableClientes.getSelectedRow());
+						enderecos = clientesTableModel.capturarEnderecos(cliente.getId());
+						
+						clientesTableModel.deletarCliente(cliente, enderecos);
+					}
+					
+					ModalUtil.MovimentacaoModal(modalDeletar);
 					modalDeletar.setLocationRelativeTo(null);
 					modalDeletar.setVisible(true);
 				}
+				
 				else {
 					
 					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", JOptionPane.WARNING_MESSAGE);
 					
-					modalUtil.MovimentacaoModal(modalAlerta);
+					ModalUtil.MovimentacaoModal(modalAlerta);
 					modalAlerta.setLocationRelativeTo(null);
 					modalAlerta.setVisible(true);
 				}

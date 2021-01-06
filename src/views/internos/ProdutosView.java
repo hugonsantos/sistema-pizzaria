@@ -6,6 +6,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -17,10 +19,19 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
+import model.table.ProdutosTableModel;
+import model.util.ModalUtil;
+import model.util.TableModelUtil;
+import views.modal.ModalProdutos;
+
 public class ProdutosView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
-	private JTable table;
+	private JTable tableProdutos;
+	
+	private ModalProdutos modalProdutos;
+	
+	private ProdutosTableModel produtosTableModel = new ProdutosTableModel();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -38,6 +49,13 @@ public class ProdutosView extends TelaInternaCustom {
 	public ProdutosView() {
 		
 		JPanel panelProdutos = new JPanel();
+		panelProdutos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				tableProdutos.clearSelection();
+			}
+		});
 		panelProdutos.setBackground(Color.WHITE);
 		
 		JScrollPane scrollPane = new JScrollPane(panelProdutos);
@@ -56,8 +74,19 @@ public class ProdutosView extends TelaInternaCustom {
 		panelListaProdutos.setBackground(Color.WHITE);
 		panelProdutos.add(panelListaProdutos, BorderLayout.CENTER);
 		
-		table = new JTable();
-		panelListaProdutos.add(table);
+		tableProdutos = new JTable();
+		tableProdutos.setModel(produtosTableModel);
+		tableProdutos.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		tableProdutos.setBorder(null);
+		tableProdutos.setShowVerticalLines(false);
+		tableProdutos.setFocusable(false);
+		TableModelUtil.customizarTable(tableProdutos.getTableHeader());
+		panelListaProdutos.add(tableProdutos);
+		
+		JScrollPane scrollPaneTableProdutos = new JScrollPane(tableProdutos);
+		scrollPaneTableProdutos.setViewportBorder(null);
+		scrollPaneTableProdutos.setBorder(null);
+		panelProdutos.add(scrollPaneTableProdutos, BorderLayout.CENTER);
 		
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBackground(Color.WHITE);
@@ -65,6 +94,16 @@ public class ProdutosView extends TelaInternaCustom {
 		panelProdutos.add(panelAcoes, BorderLayout.SOUTH);
 		
 		JButton btnIncluirProduto = new JButton("Incluir novo");
+		btnIncluirProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				modalProdutos = new ModalProdutos(produtosTableModel, null);
+
+				ModalUtil.MovimentacaoModal(modalProdutos);
+				modalProdutos.setLocationRelativeTo(null);
+				modalProdutos.setVisible(true);
+			}
+		});
 		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.addMouseListener(new MouseAdapter() {
 			
@@ -92,6 +131,19 @@ public class ProdutosView extends TelaInternaCustom {
 		panelAcoes.add(btnIncluirProduto);
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(tableProdutos.getSelectedRow() != -1) {
+					
+					modalProdutos = new ModalProdutos(produtosTableModel, produtosTableModel.capturarProduto(tableProdutos.getSelectedRow()));
+
+					ModalUtil.MovimentacaoModal(modalProdutos);
+					modalProdutos.setLocationRelativeTo(null);
+					modalProdutos.setVisible(true);
+				}
+			}
+		});
 		btnEditar.setBorderPainted(false);
 		btnEditar.addMouseListener(new MouseAdapter() {
 			

@@ -11,7 +11,7 @@ public final class ModalUtil {
 
 	private static Point point = new Point();
 	
-	public final void MovimentacaoModal(ModalCustom modal) {
+	public static final void MovimentacaoModal(ModalCustom modal) {
 
 		try {
 

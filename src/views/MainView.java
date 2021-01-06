@@ -419,42 +419,5 @@ public class MainView extends JFrame {
 		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
 		panelGridLinha5.add(lblProdutos);
-
-		// Linha 6 do GRID
-		JPanel panelGridLinha6 = new JPanel();
-		panelGridLinha6.setToolTipText("Configure ou personalize o sistema para se adaptar ao estabelecimento.");
-		panelGridLinha6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panelGridLinha6.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				panelGridLinha6.setBackground(Color.BLACK);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				panelGridLinha6.setBackground(Color.DARK_GRAY);
-			}
-		});
-		panelGridLinha6.setFocusable(false);
-		panelGridLinha6.setBackground(Color.DARK_GRAY);
-		panelGrid.add(panelGridLinha6);
-		panelGridLinha6.setLayout(new GridLayout(1, 2));
-
-		JLabel lblIconConfig = new JLabel("");
-		lblIconConfig.setIcon(new ImageIcon(MainView.class.getResource("/imagens/configuracoes-64.png")));
-		lblIconConfig.setFocusable(false);
-		lblIconConfig.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelGridLinha6.add(lblIconConfig);
-
-		JLabel lblConfig = new JLabel("Configurações");
-		lblConfig.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblConfig.setBorder(new EmptyBorder(0, 0, 10, 15));
-		lblConfig.setForeground(Color.WHITE);
-		lblConfig.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblConfig.setFont(new Font("Dialog", Font.BOLD, 14));
-		panelGridLinha6.add(lblConfig);
 	}
 }

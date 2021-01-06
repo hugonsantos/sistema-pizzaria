@@ -63,11 +63,14 @@ public class VenderView extends TelaInternaCustom {
 		lblCarrinho.setForeground(Color.WHITE);
 		panelCarrinho.add(lblCarrinho, BorderLayout.NORTH);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setPreferredSize(new Dimension(150, 70));
-		panelCarrinho.add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel panelDetalhesPedido = new JPanel();
+		panelCarrinho.add(panelDetalhesPedido, BorderLayout.CENTER);
+		
+		JPanel panelButtonFinalizar = new JPanel();
+		panelButtonFinalizar.setBackground(Color.GRAY);
+		panelButtonFinalizar.setPreferredSize(new Dimension(150, 70));
+		panelCarrinho.add(panelButtonFinalizar, BorderLayout.SOUTH);
+		panelButtonFinalizar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnFinalizarPedido = new JButton("Finalizar pedido");
 		btnFinalizarPedido.setForeground(Color.WHITE);
@@ -81,7 +84,7 @@ public class VenderView extends TelaInternaCustom {
 		btnFinalizarPedido.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnFinalizarPedido.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnFinalizarPedido.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(btnFinalizarPedido);
+		panelButtonFinalizar.add(btnFinalizarPedido, BorderLayout.CENTER);
 		
 		JPanel panelProdutos = new JPanel();
 		getContentPane().add(panelProdutos, BorderLayout.CENTER);
