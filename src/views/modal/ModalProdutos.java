@@ -12,13 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.dao.FabricaDao;
@@ -26,17 +30,24 @@ import model.dao.ProdutosDao;
 import model.entities.Categoria;
 import model.entities.Produto;
 import model.table.ProdutosTableModel;
+import model.util.ImagensUtil;
+import model.util.ModalUtil;
+import views.modal.enums.ModalAlertaEnum;
 
 public final class ModalProdutos extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField txtImagem;
+	private JTextField txtCaminhoImagem;
+	private JFileChooser jfcSelecaoImagem;
+	private JLabel lblImagem;
 	private JTextField txtNome;
-	private JTextArea txtDescricao;
+	private JTextField txtDescricao;
 	private JTextField txtValor;
 	private JTextField txtQuantidade;
 	private JComboBox<Object> cbxCategoria;
+	
+	private static final String destino = System.getProperty("user.dir") + "\\src\\imagens\\";
 			
 	private ProdutosDao produtoDao = FabricaDao.createProdutosDao();
 	
@@ -47,31 +58,86 @@ public final class ModalProdutos extends ModalCustom {
 		panelDadosProdutos.setLayout(null);
 
 		JPanel panelImagem = new JPanel();
-		panelImagem.setBounds(0, 2, 475, 107);
+		panelImagem.setBounds(0, 2, 556, 324);
 		panelDadosProdutos.add(panelImagem);
 		panelImagem.setLayout(null);
 
-		JLabel lblImagem = new JLabel("Imagem:");
-		lblImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblImagem.setBounds(58, 25, 73, 20);
-		panelImagem.add(lblImagem);
+		JLabel lblCaminhoImagem = new JLabel("Caminho da imagem:");
+		lblCaminhoImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblCaminhoImagem.setBounds(10, 11, 172, 20);
+		panelImagem.add(lblCaminhoImagem);
 
-		txtImagem = new JTextField();
-		txtImagem.setSize(new Dimension(0, 60));
-		txtImagem.setMinimumSize(new Dimension(7, 60));
-		txtImagem.setPreferredSize(new Dimension(0, 60));
-		txtImagem.setBounds(58, 53, 358, 29);
-		panelImagem.add(txtImagem);
-		txtImagem.setColumns(10);
+		txtCaminhoImagem = new JTextField();
+		txtCaminhoImagem.setEnabled(false);
+		txtCaminhoImagem.setSize(new Dimension(0, 60));
+		txtCaminhoImagem.setMinimumSize(new Dimension(7, 60));
+		txtCaminhoImagem.setPreferredSize(new Dimension(0, 60));
+		txtCaminhoImagem.setBounds(10, 40, 536, 36);
+		panelImagem.add(txtCaminhoImagem);
+		
+		lblImagem = new JLabel();
+		lblImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblImagem.setBounds(159, 123, 230, 190);
+		panelImagem.add(lblImagem);
+		
+		JButton btnSelecionarImagem = new JButton("Selecionar imagem");
+		btnSelecionarImagem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				jfcSelecaoImagem = new JFileChooser();
+				jfcSelecaoImagem.showOpenDialog(null);
+				
+				File fRemetenteImagem = jfcSelecaoImagem.getSelectedFile();
+				
+				txtCaminhoImagem.setText(fRemetenteImagem.getName());
+				
+				lblImagem.setIcon(new ImageIcon(fRemetenteImagem.getAbsolutePath()));
+				ImageIcon imgProduto = ImagensUtil.redimensionarImagem(lblImagem, 230, 190);
+				
+				lblImagem.setIcon(imgProduto);
+				
+				File fDestinoImagem = new File(destino + fRemetenteImagem.getName());
+				
+				try {
+					
+					if(Files.exists(fDestinoImagem.toPath())) {
+						
+						ModalAlerta modalAlerta = new ModalAlerta("Essa imagem já existe no sistema!", ModalAlertaEnum.ALERTA);
+
+						ModalUtil.MovimentacaoModal(modalAlerta);
+						modalAlerta.setLocationRelativeTo(null);
+						modalAlerta.setVisible(true);
+					}
+					else {
+						
+						Files.copy(fRemetenteImagem.toPath(), fDestinoImagem.toPath());
+					}
+				}
+				catch (IOException e1) {
+
+					e1.printStackTrace();
+					
+					ModalAlerta modalAlerta = new ModalAlerta("Erro ao copiar a imagem!", ModalAlertaEnum.ERRO);
+
+					ModalUtil.MovimentacaoModal(modalAlerta);
+					modalAlerta.setLocationRelativeTo(null);
+					modalAlerta.setVisible(true);
+					
+				}
+			}
+		});
+		btnSelecionarImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		btnSelecionarImagem.setBounds(374, 87, 172, 30);
+		panelImagem.add(btnSelecionarImagem);
 
 		JPanel panelNome = new JPanel();
-		panelNome.setBounds(475, 2, 475, 107);
+		panelNome.setBounds(0, 326, 556, 107);
 		panelNome.setLayout(null);
 		panelDadosProdutos.add(panelNome);
 
-		JLabel lblNome = new JLabel("Nome:");
+		JLabel lblNome = new JLabel("Nome do produto:");
 		lblNome.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNome.setBounds(58, 25, 55, 20);
+		lblNome.setBounds(58, 26, 182, 20);
 		panelNome.add(lblNome);
 
 		txtNome = new JTextField();
@@ -79,29 +145,29 @@ public final class ModalProdutos extends ModalCustom {
 		txtNome.setMinimumSize(new Dimension(7, 60));
 		txtNome.setPreferredSize(new Dimension(0, 60));
 		txtNome.setColumns(10);
-		txtNome.setBounds(58, 53, 358, 29);
+		txtNome.setBounds(58, 53, 438, 30);
 		panelNome.add(txtNome);
 
 		JPanel panelDescricao = new JPanel();
-		panelDescricao.setBounds(0, 109, 475, 107);
+		panelDescricao.setBounds(555, 2, 395, 431);
 		panelDescricao.setLayout(null);
 		panelDadosProdutos.add(panelDescricao);
 
-		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
+		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o do produto:");
 		lblDescricao.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblDescricao.setBounds(58, 25, 148, 20);
+		lblDescricao.setBounds(10, 11, 193, 20);
 		panelDescricao.add(lblDescricao);
 
-		txtDescricao = new JTextArea();
+		txtDescricao = new JTextField();
 		txtDescricao.setSize(new Dimension(0, 60));
 		txtDescricao.setMinimumSize(new Dimension(7, 60));
 		txtDescricao.setPreferredSize(new Dimension(0, 60));
 		txtDescricao.setColumns(10);
-		txtDescricao.setBounds(58, 53, 359, 43);
+		txtDescricao.setBounds(10, 42, 375, 378);
 		panelDescricao.add(txtDescricao);
 
 		JPanel panelValor = new JPanel();
-		panelValor.setBounds(475, 109, 475, 107);
+		panelValor.setBounds(0, 432, 395, 107);
 		panelValor.setLayout(null);
 		panelDadosProdutos.add(panelValor);
 
@@ -115,11 +181,11 @@ public final class ModalProdutos extends ModalCustom {
 		txtValor.setMinimumSize(new Dimension(7, 60));
 		txtValor.setPreferredSize(new Dimension(0, 60));
 		txtValor.setColumns(10);
-		txtValor.setBounds(58, 53, 185, 29);
+		txtValor.setBounds(58, 53, 185, 30);
 		panelValor.add(txtValor);
 
 		JPanel panelQuantidade = new JPanel();
-		panelQuantidade.setBounds(0, 216, 475, 107);
+		panelQuantidade.setBounds(394, 432, 201, 107);
 		panelQuantidade.setLayout(null);
 		panelDadosProdutos.add(panelQuantidade);
 
@@ -133,21 +199,21 @@ public final class ModalProdutos extends ModalCustom {
 		txtQuantidade.setMinimumSize(new Dimension(7, 60));
 		txtQuantidade.setPreferredSize(new Dimension(0, 60));
 		txtQuantidade.setColumns(10);
-		txtQuantidade.setBounds(58, 53, 264, 29);
+		txtQuantidade.setBounds(58, 53, 95, 30);
 		panelQuantidade.add(txtQuantidade);
-
+		
 		JPanel panelCategoria = new JPanel();
-		panelCategoria.setBounds(475, 216, 475, 107);
-		panelCategoria.setLayout(null);
+		panelCategoria.setBounds(594, 432, 356, 107);
 		panelDadosProdutos.add(panelCategoria);
-
+		panelCategoria.setLayout(null);
+		
 		JLabel lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		lblCategoria.setBounds(58, 25, 94, 20);
 		panelCategoria.add(lblCategoria);
 		
 		cbxCategoria = new JComboBox<>();
-		cbxCategoria.setModel(new DefaultComboBoxModel<Object>(new String[] {"Selecione a categoria ...", "Pizza", "Lanche", "Esfiha", "Bebida"}));
+		cbxCategoria.setModel(new DefaultComboBoxModel<Object>(produtoDao.listarCategorias().toArray()));
 		cbxCategoria.setSelectedIndex(0);
 		cbxCategoria.setBounds(58, 51, 185, 30);
 		panelCategoria.add(cbxCategoria);
@@ -171,37 +237,23 @@ public final class ModalProdutos extends ModalCustom {
 					
 					Produto produto = new Produto();
 					
-					produto.setImagem(txtImagem.getText());
+					produto.setImagem(txtCaminhoImagem.getText());
 					produto.setNome(txtNome.getText());
 					produto.setDescricao(txtDescricao.getText());
 					produto.setValor(Double.valueOf(txtValor.getText()));
 					produto.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
-					
-					for(Categoria c : produtoDao.listarCategorias()) {
-						
-						if(cbxCategoria.getSelectedItem().equals(c.getCategoria())) {
-							
-							produto.setCategoria(new Categoria(c.getId(), c.getCategoria()));
-						}
-					}
+					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
 					
 					produtosTableModel.adicionarProduto(produto);
 				}
 				else {
 					
-					produto.setImagem(txtImagem.getText());
+					produto.setImagem(txtCaminhoImagem.getText());
 					produto.setNome(txtNome.getText());
 					produto.setDescricao(txtDescricao.getText());
 					produto.setValor(Double.valueOf(txtValor.getText()));
 					produto.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
-					
-					for(Categoria c : produtoDao.listarCategorias()) {
-						
-						if(cbxCategoria.getSelectedItem().equals(c.getCategoria())) {
-							
-							produto.setCategoria(new Categoria(c.getId(), c.getCategoria()));
-						}
-					}
+					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
 					
 					produtosTableModel.alterarProduto(produto);
 				}
@@ -249,7 +301,7 @@ public final class ModalProdutos extends ModalCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				dispose();
 			}
 		});
 		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -281,11 +333,14 @@ public final class ModalProdutos extends ModalCustom {
 
 	protected void capturarDados(Produto produto) {
 
-		txtImagem.setText(produto.getImagem());
+		txtCaminhoImagem.setText(produto.getImagem());
+		lblImagem.setIcon(new ImageIcon(destino + produto.getImagem()));
+		ImageIcon imgProduto = ImagensUtil.redimensionarImagem(lblImagem, 230, 190);
+		lblImagem.setIcon(imgProduto);
 		txtNome.setText(produto.getNome());
 		txtDescricao.setText(produto.getDescricao());
 		txtValor.setText(String.valueOf(produto.getValor()));
 		txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
-		cbxCategoria.setSelectedIndex(produto.getId());
+		cbxCategoria.setSelectedItem(produto.getCategoria());
 	}
 }

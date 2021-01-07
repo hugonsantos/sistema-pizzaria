@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +26,7 @@ import model.util.TableModelUtil;
 import views.modal.ModalAlerta;
 import views.modal.ModalDeletar;
 import views.modal.ModalFuncionario;
+import views.modal.enums.ModalAlertaEnum;
 
 public class FuncionariosView extends TelaInternaCustom {
 
@@ -168,7 +168,7 @@ public class FuncionariosView extends TelaInternaCustom {
 				}
 				else {
 					
-					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", JOptionPane.WARNING_MESSAGE);
+					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", ModalAlertaEnum.ALERTA);
 					
 					ModalUtil.MovimentacaoModal(modalAlerta);
 					modalAlerta.setLocationRelativeTo(null);

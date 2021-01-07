@@ -267,6 +267,14 @@ public final class ModalFuncionario extends ModalCustom {
 		getRootPane().setDefaultButton(btnSalvar);
 
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+			}
+		});
 		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCancelar.setMargin(new Insets(0, 0, 0, 0));

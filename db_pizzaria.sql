@@ -12,7 +12,7 @@ quantidade int(10) not null,
 idCategoria int(20) not null,
 
 primary key(id),
-foreign key (idCategoria) references produtos (id)
+foreign key (idCategoria) references categorias (id)
 );
 
 create table categorias (

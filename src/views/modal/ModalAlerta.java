@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.util.MainViewUtil;
+import views.modal.enums.ModalAlertaEnum;
 
 public final class ModalAlerta extends ModalCustom {
 
@@ -27,14 +28,14 @@ public final class ModalAlerta extends ModalCustom {
 	
 	private MouseListener btnOkML;
 	
-	public ModalAlerta( String textoAlerta, Integer tipo) {
+	public ModalAlerta( String textoAlerta, ModalAlertaEnum tipo) {
 
 		setBounds(100, 100, 700, 300);
 		
 		JLabel lblIcon = new JLabel("");
 		lblIcon.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIcon.setPreferredSize(new Dimension(150, 0));
-		lblIcon.setIcon(new ImageIcon(ModalAlerta.class.getResource("/imagens/alerta-64.png")));
+		lblIcon.setIcon(new ImageIcon(ModalAlerta.class.getResource(tipoModal(tipo))));
 		getContentPane().add(lblIcon, BorderLayout.WEST);
 		
 		JLabel lblAlerta = new JLabel(textoAlerta);
@@ -70,5 +71,19 @@ public final class ModalAlerta extends ModalCustom {
 		btnOk.setActionCommand("OK");
 		panelAcoes.add(btnOk);
 		getRootPane().setDefaultButton(btnOk);
+	}
+	
+	private String tipoModal(ModalAlertaEnum tipo) {
+		
+		switch (tipo) {
+		case INFO:
+			return "/imagens/info-64.png";
+		case ALERTA:
+			return "/imagens/alerta-64.png";
+		case ERRO:
+			return "/imagens/erro-64.png";
+		default:
+			return "";
+		}
 	}
 }
