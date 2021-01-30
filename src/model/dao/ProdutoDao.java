@@ -5,7 +5,7 @@ import java.util.List;
 import model.entities.Categoria;
 import model.entities.Produto;
 
-public interface ProdutosDao {
+public interface ProdutoDao {
 
 	public Integer inserir(Produto produto);
 	public void alterar(Produto produto);
@@ -13,4 +13,5 @@ public interface ProdutosDao {
 	public List<Produto> listarProdutos();
 	public Produto buscarProduto(Integer id);
 	public List<Categoria> listarCategorias();
+	public List<Produto> buscarProdutosCategoria(String categoria);
 }

@@ -19,8 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
+import model.entities.Funcionario;
 import model.table.FuncionariosTableModel;
-import model.util.MainViewUtil;
+import model.util.ViewsUtil;
 import model.util.ModalUtil;
 import model.util.TableModelUtil;
 import views.modal.ModalAlerta;
@@ -32,18 +33,19 @@ public class FuncionariosView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
 
+	private Funcionario funcionario;
+	
 	private ModalFuncionario modalFuncionario;
 	private ModalDeletar modalDeletar;
 	private ModalAlerta modalAlerta;
 
 	private FuncionariosTableModel funcionariosTableModel = new FuncionariosTableModel();
-	private MainViewUtil mainUtil = new MainViewUtil();
 
 	private JTable tableFuncionarios;
 	private JButton btnIncluirProduto;
 	private JButton btnEditar;
 	private JButton btnDeletar;
-	
+
 	private MouseListener btnIncluirProdutoML;
 	private MouseListener btnEditarML;
 	private MouseListener btnDeletarML;
@@ -65,6 +67,7 @@ public class FuncionariosView extends TelaInternaCustom {
 
 		JPanel panelFuncionariosView = new JPanel();
 		panelFuncionariosView.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
@@ -104,19 +107,22 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelAcoes.setBackground(Color.WHITE);
 		panelAcoes.setPreferredSize(new Dimension(10, 100));
 		panelFuncionariosView.add(panelAcoes, BorderLayout.SOUTH);
-		
+
 		btnIncluirProduto = new JButton("Incluir novo");
 		btnIncluirProduto.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				modalFuncionario = new ModalFuncionario(funcionariosTableModel, null);
-
 				ModalUtil.MovimentacaoModal(modalFuncionario);
 				modalFuncionario.setLocationRelativeTo(null);
 				modalFuncionario.setVisible(true);
+				
+				tableFuncionarios.clearSelection();
 			}
 		});
-		btnIncluirProdutoML = mainUtil.adicionarAcaoMouse(btnIncluirProduto, Color.WHITE, Color.GREEN);
+		btnIncluirProdutoML = ViewsUtil.adicionarAcaoMouse(btnIncluirProduto, Color.WHITE, Color.GREEN);
 		btnIncluirProduto.addMouseListener(btnIncluirProdutoML);
 		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.setFocusable(false);
@@ -130,19 +136,22 @@ public class FuncionariosView extends TelaInternaCustom {
 
 		btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if(tableFuncionarios.getSelectedRow() != -1) {
-					
-					modalFuncionario = new ModalFuncionario(funcionariosTableModel, funcionariosTableModel.capturarFuncionarios(tableFuncionarios.getSelectedRow()));
 
+				if (tableFuncionarios.getSelectedRow() != -1) {
+
+					modalFuncionario = new ModalFuncionario(funcionariosTableModel, funcionariosTableModel.capturarFuncionario(tableFuncionarios.getSelectedRow()));
 					ModalUtil.MovimentacaoModal(modalFuncionario);
 					modalFuncionario.setLocationRelativeTo(null);
 					modalFuncionario.setVisible(true);
 				}
+				
+				tableFuncionarios.clearSelection();
 			}
 		});
-		btnEditarML = mainUtil.adicionarAcaoMouse(btnEditar, Color.WHITE, Color.GREEN);
+		btnEditarML = ViewsUtil.adicionarAcaoMouse(btnEditar, Color.WHITE, Color.GREEN);
 		btnEditar.addMouseListener(btnEditarML);
 		btnEditar.setBorderPainted(false);
 		btnEditar.setFocusable(false);
@@ -156,27 +165,35 @@ public class FuncionariosView extends TelaInternaCustom {
 
 		btnDeletar = new JButton("Deletar");
 		btnDeletar.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if(tableFuncionarios.getSelectedRow() != -1) {
 
-					modalDeletar = new ModalDeletar();
-					
+				if (tableFuncionarios.getSelectedRow() != -1) {
+
+					modalDeletar = new ModalDeletar("Realmente deseja deletar esse funcionário?");
 					ModalUtil.MovimentacaoModal(modalDeletar);
 					modalDeletar.setLocationRelativeTo(null);
 					modalDeletar.setVisible(true);
+
+					if (modalDeletar.confirmacao()) {
+
+						funcionario = funcionariosTableModel.capturarFuncionario(tableFuncionarios.getSelectedRow());
+						funcionariosTableModel.deletarFuncionario(funcionario);
+					}
+					
+					tableFuncionarios.clearSelection();
 				}
 				else {
-					
+
 					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", ModalAlertaEnum.ALERTA);
-					
 					ModalUtil.MovimentacaoModal(modalAlerta);
 					modalAlerta.setLocationRelativeTo(null);
 					modalAlerta.setVisible(true);
 				}
 			}
 		});
-		btnDeletarML = mainUtil.adicionarAcaoMouse(btnDeletar, Color.WHITE, Color.RED);
+		btnDeletarML = ViewsUtil.adicionarAcaoMouse(btnDeletar, Color.WHITE, Color.RED);
 		btnDeletar.addMouseListener(btnDeletarML);
 		btnDeletar.setBorderPainted(false);
 		btnDeletar.setFocusable(false);

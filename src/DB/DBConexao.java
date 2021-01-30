@@ -1,7 +1,5 @@
 package DB;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,24 +13,32 @@ public class DBConexao {
 	
 	public static Connection connection() {
 		
-		if(con == null) {
+		try {
 			
-			try {
+			if(con == null || con.isClosed()) {
 				
-				Properties properties = loadProperties();
-				String url = properties.getProperty("url");
-				
-				con = DriverManager.getConnection(url, properties);
+				try {
+					
+					Properties properties = loadProperties();
+					String url = properties.getProperty("url");
+					
+					con = DriverManager.getConnection(url, properties);
+					con.setAutoCommit(false);
+				}
+				catch(SQLException e) {
+					
+					throw new DBExcecao(e.getMessage());
+				}
 			}
-			catch(SQLException e) {
-				throw new DBExcecao(e.getMessage());
-			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
 		}
 		
 		return con;
 	}
 	
-	public static Connection closeConnection() {
+	public static void closeConnection(Connection con) {
 		
 		if(con != null) {
 			
@@ -44,11 +50,9 @@ public class DBConexao {
 				throw new DBExcecao(e.getMessage());
 			}
 		}
-		
-		return con;
 	}
 	
-	public static Statement closeStatment(Statement statement) {
+	public static void closeStatment(Statement statement) {
 		
 		if(statement != null) {
 			
@@ -60,11 +64,9 @@ public class DBConexao {
 				throw new DBExcecao(e.getMessage());
 			}
 		}
-		
-		return statement;
 	}
 	
-	public static ResultSet closeResultSet(ResultSet resultSet) {
+	public static void closeResultSet(ResultSet resultSet) {
 		
 		if(resultSet != null) {
 			
@@ -76,19 +78,23 @@ public class DBConexao {
 				throw new DBExcecao(e.getMessage());
 			}
 		}
-		
-		return resultSet;
 	}
 	
 	private static Properties loadProperties() {
 		
-		try(FileInputStream file = new FileInputStream("db.properties")) {
+		try {
 			
 			Properties properties = new Properties();
-			properties.load(file);
+
+			properties.setProperty("user", "hugonsantos");
+			properties.setProperty("password", "1234");
+			properties.setProperty("url", "jdbc:mysql://localhost:3306/pizzariadb?useTimezone=true&serverTimezone=UTC");
+			properties.setProperty("useSSL", "false");
+			properties.setProperty("allowPublicKeyRetrieval", "true");
+			
 			return properties;
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			throw new DBExcecao(e.getMessage());
 		}
 	}

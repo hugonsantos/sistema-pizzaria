@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Main-Class: views.MainView
+Class-Path: <?xml version="1.0" encoding="UTF-8"?> <classpath> 	<classpa
+ thentry kind="src" path="src"/> 	<classpathentry kind="con" path="org.e
+ clipse.jdt.USER_LIBRARY/MySQL"/> 	<classpathentry kind="con" path="or
+ g.eclipse.jdt.launching.JRE_CONTAINER"/> 	<classpathentry kind="output"
+  path="bin"/> </classpath>
+

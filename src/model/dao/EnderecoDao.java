@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.entities.Endereco;
 
-public interface EnderecosDao {
+public interface EnderecoDao {
 
 	public void inserir(Endereco enderecos);
 	public void alterar(Endereco enderecos);

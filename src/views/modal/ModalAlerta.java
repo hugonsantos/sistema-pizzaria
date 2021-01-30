@@ -17,14 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import model.util.MainViewUtil;
+import model.util.ViewsUtil;
 import views.modal.enums.ModalAlertaEnum;
 
 public final class ModalAlerta extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
-	
-	private MainViewUtil mainUtil = new MainViewUtil();
 	
 	private MouseListener btnOkML;
 	
@@ -58,7 +56,7 @@ public final class ModalAlerta extends ModalCustom {
 				dispose();
 			}
 		});
-		btnOkML = mainUtil.adicionarAcaoMouse(btnOk, Color.DARK_GRAY, new Color(173, 216, 230));
+		btnOkML = ViewsUtil.adicionarAcaoMouse(btnOk, Color.DARK_GRAY, new Color(173, 216, 230));
 		btnOk.addMouseListener(btnOkML);
 		btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnOk.setMargin(new Insets(0, 0, 0, 0));

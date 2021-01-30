@@ -91,6 +91,8 @@ public class MainView extends JFrame {
 			}
 		});
 		btnMinimizar.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				frame.setState(Frame.ICONIFIED);
@@ -122,6 +124,8 @@ public class MainView extends JFrame {
 			}
 		});
 		btnExit.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				System.exit(0);
@@ -183,14 +187,11 @@ public class MainView extends JFrame {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 				panelViewsInternas.removeAll();
 
-				if (vender == null) {
-
-					vender = new VenderView();
-				}
+				vender = new VenderView();
 
 				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
@@ -207,7 +208,7 @@ public class MainView extends JFrame {
 		JLabel lblIconVender = new JLabel("");
 		lblIconVender.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblIconVender.setBorder(null);
-		lblIconVender.setIcon(new ImageIcon(MainView.class.getResource("/imagens/carrinho-de-compras-64.png")));
+		lblIconVender.setIcon(new ImageIcon(getClass().getResource("/imagens/carrinho-de-compras-64.png")));
 		lblIconVender.setFocusable(false);
 		lblIconVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha1.add(lblIconVender);
@@ -239,7 +240,7 @@ public class MainView extends JFrame {
 			}
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 				panelViewsInternas.removeAll();
 
@@ -262,7 +263,7 @@ public class MainView extends JFrame {
 
 		JLabel lblIconClientes = new JLabel("");
 		lblIconClientes.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblIconClientes.setIcon(new ImageIcon(MainView.class.getResource("/imagens/cliente-64.png")));
+		lblIconClientes.setIcon(new ImageIcon(getClass().getResource("/imagens/cliente-64.png")));
 		lblIconClientes.setFocusable(false);
 		lblIconClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha2.add(lblIconClientes);
@@ -299,7 +300,7 @@ public class MainView extends JFrame {
 		panelGridLinha3.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconRelatorios = new JLabel("");
-		lblIconRelatorios.setIcon(new ImageIcon(MainView.class.getResource("/imagens/grafico-de-barras-64.png")));
+		lblIconRelatorios.setIcon(new ImageIcon(getClass().getResource("/imagens/grafico-de-barras-64.png")));
 		lblIconRelatorios.setFocusable(false);
 		lblIconRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha3.add(lblIconRelatorios);
@@ -331,7 +332,7 @@ public class MainView extends JFrame {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 				panelViewsInternas.removeAll();
 
@@ -353,7 +354,7 @@ public class MainView extends JFrame {
 		panelGridLinha4.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconFuncionarios = new JLabel("");
-		lblIconFuncionarios.setIcon(new ImageIcon(MainView.class.getResource("/imagens/equipe-64.png")));
+		lblIconFuncionarios.setIcon(new ImageIcon(getClass().getResource("/imagens/equipe-64.png")));
 		lblIconFuncionarios.setFocusable(false);
 		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha4.add(lblIconFuncionarios);
@@ -385,7 +386,7 @@ public class MainView extends JFrame {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 				panelViewsInternas.removeAll();
 
@@ -407,7 +408,7 @@ public class MainView extends JFrame {
 		panelGridLinha5.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconProdutos = new JLabel("");
-		lblIconProdutos.setIcon(new ImageIcon(MainView.class.getResource("/imagens/inventario-64.png")));
+		lblIconProdutos.setIcon(new ImageIcon(getClass().getResource("/imagens/inventario-64.png")));
 		lblIconProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIconProdutos.setFocusable(false);
 		panelGridLinha5.add(lblIconProdutos);
@@ -419,5 +420,9 @@ public class MainView extends JFrame {
 		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
 		panelGridLinha5.add(lblProdutos);
+		
+		vender = new VenderView();
+		panelViewsInternas.add(vender, BorderLayout.CENTER);
+		vender.setVisible(true);
 	}
 }

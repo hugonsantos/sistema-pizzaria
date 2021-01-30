@@ -6,8 +6,10 @@ public class Produto {
 	private String imagem;
 	private String nome;
 	private String descricao;
-	private Double valor;
-	private Integer quantidade;
+	private Double valorBroto;
+	private Double valorTradicional;
+	private Double valorGrande;
+	private Double valorExtraGrande;
 	
 	private Categoria categoria;
 	
@@ -15,13 +17,16 @@ public class Produto {
 		
 	}
 
-	public Produto(Integer id, String imagem, String nome, String descricao, Double valor, Integer quantidade, Categoria categoria) {
+	public Produto(Integer id, String imagem, String nome, String descricao, Double valorBroto, Double valorTradicional, Double valorGrande, Double valorExtraGrande, Categoria categoria) {
+		
 		this.id = id;
 		this.imagem = imagem;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.valor = valor;
-		this.quantidade = quantidade;
+		this.valorBroto = valorBroto;
+		this.valorTradicional = valorTradicional;
+		this.valorGrande = valorGrande;
+		this.valorExtraGrande = valorExtraGrande;
 		this.categoria = categoria;
 	}
 
@@ -57,20 +62,36 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public Double getValor() {
-		return valor;
+	public Double getValorBroto() {
+		return valorBroto;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
+	public void setValorBroto(Double valorBroto) {
+		this.valorBroto = valorBroto;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
+	public Double getValorTradicional() {
+		return valorTradicional;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
+	public void setValorTradicional(Double valorTradicional) {
+		this.valorTradicional = valorTradicional;
+	}
+
+	public Double getValorGrande() {
+		return valorGrande;
+	}
+
+	public void setValorGrande(Double valorGrande) {
+		this.valorGrande = valorGrande;
+	}
+
+	public Double getValorExtraGrande() {
+		return valorExtraGrande;
+	}
+
+	public void setValorExtraGrande(Double valorExtraGrande) {
+		this.valorExtraGrande = valorExtraGrande;
 	}
 
 	public Categoria getCategoria() {
@@ -104,5 +125,11 @@ public class Produto {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		
+		return nome;
 	}
 }

@@ -23,10 +23,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.dao.FabricaDao;
-import model.dao.ProdutosDao;
+import model.dao.ProdutoDao;
 import model.entities.Categoria;
 import model.entities.Produto;
 import model.table.ProdutosTableModel;
@@ -42,14 +43,14 @@ public final class ModalProdutos extends ModalCustom {
 	private JFileChooser jfcSelecaoImagem;
 	private JLabel lblImagem;
 	private JTextField txtNome;
-	private JTextField txtDescricao;
-	private JTextField txtValor;
-	private JTextField txtQuantidade;
+	private JTextArea txtDescricao;
+	private JTextField txtValorBroto;
 	private JComboBox<Object> cbxCategoria;
-	
-	private static final String destino = System.getProperty("user.dir") + "\\src\\imagens\\";
 			
-	private ProdutosDao produtoDao = FabricaDao.createProdutosDao();
+	private ProdutoDao produtoDao = FabricaDao.createProdutoDao();
+	private JTextField txtValorTradicional;
+	private JTextField txtValorGrande;
+	private JTextField txtValorExtraGrande;
 	
 	public ModalProdutos(ProdutosTableModel produtosTableModel, Produto produto) {
 		
@@ -64,7 +65,7 @@ public final class ModalProdutos extends ModalCustom {
 
 		JLabel lblCaminhoImagem = new JLabel("Caminho da imagem:");
 		lblCaminhoImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCaminhoImagem.setBounds(10, 11, 172, 20);
+		lblCaminhoImagem.setBounds(10, 11, 536, 20);
 		panelImagem.add(lblCaminhoImagem);
 
 		txtCaminhoImagem = new JTextField();
@@ -82,47 +83,44 @@ public final class ModalProdutos extends ModalCustom {
 		
 		JButton btnSelecionarImagem = new JButton("Selecionar imagem");
 		btnSelecionarImagem.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				jfcSelecaoImagem = new JFileChooser();
-				jfcSelecaoImagem.showOpenDialog(null);
+				String destino = System.getProperty("user.dir") + "//src//imagens//";
 				
-				File fRemetenteImagem = jfcSelecaoImagem.getSelectedFile();
+				jfcSelecaoImagem = new JFileChooser(System.getProperty("user.dir"));
+				jfcSelecaoImagem.setApproveButtonText("Selecionar");
 				
-				txtCaminhoImagem.setText(fRemetenteImagem.getName());
-				
-				lblImagem.setIcon(new ImageIcon(fRemetenteImagem.getAbsolutePath()));
-				ImageIcon imgProduto = ImagensUtil.redimensionarImagem(lblImagem, 230, 190);
-				
-				lblImagem.setIcon(imgProduto);
-				
-				File fDestinoImagem = new File(destino + fRemetenteImagem.getName());
-				
-				try {
+				if(jfcSelecaoImagem.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					
-					if(Files.exists(fDestinoImagem.toPath())) {
+					File fRemetenteImagem = jfcSelecaoImagem.getSelectedFile();
+					
+					txtCaminhoImagem.setText(fRemetenteImagem.getName());
+					
+					ImageIcon imgProduto = ImagensUtil.redimensionarImagem(new ImageIcon(fRemetenteImagem.getAbsolutePath()), 230, 190);
+					lblImagem.setIcon(imgProduto);
+					
+					try {
 						
-						ModalAlerta modalAlerta = new ModalAlerta("Essa imagem já existe no sistema!", ModalAlertaEnum.ALERTA);
+						File fDestinoImagem = new File(destino + fRemetenteImagem.getName());
+						
+						if(Files.notExists(fDestinoImagem.toPath())) {
+							
+							Files.copy(fRemetenteImagem.toPath(), fDestinoImagem.toPath());
+						}
+					}
+					catch (IOException e2) {
+
+						e2.printStackTrace();
+						
+						ModalAlerta modalAlerta = new ModalAlerta("Erro ao copiar a imagem!", ModalAlertaEnum.ERRO);
 
 						ModalUtil.MovimentacaoModal(modalAlerta);
 						modalAlerta.setLocationRelativeTo(null);
 						modalAlerta.setVisible(true);
-					}
-					else {
 						
-						Files.copy(fRemetenteImagem.toPath(), fDestinoImagem.toPath());
 					}
-				}
-				catch (IOException e1) {
-
-					e1.printStackTrace();
-					
-					ModalAlerta modalAlerta = new ModalAlerta("Erro ao copiar a imagem!", ModalAlertaEnum.ERRO);
-
-					ModalUtil.MovimentacaoModal(modalAlerta);
-					modalAlerta.setLocationRelativeTo(null);
-					modalAlerta.setVisible(true);
-					
 				}
 			}
 		});
@@ -137,7 +135,7 @@ public final class ModalProdutos extends ModalCustom {
 
 		JLabel lblNome = new JLabel("Nome do produto:");
 		lblNome.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNome.setBounds(58, 26, 182, 20);
+		lblNome.setBounds(44, 26, 441, 20);
 		panelNome.add(lblNome);
 
 		txtNome = new JTextField();
@@ -145,11 +143,11 @@ public final class ModalProdutos extends ModalCustom {
 		txtNome.setMinimumSize(new Dimension(7, 60));
 		txtNome.setPreferredSize(new Dimension(0, 60));
 		txtNome.setColumns(10);
-		txtNome.setBounds(58, 53, 438, 30);
+		txtNome.setBounds(44, 53, 441, 30);
 		panelNome.add(txtNome);
 
 		JPanel panelDescricao = new JPanel();
-		panelDescricao.setBounds(555, 2, 395, 431);
+		panelDescricao.setBounds(555, 2, 395, 324);
 		panelDescricao.setLayout(null);
 		panelDadosProdutos.add(panelDescricao);
 
@@ -158,64 +156,84 @@ public final class ModalProdutos extends ModalCustom {
 		lblDescricao.setBounds(10, 11, 193, 20);
 		panelDescricao.add(lblDescricao);
 
-		txtDescricao = new JTextField();
+		txtDescricao = new JTextArea();
 		txtDescricao.setSize(new Dimension(0, 60));
 		txtDescricao.setMinimumSize(new Dimension(7, 60));
 		txtDescricao.setPreferredSize(new Dimension(0, 60));
 		txtDescricao.setColumns(10);
-		txtDescricao.setBounds(10, 42, 375, 378);
+		txtDescricao.setBounds(10, 42, 375, 271);
 		panelDescricao.add(txtDescricao);
 
 		JPanel panelValor = new JPanel();
-		panelValor.setBounds(0, 432, 395, 107);
+		panelValor.setBounds(555, 326, 395, 213);
 		panelValor.setLayout(null);
 		panelDadosProdutos.add(panelValor);
 
-		JLabel lblValor = new JLabel("Valor:");
-		lblValor.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblValor.setBounds(58, 25, 55, 20);
-		panelValor.add(lblValor);
+		JLabel lblValorBroto = new JLabel("Valor Broto:");
+		lblValorBroto.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblValorBroto.setBounds(42, 32, 140, 20);
+		panelValor.add(lblValorBroto);
 
-		txtValor = new JTextField();
-		txtValor.setSize(new Dimension(0, 60));
-		txtValor.setMinimumSize(new Dimension(7, 60));
-		txtValor.setPreferredSize(new Dimension(0, 60));
-		txtValor.setColumns(10);
-		txtValor.setBounds(58, 53, 185, 30);
-		panelValor.add(txtValor);
-
-		JPanel panelQuantidade = new JPanel();
-		panelQuantidade.setBounds(394, 432, 201, 107);
-		panelQuantidade.setLayout(null);
-		panelDadosProdutos.add(panelQuantidade);
-
-		JLabel lblQuantidade = new JLabel("Quantidade:");
-		lblQuantidade.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblQuantidade.setBounds(58, 25, 103, 20);
-		panelQuantidade.add(lblQuantidade);
-
-		txtQuantidade = new JTextField();
-		txtQuantidade.setSize(new Dimension(0, 60));
-		txtQuantidade.setMinimumSize(new Dimension(7, 60));
-		txtQuantidade.setPreferredSize(new Dimension(0, 60));
-		txtQuantidade.setColumns(10);
-		txtQuantidade.setBounds(58, 53, 95, 30);
-		panelQuantidade.add(txtQuantidade);
+		txtValorBroto = new JTextField();
+		txtValorBroto.setSize(new Dimension(0, 60));
+		txtValorBroto.setMinimumSize(new Dimension(7, 60));
+		txtValorBroto.setPreferredSize(new Dimension(0, 60));
+		txtValorBroto.setColumns(10);
+		txtValorBroto.setBounds(42, 56, 140, 30);
+		panelValor.add(txtValorBroto);
+		
+		JLabel lblValorTradicional = new JLabel("Valor Tradicional:");
+		lblValorTradicional.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblValorTradicional.setBounds(42, 119, 140, 20);
+		panelValor.add(lblValorTradicional);
+		
+		txtValorTradicional = new JTextField();
+		txtValorTradicional.setSize(new Dimension(0, 60));
+		txtValorTradicional.setPreferredSize(new Dimension(0, 60));
+		txtValorTradicional.setMinimumSize(new Dimension(7, 60));
+		txtValorTradicional.setColumns(10);
+		txtValorTradicional.setBounds(42, 142, 140, 30);
+		panelValor.add(txtValorTradicional);
+		
+		JLabel lblValorGrande = new JLabel("Valor Grande:");
+		lblValorGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblValorGrande.setBounds(213, 32, 140, 20);
+		panelValor.add(lblValorGrande);
+		
+		txtValorGrande = new JTextField();
+		txtValorGrande.setSize(new Dimension(0, 60));
+		txtValorGrande.setPreferredSize(new Dimension(0, 60));
+		txtValorGrande.setMinimumSize(new Dimension(7, 60));
+		txtValorGrande.setColumns(10);
+		txtValorGrande.setBounds(213, 56, 140, 30);
+		panelValor.add(txtValorGrande);
+		
+		JLabel lblValorExtraGrande = new JLabel("Valor Extra grande:");
+		lblValorExtraGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblValorExtraGrande.setBounds(213, 119, 140, 20);
+		panelValor.add(lblValorExtraGrande);
+		
+		txtValorExtraGrande = new JTextField();
+		txtValorExtraGrande.setSize(new Dimension(0, 60));
+		txtValorExtraGrande.setPreferredSize(new Dimension(0, 60));
+		txtValorExtraGrande.setMinimumSize(new Dimension(7, 60));
+		txtValorExtraGrande.setColumns(10);
+		txtValorExtraGrande.setBounds(213, 142, 140, 30);
+		panelValor.add(txtValorExtraGrande);
 		
 		JPanel panelCategoria = new JPanel();
-		panelCategoria.setBounds(594, 432, 356, 107);
+		panelCategoria.setBounds(0, 432, 556, 107);
 		panelDadosProdutos.add(panelCategoria);
 		panelCategoria.setLayout(null);
 		
 		JLabel lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCategoria.setBounds(58, 25, 94, 20);
+		lblCategoria.setBounds(48, 25, 263, 20);
 		panelCategoria.add(lblCategoria);
 		
 		cbxCategoria = new JComboBox<>();
 		cbxCategoria.setModel(new DefaultComboBoxModel<Object>(produtoDao.listarCategorias().toArray()));
-		cbxCategoria.setSelectedIndex(0);
-		cbxCategoria.setBounds(58, 51, 185, 30);
+		cbxCategoria.setBounds(48, 51, 263, 30);
 		panelCategoria.add(cbxCategoria);
 		
 		if(produto != null) {
@@ -240,8 +258,10 @@ public final class ModalProdutos extends ModalCustom {
 					produto.setImagem(txtCaminhoImagem.getText());
 					produto.setNome(txtNome.getText());
 					produto.setDescricao(txtDescricao.getText());
-					produto.setValor(Double.valueOf(txtValor.getText()));
-					produto.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
+					produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
+					produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
+					produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
+					produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
 					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
 					
 					produtosTableModel.adicionarProduto(produto);
@@ -251,8 +271,10 @@ public final class ModalProdutos extends ModalCustom {
 					produto.setImagem(txtCaminhoImagem.getText());
 					produto.setNome(txtNome.getText());
 					produto.setDescricao(txtDescricao.getText());
-					produto.setValor(Double.valueOf(txtValor.getText()));
-					produto.setQuantidade(Integer.valueOf(txtQuantidade.getText()));
+					produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
+					produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
+					produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
+					produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
 					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
 					
 					produtosTableModel.alterarProduto(produto);
@@ -263,8 +285,11 @@ public final class ModalProdutos extends ModalCustom {
 				txtNome.setText("");
 				txtNome.setText("");
 				txtDescricao.setText("");
-				txtValor.setText("");
-				txtQuantidade.setText("");
+				txtValorBroto.setText("");
+				txtValorTradicional.setText("");
+				txtValorGrande.setText("");
+				txtValorExtraGrande.setText("");
+				cbxCategoria.setSelectedIndex(0);
 				
 				dispose();
 			}
@@ -304,9 +329,6 @@ public final class ModalProdutos extends ModalCustom {
 				dispose();
 			}
 		});
-		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
 		btnCancelar.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -321,6 +343,9 @@ public final class ModalProdutos extends ModalCustom {
 				btnCancelar.setBackground(Color.DARK_GRAY);
 			}
 		});
+		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("Leelawadee", Font.BOLD, 12));
 		btnCancelar.setFocusable(false);
@@ -334,13 +359,13 @@ public final class ModalProdutos extends ModalCustom {
 	protected void capturarDados(Produto produto) {
 
 		txtCaminhoImagem.setText(produto.getImagem());
-		lblImagem.setIcon(new ImageIcon(destino + produto.getImagem()));
-		ImageIcon imgProduto = ImagensUtil.redimensionarImagem(lblImagem, 230, 190);
-		lblImagem.setIcon(imgProduto);
+		lblImagem.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 230, 190));
 		txtNome.setText(produto.getNome());
 		txtDescricao.setText(produto.getDescricao());
-		txtValor.setText(String.valueOf(produto.getValor()));
-		txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
+		txtValorBroto.setText(String.valueOf(produto.getValorBroto()));
+		txtValorTradicional.setText(String.valueOf(produto.getValorTradicional()));
+		txtValorGrande.setText(String.valueOf(produto.getValorGrande()));
+		txtValorExtraGrande.setText(String.valueOf(produto.getValorExtraGrande()));
 		cbxCategoria.setSelectedItem(produto.getCategoria());
 	}
 }

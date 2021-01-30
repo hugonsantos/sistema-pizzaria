@@ -5,11 +5,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
-public class MainViewUtil {
+import views.internos.produtos.PizzasView;
 
-public void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
+public class ViewsUtil {
+
+	public static void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
 		
 		botao.setEnabled(false);
 		botao.addActionListener(null);
@@ -31,7 +35,7 @@ public void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
 		});
 	}
 	
-	public MouseListener adicionarAcaoMouse(JButton botao, Color corTexto, Color corFundo) {
+	public static MouseListener adicionarAcaoMouse(JButton botao, Color corTexto, Color corFundo) {
 		
 		MouseListener m = new MouseAdapter() {
 			
@@ -51,5 +55,16 @@ public void desabilitarBotoes(JButton botao, MouseListener mouseListener) {
 		};
 		
 		return m;
+	}
+	
+	public static void limparSelecao(JLabel label, String texto) {
+		
+		label.setIcon(new ImageIcon(PizzasView.class.getResource("/imagens/pizza-64.png")));
+		label.setText(texto);
+	}
+	
+	public static Boolean limparSelecao(Integer tamanho, Integer subTamanho) {
+		
+		if(tamanho >= subTamanho) return true; else return false;
 	}
 }

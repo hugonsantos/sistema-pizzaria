@@ -5,16 +5,16 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import model.dao.FabricaDao;
-import model.dao.ProdutosDao;
+import model.dao.ProdutoDao;
 import model.entities.Produto;
 
-public final class ProdutosTableModel extends AbstractTableModel{
+public final class ProdutosTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String[] colunas = {"Id", "Imagem", "Nome", "Descricao", "Valor", "Quantidade", "Categoria"};
+	private String[] colunas = {"Id", "Nome", "Descricao", "Valor Broto", "Valor Tradicional", "Valor Grande", "Valor Extra Grande", "Categoria"};
 	
-	private ProdutosDao produtosDao = FabricaDao.createProdutosDao();
+	private ProdutoDao produtosDao = FabricaDao.createProdutoDao();
 	private List<Produto> list = produtosDao.listarProdutos();
 	
 	@Override
@@ -46,6 +46,8 @@ public final class ProdutosTableModel extends AbstractTableModel{
 			return colunas[5];
 		case 6:
 			return colunas[6];
+		case 7:
+			return colunas[7];
 		default:
 			return "";
 		}
@@ -60,17 +62,19 @@ public final class ProdutosTableModel extends AbstractTableModel{
 		
 		case 0:
 			return produtos.getId();
-		case 1: 
-			return produtos.getImagem();
-		case 2:
+		case 1:
 			return produtos.getNome();
-		case 3:
+		case 2:
 			return produtos.getDescricao();
+		case 3:
+			return String.format("%.2f", produtos.getValorBroto());
 		case 4:
-			return String.format("%.2f", produtos.getValor());
+			return String.format("%.2f", produtos.getValorTradicional());
 		case 5:
-			return produtos.getQuantidade();
+			return String.format("%.2f", produtos.getValorGrande());
 		case 6:
+			return String.format("%.2f", produtos.getValorExtraGrande());
+		case 7:
 			return produtos.getCategoria().getCategoria();
 		default:
 			return "";

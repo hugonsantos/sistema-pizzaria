@@ -17,29 +17,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import model.util.MainViewUtil;
+import model.util.ViewsUtil;
 
 public final class ModalDeletar extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
 	
-	private MainViewUtil mainUtil = new MainViewUtil();
+	private MouseListener btnSimML;
+	private MouseListener btnNaoML;
 	
-	private MouseListener btnOkML;
-	private MouseListener btnCancelarML;
+	private static Boolean confirmacao;
 	
-	private int confirmacao;
-	
-	public ModalDeletar() {
+	public ModalDeletar(String texto) {
 
-		
-	}
-	
-	public int modalComponentes(String textoConfirmacao) {
-		
 		setBounds(100, 100, 700, 300);
 		
-		JLabel lblConfirmacao = new JLabel(textoConfirmacao);
+		JLabel lblConfirmacao = new JLabel(texto);
 		lblConfirmacao.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConfirmacao.setFont(new Font("Leelawadee UI", Font.BOLD, 16));
 		getContentPane().add(lblConfirmacao, BorderLayout.CENTER);
@@ -50,53 +43,56 @@ public final class ModalDeletar extends ModalCustom {
 		panelAcoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(panelAcoes, BorderLayout.SOUTH);
 
-		JButton btnOk = new JButton("Ok");
-		btnOk.addActionListener(new ActionListener() {
+		JButton btnSim = new JButton("Sim");
+		btnSim.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				confirmacao = 12;
+				confirmacao = true;
 				dispose();
 			}
 		});
-		btnCancelarML = mainUtil.adicionarAcaoMouse(btnOk, Color.WHITE, new Color(173, 216, 230));
-		btnOk.addMouseListener(btnCancelarML);
-		btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnOk.setMargin(new Insets(0, 0, 0, 0));
-		btnOk.setFocusable(false);
-		btnOk.setFont(new Font("Leelawadee", Font.BOLD, 12));
-		btnOk.setForeground(Color.WHITE);
-		btnOk.setBackground(Color.DARK_GRAY);
-		btnOk.setPreferredSize(new Dimension(70, 23));
-		btnOk.setBorder(null);
-		btnOk.setActionCommand("OK");
-		panelAcoes.add(btnOk);
-		getRootPane().setDefaultButton(btnOk);
+		btnNaoML = ViewsUtil.adicionarAcaoMouse(btnSim, Color.WHITE, new Color(173, 216, 230));
+		btnSim.addMouseListener(btnNaoML);
+		btnSim.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSim.setMargin(new Insets(0, 0, 0, 0));
+		btnSim.setFocusable(false);
+		btnSim.setFont(new Font("Leelawadee", Font.BOLD, 12));
+		btnSim.setForeground(Color.WHITE);
+		btnSim.setBackground(Color.DARK_GRAY);
+		btnSim.setPreferredSize(new Dimension(70, 23));
+		btnSim.setBorder(null);
+		btnSim.setActionCommand("OK");
+		panelAcoes.add(btnSim);
+		getRootPane().setDefaultButton(btnSim);
 
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
+		JButton btnNao = new JButton("Cancelar");
+		btnNao.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				confirmacao = -12;
+				confirmacao = false;
 				dispose();
 			}
 		});
-		btnOkML = mainUtil.adicionarAcaoMouse(btnCancelar, Color.WHITE, Color.RED);
-		btnCancelar.addMouseListener(btnOkML);
-		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("Leelawadee", Font.BOLD, 12));
-		btnCancelar.setFocusable(false);
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setPreferredSize(new Dimension(70, 23));
-		btnCancelar.setBorderPainted(false);
-		btnCancelar.setBorder(null);
-		panelAcoes.add(btnCancelar);
+		btnSimML = ViewsUtil.adicionarAcaoMouse(btnNao, Color.WHITE, Color.RED);
+		btnNao.addMouseListener(btnSimML);
+		btnNao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNao.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNao.setMargin(new Insets(0, 0, 0, 0));
+		btnNao.setForeground(Color.WHITE);
+		btnNao.setFont(new Font("Leelawadee", Font.BOLD, 12));
+		btnNao.setFocusable(false);
+		btnNao.setBackground(Color.DARK_GRAY);
+		btnNao.setPreferredSize(new Dimension(70, 23));
+		btnNao.setBorderPainted(false);
+		btnNao.setBorder(null);
+		panelAcoes.add(btnNao);
+	}
+	
+	public Boolean confirmacao() {
 		
 		return confirmacao;
 	}

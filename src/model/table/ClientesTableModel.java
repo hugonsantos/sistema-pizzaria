@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import model.dao.ClientesDao;
-import model.dao.EnderecosDao;
+import model.dao.ClienteDao;
+import model.dao.EnderecoDao;
 import model.dao.FabricaDao;
 import model.entities.Cliente;
 import model.entities.Endereco;
@@ -16,8 +16,8 @@ public final class ClientesTableModel extends AbstractTableModel{
 	
 	private String[] colunas = {"Id", "Nome", "CPF"};
 	
-	private ClientesDao clientesDao = FabricaDao.createClientesDao();
-	private EnderecosDao enderecosDao = FabricaDao.createEnderecosDao();
+	private ClienteDao clientesDao = FabricaDao.createClienteDao();
+	private EnderecoDao enderecosDao = FabricaDao.createEnderecoDao();
 	private List<Cliente> list = clientesDao.listarTodos();
 	
 	@Override
@@ -122,6 +122,12 @@ public final class ClientesTableModel extends AbstractTableModel{
 		
 		Cliente cliente = list.get(linha);
 		return cliente;
+	}
+	
+	public List<Cliente> capturarClientes() {
+		
+		List<Cliente> clientes = clientesDao.listarTodos();
+		return clientes;
 	}
 	
 	public List<Endereco> capturarEnderecos(Integer idCliente) {

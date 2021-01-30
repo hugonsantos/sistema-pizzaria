@@ -9,7 +9,7 @@ public class Funcionario {
 	private String email;
 	private Date dataNascimento;
 	private String cpf;
-	private String apelido;
+	private String usuario;
 	private String senha;
 	private String administrador;
 	
@@ -17,13 +17,13 @@ public class Funcionario {
 		
 	}
 
-	public Funcionario(Integer id, String nome, String email, Date dataNascimento, String cpf, String apelido, String senha, String administrador) {
+	public Funcionario(Integer id, String nome, String email, Date dataNascimento, String cpf, String usuario, String senha, String administrador) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
 		this.cpf = cpf;
-		this.apelido = apelido;
+		this.usuario = usuario;
 		this.senha = senha;
 		this.administrador = administrador;
 	}
@@ -68,12 +68,12 @@ public class Funcionario {
 		this.cpf = cpf;
 	}
 
-	public String getApelido() {
-		return apelido;
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 	
 	public String getSenha() {
@@ -121,12 +121,5 @@ public class Funcionario {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Funcionarios [id=" + id + ", nome=" + nome + ", email=" + email + ", dataNascimento=" + dataNascimento
-				+ ", cpf=" + cpf + ", apelido=" + apelido + ", senha=" + senha + ", administrador=" + administrador
-				+ "]";
 	}
 }

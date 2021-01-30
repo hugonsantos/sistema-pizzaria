@@ -24,9 +24,9 @@ import javax.swing.SwingConstants;
 import model.entities.Cliente;
 import model.entities.Endereco;
 import model.table.ClientesTableModel;
-import model.util.MainViewUtil;
 import model.util.ModalUtil;
 import model.util.TableModelUtil;
+import model.util.ViewsUtil;
 import views.modal.ModalAlerta;
 import views.modal.ModalCliente;
 import views.modal.ModalDeletar;
@@ -37,12 +37,10 @@ public class ClientesView extends TelaInternaCustom {
 	private static final long serialVersionUID = 1L;
 
 	private ModalCliente modalCliente;
-	private ModalDeletar modalDeletar = new ModalDeletar();
 	private ModalAlerta modalAlerta;
 
 	private Cliente cliente = new Cliente();
 	private ClientesTableModel clientesTableModel = new ClientesTableModel();
-	private MainViewUtil mainUtil = new MainViewUtil();
 
 	private JTable tableClientes;
 	private JButton btnIncluirProduto;
@@ -120,9 +118,11 @@ public class ClientesView extends TelaInternaCustom {
 				ModalUtil.MovimentacaoModal(modalCliente);
 				modalCliente.setLocationRelativeTo(null);
 				modalCliente.setVisible(true);
+				
+				tableClientes.clearSelection();
 			}
 		});
-		btnIncluirProdutoML = mainUtil.adicionarAcaoMouse(btnIncluirProduto, Color.WHITE, Color.GREEN);
+		btnIncluirProdutoML = ViewsUtil.adicionarAcaoMouse(btnIncluirProduto, Color.WHITE, Color.GREEN);
 		btnIncluirProduto.addMouseListener(btnIncluirProdutoML);
 		btnIncluirProduto.setBorderPainted(false);
 		btnIncluirProduto.setFocusable(false);
@@ -146,9 +146,11 @@ public class ClientesView extends TelaInternaCustom {
 					modalCliente.setLocationRelativeTo(null);
 					modalCliente.setVisible(true);
 				}
+				
+				tableClientes.clearSelection();
 			}
 		});
-		btnEditarML = mainUtil.adicionarAcaoMouse(btnEditar, Color.WHITE, Color.GREEN);
+		btnEditarML = ViewsUtil.adicionarAcaoMouse(btnEditar, Color.WHITE, Color.GREEN);
 		btnEditar.addMouseListener(btnEditarML);
 		btnEditar.setBorderPainted(false);
 		btnEditar.setFocusable(false);
@@ -166,9 +168,12 @@ public class ClientesView extends TelaInternaCustom {
 				
 				if(tableClientes.getSelectedRow() != -1) {
 					
-					int conf = modalDeletar.modalComponentes("Realmente deseja deletar esse cliente?");
+					ModalDeletar modalDeletar = new ModalDeletar("Realmente deseja deletar esse cliente?");
+					ModalUtil.MovimentacaoModal(modalDeletar);
+					modalDeletar.setLocationRelativeTo(null);
+					modalDeletar.setVisible(true);
 					
-					if(conf == 12) {
+					if(modalDeletar.confirmacao()) {
 						
 						cliente = clientesTableModel.capturarCliente(tableClientes.getSelectedRow());
 						enderecos = clientesTableModel.capturarEnderecos(cliente.getId());
@@ -176,14 +181,11 @@ public class ClientesView extends TelaInternaCustom {
 						clientesTableModel.deletarCliente(cliente, enderecos);
 					}
 					
-					ModalUtil.MovimentacaoModal(modalDeletar);
-					modalDeletar.setLocationRelativeTo(null);
-					modalDeletar.setVisible(true);
+					tableClientes.clearSelection();
 				}
-				
 				else {
 					
-					modalAlerta = new ModalAlerta("Desculpe, primeiro você deve selecionar um funcionário na tabela!", ModalAlertaEnum.ALERTA);
+					modalAlerta = new ModalAlerta("Primeiro você deve selecionar um cliente na tabela para deletar!", ModalAlertaEnum.ALERTA);
 					
 					ModalUtil.MovimentacaoModal(modalAlerta);
 					modalAlerta.setLocationRelativeTo(null);
@@ -191,7 +193,7 @@ public class ClientesView extends TelaInternaCustom {
 				}
 			}
 		});
-		btnDeletarML = mainUtil.adicionarAcaoMouse(btnDeletar, Color.WHITE, Color.RED);
+		btnDeletarML = ViewsUtil.adicionarAcaoMouse(btnDeletar, Color.WHITE, Color.RED);
 		btnDeletar.addMouseListener(btnDeletarML);
 		btnDeletar.setBorderPainted(false);
 		btnDeletar.setFocusable(false);

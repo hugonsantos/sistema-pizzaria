@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -44,17 +46,21 @@ public final class ModalCliente extends ModalCustom {
 	private JTextField txtBairroEP;
 	private JTextField txtComplementoEP;
 	private JTextField txtCepEP;
+	private JTextField txtCidadeEP;
+	private JComboBox<Object> cbxEstadoEP;
 	private JCheckBox checkboxConfigEndereco;
 	private JTextField txtEnderecoEE;
 	private JTextField txtNumeroEE;
 	private JTextField txtBairroEE;
 	private JTextField txtComplementoEE;
 	private JTextField txtCepEE;
+	private JTextField txtCidadeEE;
+	private JComboBox<Object> cbxEstadoEE;
 	
 	private List<Endereco> enderecos;
-	
-	ClientesTableModel clientesTableModel;
 
+	private ClientesTableModel clientesTableModel;
+	
 	private ButtonGroup generoBtns = new ButtonGroup();
 
 	public ModalCliente(ClientesTableModel clientesTableModel, Cliente cliente) {
@@ -130,8 +136,8 @@ public final class ModalCliente extends ModalCustom {
 		panelEnderecos.setLayout(new GridLayout(1, 2));
 		
 		JSplitPane splitPane = new JSplitPane();
+		splitPane.setEnabled(false);
 		splitPane.setAlignmentY(Component.CENTER_ALIGNMENT);
-		splitPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		splitPane.setPreferredSize(new Dimension(500, 25));
 		panelEnderecos.add(splitPane);
 		
@@ -146,15 +152,27 @@ public final class ModalCliente extends ModalCustom {
 		lblEnderecoPrincipal.setBounds(10, 11, 451, 47);
 		panelEnderecoPrincipal.add(lblEnderecoPrincipal);
 		
+		JLabel lblCepEP = new JLabel("Cep:");
+		lblCepEP.setSize(new Dimension(30, 0));
+		lblCepEP.setPreferredSize(new Dimension(30, 14));
+		lblCepEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblCepEP.setBounds(10, 69, 46, 30);
+		panelEnderecoPrincipal.add(lblCepEP);
+		
+		txtCepEP = new JTextField();
+		txtCepEP.setColumns(10);
+		txtCepEP.setBounds(10, 99, 150, 30);
+		panelEnderecoPrincipal.add(txtCepEP);
+		
 		JLabel lblEnderecoEP = new JLabel("Endere\u00E7o:");
 		lblEnderecoEP.setSize(new Dimension(30, 0));
 		lblEnderecoEP.setPreferredSize(new Dimension(30, 14));
 		lblEnderecoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblEnderecoEP.setBounds(10, 69, 76, 30);
+		lblEnderecoEP.setBounds(10, 140, 76, 30);
 		panelEnderecoPrincipal.add(lblEnderecoEP);
 		
 		txtEnderecoEP = new JTextField();
-		txtEnderecoEP.setBounds(10, 99, 451, 30);
+		txtEnderecoEP.setBounds(10, 170, 451, 30);
 		panelEnderecoPrincipal.add(txtEnderecoEP);
 		txtEnderecoEP.setColumns(10);
 		
@@ -162,49 +180,61 @@ public final class ModalCliente extends ModalCustom {
 		lblNumeroEP.setSize(new Dimension(30, 0));
 		lblNumeroEP.setPreferredSize(new Dimension(30, 14));
 		lblNumeroEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNumeroEP.setBounds(10, 156, 37, 30);
+		lblNumeroEP.setBounds(10, 227, 37, 30);
 		panelEnderecoPrincipal.add(lblNumeroEP);
 		
 		txtNumeroEP = new JTextField();
 		txtNumeroEP.setColumns(10);
-		txtNumeroEP.setBounds(10, 186, 76, 30);
+		txtNumeroEP.setBounds(10, 257, 76, 30);
 		panelEnderecoPrincipal.add(txtNumeroEP);
 		
 		JLabel lblBairroEP = new JLabel("Bairro:");
 		lblBairroEP.setSize(new Dimension(30, 0));
 		lblBairroEP.setPreferredSize(new Dimension(30, 14));
 		lblBairroEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblBairroEP.setBounds(104, 156, 58, 30);
+		lblBairroEP.setBounds(104, 227, 58, 30);
 		panelEnderecoPrincipal.add(lblBairroEP);
 		
 		txtBairroEP = new JTextField();
 		txtBairroEP.setColumns(10);
-		txtBairroEP.setBounds(104, 186, 357, 30);
+		txtBairroEP.setBounds(104, 257, 357, 30);
 		panelEnderecoPrincipal.add(txtBairroEP);
 		
 		JLabel lblComplementoEP = new JLabel("Complemento:");
 		lblComplementoEP.setSize(new Dimension(30, 0));
 		lblComplementoEP.setPreferredSize(new Dimension(30, 14));
 		lblComplementoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblComplementoEP.setBounds(10, 247, 117, 30);
+		lblComplementoEP.setBounds(10, 318, 117, 30);
 		panelEnderecoPrincipal.add(lblComplementoEP);
 		
 		txtComplementoEP = new JTextField();
 		txtComplementoEP.setColumns(10);
-		txtComplementoEP.setBounds(10, 277, 451, 30);
+		txtComplementoEP.setBounds(10, 348, 451, 30);
 		panelEnderecoPrincipal.add(txtComplementoEP);
 		
-		JLabel lblCepEP = new JLabel("Cep:");
-		lblCepEP.setSize(new Dimension(30, 0));
-		lblCepEP.setPreferredSize(new Dimension(30, 14));
-		lblCepEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCepEP.setBounds(10, 337, 46, 30);
-		panelEnderecoPrincipal.add(lblCepEP);
+		JLabel lblCidadeEP = new JLabel("Cidade:");
+		lblCidadeEP.setSize(new Dimension(30, 0));
+		lblCidadeEP.setPreferredSize(new Dimension(30, 14));
+		lblCidadeEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblCidadeEP.setBounds(10, 410, 117, 30);
+		panelEnderecoPrincipal.add(lblCidadeEP);
 		
-		txtCepEP = new JTextField();
-		txtCepEP.setColumns(10);
-		txtCepEP.setBounds(10, 367, 150, 30);
-		panelEnderecoPrincipal.add(txtCepEP);
+		txtCidadeEP = new JTextField();
+		txtCidadeEP.setColumns(10);
+		txtCidadeEP.setBounds(10, 439, 357, 30);
+		panelEnderecoPrincipal.add(txtCidadeEP);
+		
+		JLabel lblEstadoEP = new JLabel("Estado:");
+		lblEstadoEP.setSize(new Dimension(30, 0));
+		lblEstadoEP.setPreferredSize(new Dimension(30, 14));
+		lblEstadoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblEstadoEP.setBounds(385, 410, 58, 30);
+		panelEnderecoPrincipal.add(lblEstadoEP);
+		
+		cbxEstadoEP = new JComboBox<>();
+		cbxEstadoEP.setModel(new DefaultComboBoxModel<Object>(new String[] {"AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO"}));
+		cbxEstadoEP.setBounds(385, 439, 76, 30);
+		panelEnderecoPrincipal.add(cbxEstadoEP);
 		
 		JPanel panelEnderecoEntrega = new JPanel();
 		splitPane.setRightComponent(panelEnderecoEntrega);
@@ -216,65 +246,89 @@ public final class ModalCliente extends ModalCustom {
 		lblEnderecoEntrega.setBounds(10, 11, 451, 47);
 		panelEnderecoEntrega.add(lblEnderecoEntrega);
 		
+		JLabel lblCepEE = new JLabel("Cep:");
+		lblCepEE.setSize(new Dimension(30, 0));
+		lblCepEE.setPreferredSize(new Dimension(30, 14));
+		lblCepEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblCepEE.setBounds(10, 69, 46, 30);
+		panelEnderecoEntrega.add(lblCepEE);
+		
+		txtCepEE = new JTextField();
+		txtCepEE.setColumns(10);
+		txtCepEE.setBounds(10, 99, 150, 30);
+		panelEnderecoEntrega.add(txtCepEE);
+		
 		JLabel lblEnderecoEE = new JLabel("Endere\u00E7o:");
 		lblEnderecoEE.setSize(new Dimension(30, 0));
 		lblEnderecoEE.setPreferredSize(new Dimension(30, 14));
 		lblEnderecoEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblEnderecoEE.setBounds(10, 69, 76, 30);
+		lblEnderecoEE.setBounds(10, 140, 76, 30);
 		panelEnderecoEntrega.add(lblEnderecoEE);
 		
 		txtEnderecoEE = new JTextField();
 		txtEnderecoEE.setColumns(10);
-		txtEnderecoEE.setBounds(10, 99, 451, 30);
+		txtEnderecoEE.setBounds(10, 170, 451, 30);
 		panelEnderecoEntrega.add(txtEnderecoEE);
 		
 		JLabel lblNumeroEE = new JLabel("N\u00B0:");
 		lblNumeroEE.setSize(new Dimension(30, 0));
 		lblNumeroEE.setPreferredSize(new Dimension(30, 14));
 		lblNumeroEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNumeroEE.setBounds(10, 156, 37, 30);
+		lblNumeroEE.setBounds(10, 227, 37, 30);
 		panelEnderecoEntrega.add(lblNumeroEE);
 		
 		txtNumeroEE = new JTextField();
 		txtNumeroEE.setColumns(10);
-		txtNumeroEE.setBounds(10, 186, 76, 30);
+		txtNumeroEE.setBounds(10, 257, 76, 30);
 		panelEnderecoEntrega.add(txtNumeroEE);
 		
 		JLabel lblBairroEE = new JLabel("Bairro:");
 		lblBairroEE.setSize(new Dimension(30, 0));
 		lblBairroEE.setPreferredSize(new Dimension(30, 14));
 		lblBairroEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblBairroEE.setBounds(104, 156, 58, 30);
+		lblBairroEE.setBounds(104, 227, 58, 30);
 		panelEnderecoEntrega.add(lblBairroEE);
 		
 		txtBairroEE = new JTextField();
 		txtBairroEE.setColumns(10);
-		txtBairroEE.setBounds(104, 186, 357, 30);
+		txtBairroEE.setBounds(104, 257, 357, 30);
 		panelEnderecoEntrega.add(txtBairroEE);
 		
 		JLabel lblComplementoEE = new JLabel("Complemento:");
 		lblComplementoEE.setSize(new Dimension(30, 0));
 		lblComplementoEE.setPreferredSize(new Dimension(30, 14));
 		lblComplementoEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblComplementoEE.setBounds(10, 247, 117, 30);
+		lblComplementoEE.setBounds(10, 318, 117, 30);
 		panelEnderecoEntrega.add(lblComplementoEE);
 		
 		txtComplementoEE = new JTextField();
 		txtComplementoEE.setColumns(10);
-		txtComplementoEE.setBounds(10, 277, 451, 30);
+		txtComplementoEE.setBounds(10, 348, 451, 30);
 		panelEnderecoEntrega.add(txtComplementoEE);
 		
-		JLabel lblCepEE = new JLabel("Cep:");
-		lblCepEE.setSize(new Dimension(30, 0));
-		lblCepEE.setPreferredSize(new Dimension(30, 14));
-		lblCepEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCepEE.setBounds(10, 337, 46, 30);
-		panelEnderecoEntrega.add(lblCepEE);
+		JLabel lblCidadeEE = new JLabel("Cidade:");
+		lblCidadeEE.setSize(new Dimension(30, 0));
+		lblCidadeEE.setPreferredSize(new Dimension(30, 14));
+		lblCidadeEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblCidadeEE.setBounds(10, 410, 117, 30);
+		panelEnderecoEntrega.add(lblCidadeEE);
 		
-		txtCepEE = new JTextField();
-		txtCepEE.setColumns(10);
-		txtCepEE.setBounds(10, 367, 150, 30);
-		panelEnderecoEntrega.add(txtCepEE);
+		txtCidadeEE = new JTextField();
+		txtCidadeEE.setColumns(10);
+		txtCidadeEE.setBounds(10, 439, 357, 30);
+		panelEnderecoEntrega.add(txtCidadeEE);
+		
+		JLabel lblEstadoEE = new JLabel("Estado:");
+		lblEstadoEE.setSize(new Dimension(30, 0));
+		lblEstadoEE.setPreferredSize(new Dimension(30, 14));
+		lblEstadoEE.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		lblEstadoEE.setBounds(385, 410, 58, 30);
+		panelEnderecoEntrega.add(lblEstadoEE);
+		
+		cbxEstadoEE = new JComboBox<>();
+		cbxEstadoEE.setModel(new DefaultComboBoxModel<Object>(new String[] {"AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO"}));
+		cbxEstadoEE.setBounds(385, 439, 76, 30);
+		panelEnderecoEntrega.add(cbxEstadoEE);
 		
 		checkboxConfigEndereco = new JCheckBox("O endere\u00E7o de entrega \u00E9 o mesmo do endere\u00E7o principal!");
 		checkboxConfigEndereco.addActionListener(new ActionListener() {
@@ -291,6 +345,10 @@ public final class ModalCliente extends ModalCustom {
 				txtComplementoEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
 				lblCepEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
 				txtCepEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
+				lblCidadeEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
+				txtCidadeEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
+				lblEstadoEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
+				cbxEstadoEE.setEnabled(checkboxConfigEndereco.isSelected() == false);
 				
 				if(cliente != null) {
 					
@@ -311,13 +369,15 @@ public final class ModalCliente extends ModalCustom {
 							txtBairroEE.setText("");
 							txtComplementoEE.setText("");
 							txtCepEE.setText("");
+							txtCidadeEE.setText("");
+							cbxEstadoEE.setSelectedIndex(0);
 						}
 					}
 				}
 			}
 		});
 		checkboxConfigEndereco.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		checkboxConfigEndereco.setBounds(10, 459, 451, 38);
+		checkboxConfigEndereco.setBounds(10, 488, 451, 38);
 		panelEnderecoPrincipal.add(checkboxConfigEndereco);
 		
 		if(cliente != null) {
@@ -337,6 +397,10 @@ public final class ModalCliente extends ModalCustom {
 			txtComplementoEE.setEnabled(false);
 			lblCepEE.setEnabled(false);
 			txtCepEE.setEnabled(false);
+			lblCidadeEE.setEnabled(false);
+			txtCidadeEE.setEnabled(false);
+			lblEstadoEE.setEnabled(false);
+			cbxEstadoEE.setEnabled(false);
 		}
 
 		JPanel panelAcoes = new JPanel();
@@ -348,6 +412,7 @@ public final class ModalCliente extends ModalCustom {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				if(cliente == null) {
@@ -362,10 +427,12 @@ public final class ModalCliente extends ModalCustom {
 					Endereco endereco = new Endereco();
 					
 					endereco.setEndereco(txtEnderecoEP.getText());
-					endereco.setNumero(Integer.valueOf(txtNumeroEP.getText()));
+					endereco.setNumero(txtNumeroEP.getText());
 					endereco.setBairro(txtBairroEP.getText());
 					endereco.setComplemento(txtComplementoEP.getText());
-					endereco.setCep(Integer.valueOf(txtCepEP.getText()));
+					endereco.setCep(txtCepEP.getText());
+					endereco.setCidade(txtCidadeEP.getText());
+					endereco.setEstado((String) cbxEstadoEP.getSelectedItem());
 					if(checkboxConfigEndereco.isSelected()) endereco.setEnderecoEntrega("Sim"); else endereco.setEnderecoEntrega("Não");
 					
 					enderecos.add(endereco);
@@ -375,10 +442,12 @@ public final class ModalCliente extends ModalCustom {
 						endereco = new Endereco();
 						
 						endereco.setEndereco(txtEnderecoEE.getText());
-						endereco.setNumero(Integer.valueOf(txtNumeroEE.getText()));
+						endereco.setNumero(txtNumeroEE.getText());
 						endereco.setBairro(txtBairroEE.getText());
 						endereco.setComplemento(txtComplementoEE.getText());
-						endereco.setCep(Integer.valueOf(txtCepEE.getText()));
+						endereco.setCep(txtCepEE.getText());
+						endereco.setCidade(txtCidadeEE.getText());
+						endereco.setEstado((String) cbxEstadoEE.getSelectedItem());
 						endereco.setEnderecoEntrega("Sim");
 						
 						enderecos.add(endereco);
@@ -396,10 +465,12 @@ public final class ModalCliente extends ModalCustom {
 					Endereco endereco = enderecos.get(0);
 					
 					endereco.setEndereco(txtEnderecoEP.getText());
-					endereco.setNumero(Integer.valueOf(txtNumeroEP.getText()));
+					endereco.setNumero(txtNumeroEP.getText());
 					endereco.setBairro(txtBairroEP.getText());
 					endereco.setComplemento(txtComplementoEP.getText());
-					endereco.setCep(Integer.valueOf(txtCepEP.getText()));
+					endereco.setCep(txtCepEP.getText());
+					endereco.setCidade(txtCidadeEP.getText());
+					endereco.setEstado((String) cbxEstadoEP.getSelectedItem());
 					if(checkboxConfigEndereco.isSelected() == true) endereco.setEnderecoEntrega("Sim"); else endereco.setEnderecoEntrega("Não");
 					endereco.setIdClientes(cliente);
 					
@@ -416,10 +487,12 @@ public final class ModalCliente extends ModalCustom {
 							endereco = new Endereco();
 							
 							endereco.setEndereco(txtEnderecoEE.getText());
-							endereco.setNumero(Integer.valueOf(txtNumeroEE.getText()));
+							endereco.setNumero(txtNumeroEE.getText());
 							endereco.setBairro(txtBairroEE.getText());
 							endereco.setComplemento(txtComplementoEE.getText());
-							endereco.setCep(Integer.valueOf(txtCepEE.getText()));
+							endereco.setCep(txtCepEE.getText());
+							endereco.setCidade(txtCidadeEE.getText());
+							endereco.setEstado((String) cbxEstadoEE.getSelectedItem());
 							endereco.setEnderecoEntrega("Sim");
 							endereco.setIdClientes(cliente);
 							
@@ -432,10 +505,12 @@ public final class ModalCliente extends ModalCustom {
 							endereco = enderecos.get(1);
 							
 							endereco.setEndereco(txtEnderecoEE.getText());
-							endereco.setNumero(Integer.valueOf(txtNumeroEE.getText()));
+							endereco.setNumero(txtNumeroEE.getText());
 							endereco.setBairro(txtBairroEE.getText());
 							endereco.setComplemento(txtComplementoEE.getText());
-							endereco.setCep(Integer.valueOf(txtCepEE.getText()));
+							endereco.setCep(txtCepEE.getText());
+							endereco.setCidade(txtCidadeEE.getText());
+							endereco.setEstado((String) cbxEstadoEE.getSelectedItem());
 							endereco.setEnderecoEntrega("Sim");
 							endereco.setIdClientes(cliente);
 							
@@ -443,12 +518,6 @@ public final class ModalCliente extends ModalCustom {
 						}
 					}
 				}
-				
-				enderecos = clientesTableModel.capturarEnderecos(cliente.getId());
-				
-				txtNome.setText("");
-				txtCpf.setText("");
-				generoBtns.clearSelection();
 				
 				dispose();
 			}
@@ -526,6 +595,8 @@ public final class ModalCliente extends ModalCustom {
 		txtBairroEP.setText(enderecos.get(0).getBairro());
 		txtComplementoEP.setText(enderecos.get(0).getComplemento());
 		txtCepEP.setText(String.valueOf(enderecos.get(0).getCep()));
+		txtCidadeEP.setText(enderecos.get(0).getCidade());
+		cbxEstadoEP.setSelectedItem(enderecos.get(0).getEstado());
 		if(enderecos.get(0).getEnderecoEntrega().equals("Sim")) checkboxConfigEndereco.setSelected(true); else checkboxConfigEndereco.setSelected(false);
 		
 		if(checkboxConfigEndereco.isSelected() == false) {
@@ -535,6 +606,8 @@ public final class ModalCliente extends ModalCustom {
 			txtBairroEE.setText(enderecos.get(1).getBairro());
 			txtComplementoEE.setText(enderecos.get(1).getComplemento());
 			txtCepEE.setText(String.valueOf(enderecos.get(1).getCep()));
+			txtCidadeEE.setText(enderecos.get(1).getCidade());
+			cbxEstadoEE.setSelectedItem(enderecos.get(1).getEstado());
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package model.dao.source;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,48 +12,50 @@ import model.entities.Funcionario;
 
 public class LoginSourceDao implements LoginDao {
 	
+	private Connection con;
 	private PreparedStatement prepared;
 	private ResultSet resultSet;
 
 	@Override
 	public Boolean AutenticacaoLogin(Funcionario funcionario) {
 		
-		String sql = "select cpf, apelido, senha from funcionarios where cpf = ? or apelido = ?";
+		String sql = "select cpf, usuario, senha from funcionarios where cpf = ? or usuario = ?";
+		
+		boolean autenticacao = false;
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setString(1, funcionario.getCpf());
-			prepared.setString(2, funcionario.getApelido());
+			prepared.setString(2, funcionario.getUsuario());
 			
 			resultSet = prepared.executeQuery();
 			
 			if(resultSet.next()) {
 				
-				if(resultSet.getString("apelido").equals(funcionario.getApelido()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
+				if(resultSet.getString("usuario").equals(funcionario.getUsuario()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
 					
-					return true;
+					autenticacao = true;
 				}
 				else if(resultSet.getString("cpf").equals(funcionario.getCpf()) && resultSet.getString("senha").equals(funcionario.getSenha())) {
 					
-					return true;
-				}
-				else {
-					
-					return false;
+					autenticacao = true;
 				}
 			}
 			
-			return false;
+			return autenticacao;
 		}
 		catch(SQLException e) {
+
 			throw new DBExcecao(e.getMessage());
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 }

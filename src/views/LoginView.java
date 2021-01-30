@@ -24,6 +24,9 @@ import javax.swing.border.EmptyBorder;
 import model.dao.FabricaDao;
 import model.dao.LoginDao;
 import model.entities.Funcionario;
+import model.util.ModalUtil;
+import views.modal.ModalAlerta;
+import views.modal.enums.ModalAlertaEnum;
 
 public class LoginView extends JFrame {
 
@@ -87,11 +90,11 @@ public class LoginView extends JFrame {
 		contentPane.add(panelImagem);
 		panelImagem.setLayout(null);
 		
-		JLabel lblImagem = new JLabel("");
+		JLabel lblImagem = new JLabel();
+		lblImagem.setIcon(new ImageIcon(getClass().getResource("/imagens/login.gif")));
 		lblImagem.setIconTextGap(2);
 		lblImagem.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblImagem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImagem.setIcon(new ImageIcon(LoginView.class.getResource("/imagens/login.gif")));
 		lblImagem.setBounds(0, 0, 725, 600);
 		panelImagem.add(lblImagem);
 		
@@ -165,24 +168,26 @@ public class LoginView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				Funcionario funcionario = new Funcionario();
+				funcionario.setUsuario(txtUsuario.getText());
+				funcionario.setSenha(String.valueOf(ptxtSenha.getPassword()));
+				
 				LoginDao loginDao = FabricaDao.createLoginDao();
 				
-				funcionario.setApelido(txtUsuario.getText());
-				funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
-				
-				Boolean autenticacao = loginDao.AutenticacaoLogin(funcionario);
-				
-				if(autenticacao.booleanValue() == true) {
+				if(loginDao.AutenticacaoLogin(funcionario)) {
 					
-					MainView frame = new MainView();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-					
+					MainView.main(null);
 					dispose();
 				}
 				else {
 					
-					System.out.println("O usuário ou a senha digitada não confere, por favor verifique o que foi digitado!");
+					txtUsuario.setText("");
+					ptxtSenha.setText("");
+					
+					ModalAlerta modalAlerta = new ModalAlerta("O seu usuário ou senha está incorreto!", ModalAlertaEnum.ALERTA);
+					
+					ModalUtil.MovimentacaoModal(modalAlerta);
+					modalAlerta.setLocationRelativeTo(null);
+					modalAlerta.setVisible(true);
 				}
 			}
 		});

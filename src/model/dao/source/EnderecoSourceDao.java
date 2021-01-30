@@ -1,5 +1,6 @@
 package model.dao.source;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,11 +9,12 @@ import java.util.List;
 
 import DB.DBConexao;
 import DB.DBExcecao;
-import model.dao.EnderecosDao;
+import model.dao.EnderecoDao;
 import model.entities.Endereco;
 
-public class EnderecosSourceDao implements EnderecosDao{
+public class EnderecoSourceDao implements EnderecoDao{
 
+	private Connection con;
 	private PreparedStatement prepared;
 	private ResultSet resultSet;
 	private String sql;
@@ -20,58 +22,88 @@ public class EnderecosSourceDao implements EnderecosDao{
 	@Override
 	public void inserir(Endereco enderecos) {
 
-		sql = "insert into enderecos(endereco, numero, bairro, complemento, cep, enderecoEntrega, idCliente) values(?, ?, ?, ?, ?, ?, ?)";
+		sql = "insert into enderecos(endereco, numero, bairro, complemento, cep, cidade, estado, enderecoEntrega, idCliente) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setString(1, enderecos.getEndereco());
-			prepared.setInt(2, enderecos.getNumero());
+			prepared.setString(2, enderecos.getNumero());
 			prepared.setString(3, enderecos.getBairro());
-			prepared.setString(4,  enderecos.getComplemento());
-			prepared.setInt(5, enderecos.getCep());
-			prepared.setString(6, enderecos.getEnderecoEntrega());
-			prepared.setInt(7, enderecos.getIdClientes().getId());
+			prepared.setString(4, enderecos.getComplemento());
+			prepared.setString(5, enderecos.getCep());
+			prepared.setString(6, enderecos.getCidade());
+			prepared.setString(7, enderecos.getEstado());
+			prepared.setString(8, enderecos.getEnderecoEntrega());
+			prepared.setInt(9, enderecos.getIdClientes().getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch (SQLException e) {
-			throw new DBExcecao(e.getMessage());
+
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
 	@Override
 	public void alterar(Endereco enderecos) {
 
-		sql = "update enderecos set endereco = ?, numero = ?, bairro = ?, complemento = ?, cep = ?, enderecoEntrega = ? where id = ?";
+		sql = "update enderecos set endereco = ?, numero = ?, bairro = ?, complemento = ?, cep = ?, cidade = ?, estado = ?, enderecoEntrega = ? where id = ?";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setString(1, enderecos.getEndereco());
-			prepared.setInt(2, enderecos.getNumero());
+			prepared.setString(2, enderecos.getNumero());
 			prepared.setString(3, enderecos.getBairro());
 			prepared.setString(4,  enderecos.getComplemento());
-			prepared.setInt(5, enderecos.getCep());
-			prepared.setString(6, enderecos.getEnderecoEntrega());
-			prepared.setInt(7, enderecos.getId());
+			prepared.setString(5, enderecos.getCep());
+			prepared.setString(6, enderecos.getCidade());
+			prepared.setString(7, enderecos.getEstado());
+			prepared.setString(8, enderecos.getEnderecoEntrega());
+			prepared.setInt(9, enderecos.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch (SQLException e) {
-			throw new DBExcecao(e.getMessage());
+
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -82,19 +114,32 @@ public class EnderecosSourceDao implements EnderecosDao{
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setInt(1, enderecos.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch (SQLException e) {
-			throw new DBExcecao(e.getMessage());
+
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -107,7 +152,8 @@ public class EnderecosSourceDao implements EnderecosDao{
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setInt(1, id);
 			
@@ -119,10 +165,12 @@ public class EnderecosSourceDao implements EnderecosDao{
 				
 				endereco.setId(resultSet.getInt("id"));
 				endereco.setEndereco(resultSet.getString("endereco"));
-				endereco.setNumero(resultSet.getInt("numero"));
+				endereco.setNumero(resultSet.getString("numero"));
 				endereco.setBairro(resultSet.getString("bairro"));
 				endereco.setComplemento(resultSet.getString("complemento"));
-				endereco.setCep(resultSet.getInt("cep"));
+				endereco.setCep(resultSet.getString("cep"));
+				endereco.setCidade(resultSet.getString("cidade"));
+				endereco.setEstado(resultSet.getString("estado"));
 				endereco.setEnderecoEntrega(resultSet.getString("enderecoEntrega"));
 				
 				lista.add(endereco);
@@ -131,32 +179,36 @@ public class EnderecosSourceDao implements EnderecosDao{
 			return lista;
 		}
 		catch(SQLException e) {
+
 			throw new DBExcecao(e.getMessage());
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 
 	@Override
 	public Boolean localizarEndereco(Integer id) {
 
+		boolean localizacao = false;
+		
 		sql = "select * from enderecos where id = ?";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setInt(1, id);
 			
 			resultSet = prepared.executeQuery();
 			
-			if(resultSet.next()) {
-				
-				return true;
-			}
+			if(resultSet.next()) localizacao = true;
+			
+			return localizacao;
 		}
 		catch(SQLException e) {
 			
@@ -166,8 +218,7 @@ public class EnderecosSourceDao implements EnderecosDao{
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
-		
-		return false;
 	}
 }

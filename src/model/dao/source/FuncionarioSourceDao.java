@@ -1,5 +1,6 @@
 package model.dao.source;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,31 +11,35 @@ import java.util.List;
 
 import DB.DBConexao;
 import DB.DBExcecao;
-import model.dao.FuncionariosDao;
+import model.dao.FuncionarioDao;
 import model.entities.Funcionario;
 
-public class FuncionariosSourceDao implements FuncionariosDao {
+public class FuncionarioSourceDao implements FuncionarioDao {
 
+	private Connection con;
 	private Statement statement;
 	private PreparedStatement prepared;
 	private ResultSet resultSet;
 	private String sql;
-	private Funcionario funcionarios;
+	private Funcionario funcionario;
 	
 	@Override
 	public Integer inserir(Funcionario funcionarios) {
 		
-		sql = "insert into funcionarios(nome, email, dataNascimento, cpf, apelido, senha, administrador) values(?, ?, ?, ?, ?, ?, ?)";
+		int id = 0;
+		
+		sql = "insert into funcionarios(nome, email, dataNascimento, cpf, usuario, senha, administrador) values(?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			prepared.setString(1, funcionarios.getNome());
 			prepared.setString(2, funcionarios.getEmail());
 			prepared.setDate(3, new Date(funcionarios.getDataNascimento().getTime()));
 			prepared.setString(4, funcionarios.getCpf());
-			prepared.setString(5, funcionarios.getApelido());
+			prepared.setString(5, funcionarios.getUsuario());
 			prepared.setString(6, funcionarios.getSenha());
 			prepared.setString(7, funcionarios.getAdministrador());
 			
@@ -43,48 +48,72 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 			resultSet = prepared.getGeneratedKeys();
 			
 			if(resultSet.next()) {
-				return resultSet.getInt(1);
+				
+				id = resultSet.getInt(1);
 			}
 			
-			return 0;
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
+		
+		return id;
 	}
 
 	@Override
 	public void alterar(Funcionario funcionarios) {
 
-		sql = "update funcionarios set nome = ?, email = ?, dataNascimento = ?, cpf = ?, apelido = ?, senha = ?, administrador = ? where id = ?";
+		sql = "update funcionarios set nome = ?, email = ?, dataNascimento = ?, cpf = ?, usuario = ?, senha = ?, administrador = ? where id = ?";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setString(1, funcionarios.getNome());
 			prepared.setString(2, funcionarios.getEmail());
 			prepared.setDate(3, new Date(funcionarios.getDataNascimento().getTime()));
 			prepared.setString(4, funcionarios.getCpf());
-			prepared.setString(5, funcionarios.getApelido());
+			prepared.setString(5, funcionarios.getUsuario());
 			prepared.setString(6, funcionarios.getSenha());
 			prepared.setString(7, funcionarios.getAdministrador());
 			prepared.setInt(8, funcionarios.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -95,19 +124,31 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
 			
 			prepared.setInt(1, funcionarios.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -118,26 +159,28 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql);
+			
 			prepared.setInt(1, id);
 			
 			resultSet = prepared.executeQuery(sql);
 			
 			if(resultSet.next()) {
 				
-				funcionarios = new Funcionario();
+				funcionario = new Funcionario();
 				
-				funcionarios.setId(resultSet.getInt("id"));
-				funcionarios.setNome(resultSet.getString("nome"));
-				funcionarios.setEmail(resultSet.getString("email"));
-				funcionarios.setDataNascimento(resultSet.getDate("dataNascimento"));
-				funcionarios.setCpf(resultSet.getString("cpf"));
-				funcionarios.setApelido(resultSet.getString("apelido"));
-				funcionarios.setSenha(resultSet.getString("senha"));
-				funcionarios.setAdministrador(resultSet.getString("administrador"));
+				funcionario.setId(resultSet.getInt("id"));
+				funcionario.setNome(resultSet.getString("nome"));
+				funcionario.setEmail(resultSet.getString("email"));
+				funcionario.setDataNascimento(resultSet.getDate("dataNascimento"));
+				funcionario.setCpf(resultSet.getString("cpf"));
+				funcionario.setUsuario(resultSet.getString("usuario"));
+				funcionario.setSenha(resultSet.getString("senha"));
+				funcionario.setAdministrador(resultSet.getString("administrador"));
 			}
 			
-			return funcionarios;
+			return funcionario;
 		}
 		catch(SQLException e) {
 			
@@ -147,13 +190,14 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 
 	@Override
 	public List<Funcionario> listarTodos() {
 
-		List<Funcionario> list = new ArrayList<>();
+		List<Funcionario> lista = new ArrayList<>();
 		
 		sql = "select * from funcionarios";
 		
@@ -164,29 +208,31 @@ public class FuncionariosSourceDao implements FuncionariosDao {
 			
 			while(resultSet.next()) {
 				
-				funcionarios = new Funcionario();
+				funcionario = new Funcionario();
 				
-				funcionarios.setId(resultSet.getInt("id"));
-				funcionarios.setNome(resultSet.getString("nome"));
-				funcionarios.setEmail(resultSet.getString("email"));
-				funcionarios.setDataNascimento(resultSet.getDate("dataNascimento"));
-				funcionarios.setCpf(resultSet.getString("cpf"));
-				funcionarios.setApelido(resultSet.getString("apelido"));
-				funcionarios.setSenha(resultSet.getString("senha"));
-				funcionarios.setAdministrador(resultSet.getString("administrador"));
+				funcionario.setId(resultSet.getInt("id"));
+				funcionario.setNome(resultSet.getString("nome"));
+				funcionario.setEmail(resultSet.getString("email"));
+				funcionario.setDataNascimento(resultSet.getDate("dataNascimento"));
+				funcionario.setCpf(resultSet.getString("cpf"));
+				funcionario.setUsuario(resultSet.getString("usuario"));
+				funcionario.setSenha(resultSet.getString("senha"));
+				funcionario.setAdministrador(resultSet.getString("administrador"));
 				
-				list.add(funcionarios);
+				lista.add(funcionario);
 			}
 			
-			return list;
+			return lista;
 		}
 		catch(SQLException e) {
+
 			throw new DBExcecao(e.getMessage());
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 }

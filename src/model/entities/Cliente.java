@@ -75,4 +75,18 @@ public class Cliente {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("<html>");
+		sb.append("<font style='font-size: 11px;'>");
+		sb.append("<p>" + nome + "</p>");
+		sb.append("</font>");
+		sb.append("</html>");
+		
+		return sb.toString();
+	}
 }

@@ -46,12 +46,12 @@ public abstract class TelaInternaCustom extends JInternalFrame {
 		getContentPane().add(jifPanelTopo, BorderLayout.NORTH);
 		
 		JButton btnExit = new JButton("X");
-		btnExit.setContentAreaFilled(false);
 		btnExit.setBorderPainted(false);
 		btnExit.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnExit.setBackground(Color.RED);
 			}
 
@@ -62,7 +62,7 @@ public abstract class TelaInternaCustom extends JInternalFrame {
 			}
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				
 				dispose();
 			}

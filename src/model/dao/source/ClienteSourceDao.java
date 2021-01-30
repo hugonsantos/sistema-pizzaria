@@ -1,5 +1,6 @@
 package model.dao.source;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,26 +10,29 @@ import java.util.List;
 
 import DB.DBConexao;
 import DB.DBExcecao;
-import model.dao.ClientesDao;
+import model.dao.ClienteDao;
 import model.entities.Cliente;
 
-public class ClientesSourceDao implements ClientesDao{
+public class ClienteSourceDao implements ClienteDao{
 	
+	private Connection con;
 	private Statement statement;
 	private PreparedStatement prepared;
 	private ResultSet resultSet;
 	private String sql;
-	private Cliente clientes;
+	private Cliente cliente;
 
 	@Override
 	public Integer inserir(Cliente clientes) {
 
 		int id = 0;
+		
 		sql = "insert into clientes(nome, genero, cpf) values(?, ?, ?)";
 		
 		try {
 			
-			prepared = DBConexao.connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			con = DBConexao.connection();
+			prepared = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			prepared.setString(1, clientes.getNome());
 			prepared.setString(2, clientes.getGenero());
@@ -42,17 +46,28 @@ public class ClientesSourceDao implements ClientesDao{
 				id = resultSet.getInt(1);
 			}
 			
-			return id;
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
+		
+		return id;
 	}
 
 	@Override
@@ -70,14 +85,25 @@ public class ClientesSourceDao implements ClientesDao{
 			prepared.setInt(4, clientes.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -93,14 +119,25 @@ public class ClientesSourceDao implements ClientesDao{
 			prepared.setInt(1, clientes.getId());
 			
 			prepared.executeUpdate();
+			
+			con.commit();
 		}
 		catch(SQLException e) {
 			
-			throw new DBExcecao(e.getMessage());
+			try {
+				
+				con.rollback();
+				throw new DBExcecao(e.getMessage());
+			}
+			catch (SQLException e1) {
+				
+				e1.printStackTrace();
+			}
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -119,14 +156,14 @@ public class ClientesSourceDao implements ClientesDao{
 			
 			while(resultSet.next()) {
 				
-				clientes = new Cliente();
+				cliente = new Cliente();
 				
-				clientes.setId(resultSet.getInt("id"));
-				clientes.setNome(resultSet.getString("nome"));
-				clientes.setGenero(resultSet.getString("genero"));
-				clientes.setCpf(resultSet.getString("cpf"));
+				cliente.setId(resultSet.getInt("id"));
+				cliente.setNome(resultSet.getString("nome"));
+				cliente.setGenero(resultSet.getString("genero"));
+				cliente.setCpf(resultSet.getString("cpf"));
 				
-				lista.add(clientes);
+				lista.add(cliente);
 			}
 			
 			return lista;
@@ -139,6 +176,7 @@ public class ClientesSourceDao implements ClientesDao{
 			
 			DBConexao.closeStatment(statement);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 
@@ -157,23 +195,25 @@ public class ClientesSourceDao implements ClientesDao{
 			
 			if(resultSet.next()) {
 				
-				clientes = new Cliente();
+				cliente = new Cliente();
 				
-				clientes.setId(resultSet.getInt("id"));
-				clientes.setNome(resultSet.getString("nome"));
-				clientes.setGenero(resultSet.getString("genero"));
-				clientes.setCpf(resultSet.getString("cpf"));
+				cliente.setId(resultSet.getInt("id"));
+				cliente.setNome(resultSet.getString("nome"));
+				cliente.setGenero(resultSet.getString("genero"));
+				cliente.setCpf(resultSet.getString("cpf"));
 			}
 			
-			return clientes;
+			return cliente;
 		}
 		catch (SQLException e) {
+
 			throw new DBExcecao(e.getMessage());
 		}
 		finally {
 			
 			DBConexao.closeStatment(prepared);
 			DBConexao.closeResultSet(resultSet);
+			DBConexao.closeConnection(con);
 		}
 	}
 }

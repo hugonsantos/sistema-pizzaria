@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import model.dao.FabricaDao;
-import model.dao.FuncionariosDao;
+import model.dao.FuncionarioDao;
 import model.entities.Funcionario;
 
 public final class FuncionariosTableModel extends AbstractTableModel{
@@ -15,9 +15,9 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private String[] colunas = {"Id", "Nome", "Email", "Data de Nascimento", "CPF", "Apelido", "Senha", "Administrador"};
+	private String[] colunas = {"Id", "Nome", "Email", "Data de Nascimento", "CPF", "Usuário", "Administrador"};
 	
-	private FuncionariosDao funcionariosDao = FabricaDao.createFuncionariosDao();
+	private FuncionarioDao funcionariosDao = FabricaDao.createFuncionarioDao();
 	private List<Funcionario> list = funcionariosDao.listarTodos();
 	
 	@Override
@@ -49,8 +49,6 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 			return colunas[5];
 		case 6:
 			return colunas[6];
-		case 7:
-			return colunas[7];
 		default:
 			return "";
 		}
@@ -74,10 +72,8 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 		case 4:
 			return funcionarios.getCpf();
 		case 5:
-			return funcionarios.getApelido();
+			return funcionarios.getUsuario();
 		case 6:
-			return funcionarios.getSenha();
-		case 7:
 			return funcionarios.getAdministrador();
 		default:
 			return "";
@@ -104,7 +100,7 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 		list.remove(funcionarios);
 	}
 	
-	public Funcionario capturarFuncionarios(Integer linha) {
+	public Funcionario capturarFuncionario(Integer linha) {
 		
 		Funcionario funcionarios = list.get(linha);
 		return funcionarios;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.entities.Cliente;
 
-public interface ClientesDao {
+public interface ClienteDao {
 
 	public Integer inserir(Cliente clientes);
 	public void alterar(Cliente clientes);

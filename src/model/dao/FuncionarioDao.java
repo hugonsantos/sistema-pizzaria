@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.entities.Funcionario;
 
-public interface FuncionariosDao {
+public interface FuncionarioDao {
 
 	public Integer inserir(Funcionario funcionarios);
 	public void alterar(Funcionario funcionarios);

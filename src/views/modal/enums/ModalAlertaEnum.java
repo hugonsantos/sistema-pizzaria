@@ -7,7 +7,7 @@ public enum ModalAlertaEnum {
 	ERRO(3);
 
 	private final Integer tipo;
-	
+
 	ModalAlertaEnum(int tipo) {
 		this.tipo = tipo;
 	}

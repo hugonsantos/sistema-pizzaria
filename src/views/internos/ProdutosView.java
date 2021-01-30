@@ -19,17 +19,24 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
+import model.entities.Produto;
 import model.table.ProdutosTableModel;
 import model.util.ModalUtil;
 import model.util.TableModelUtil;
+import views.modal.ModalAlerta;
+import views.modal.ModalDeletar;
 import views.modal.ModalProdutos;
+import views.modal.enums.ModalAlertaEnum;
 
 public class ProdutosView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
 	private JTable tableProdutos;
 	
+	private Produto produto;
+	
 	private ModalProdutos modalProdutos;
+	private ModalAlerta modalAlerta;
 	
 	private ProdutosTableModel produtosTableModel = new ProdutosTableModel();
 
@@ -80,6 +87,11 @@ public class ProdutosView extends TelaInternaCustom {
 		tableProdutos.setBorder(null);
 		tableProdutos.setShowVerticalLines(false);
 		tableProdutos.setFocusable(false);
+		tableProdutos.getColumnModel().getColumn(0).setPreferredWidth(10);
+		tableProdutos.getColumnModel().getColumn(1).setPreferredWidth(300);
+		tableProdutos.getColumnModel().getColumn(2).setPreferredWidth(600);
+		tableProdutos.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tableProdutos.getColumnModel().getColumn(6).setPreferredWidth(100);
 		TableModelUtil.customizarTable(tableProdutos.getTableHeader());
 		panelListaProdutos.add(tableProdutos);
 		
@@ -141,6 +153,16 @@ public class ProdutosView extends TelaInternaCustom {
 					ModalUtil.MovimentacaoModal(modalProdutos);
 					modalProdutos.setLocationRelativeTo(null);
 					modalProdutos.setVisible(true);
+					
+					tableProdutos.clearSelection();
+				}
+				else {
+					
+					modalAlerta = new ModalAlerta("Primeiro você deve selecionar um produto na tabela para editar!", ModalAlertaEnum.ALERTA);
+					
+					ModalUtil.MovimentacaoModal(modalAlerta);
+					modalAlerta.setLocationRelativeTo(null);
+					modalAlerta.setVisible(true);
 				}
 			}
 		});
@@ -171,6 +193,34 @@ public class ProdutosView extends TelaInternaCustom {
 		panelAcoes.add(btnEditar);
 		
 		JButton btnDeletar = new JButton("Deletar");
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(tableProdutos.getSelectedRow() != -1) {
+					
+					ModalDeletar modalDeletar = new ModalDeletar("Realmente deseja deletar esse produto?");
+					ModalUtil.MovimentacaoModal(modalDeletar);
+					modalDeletar.setLocationRelativeTo(null);
+					modalDeletar.setVisible(true);
+					
+					if(modalDeletar.confirmacao()) {
+						
+						produto = produtosTableModel.capturarProduto(tableProdutos.getSelectedRow());
+						produtosTableModel.deletarProduto(produto);
+					}
+					
+					tableProdutos.clearSelection();
+				}
+				else {
+					
+					modalAlerta = new ModalAlerta("Primeiro você deve selecionar um produto na tabela para deletar!", ModalAlertaEnum.ALERTA);
+					
+					ModalUtil.MovimentacaoModal(modalAlerta);
+					modalAlerta.setLocationRelativeTo(null);
+					modalAlerta.setVisible(true);
+				}
+			}
+		});
 		btnDeletar.setBorderPainted(false);
 		btnDeletar.addMouseListener(new MouseAdapter() {
 			

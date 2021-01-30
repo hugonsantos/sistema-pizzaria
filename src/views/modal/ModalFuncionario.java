@@ -204,7 +204,7 @@ public final class ModalFuncionario extends ModalCustom {
 						funcionario.setEmail(txtEmail.getText());
 						funcionario.setDataNascimento(new Date(sdf.parse(txtDataNascimento.getText()).getTime()));
 						funcionario.setCpf(txtCpf.getText());
-						funcionario.setApelido(txtApelido.getText());
+						funcionario.setUsuario(txtApelido.getText());
 						funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
 						if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
 						
@@ -216,7 +216,7 @@ public final class ModalFuncionario extends ModalCustom {
 						funcionario.setEmail(txtEmail.getText());
 						funcionario.setDataNascimento(new Date(sdf.parse(txtDataNascimento.getText()).getTime()));
 						funcionario.setCpf(txtCpf.getText());
-						funcionario.setApelido(txtApelido.getText());
+						funcionario.setUsuario(txtApelido.getText());
 						funcionario.setSenha(String.copyValueOf(ptxtSenha.getPassword()));
 						if(rdbtnSim.isSelected()) funcionario.setAdministrador(rdbtnSim.getText()); else funcionario.setAdministrador(rdbtnNao.getText());
 						
@@ -308,7 +308,7 @@ public final class ModalFuncionario extends ModalCustom {
 		txtEmail.setText(funcionario.getEmail());
 		txtDataNascimento.setText(sdf.format(funcionario.getDataNascimento()));
 		txtCpf.setText(funcionario.getCpf());
-		txtApelido.setText(funcionario.getApelido());
+		txtApelido.setText(funcionario.getUsuario());
 		ptxtSenha.setText(funcionario.getSenha());
 		if(funcionario.getAdministrador().equals("Sim")) rdbtnSim.setSelected(true); else rdbtnNao.setSelected(true);
 	}

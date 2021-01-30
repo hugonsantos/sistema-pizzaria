@@ -2,11 +2,9 @@ package views.internos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -17,10 +15,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import views.internos.produtos.LanchesView;
@@ -34,6 +30,15 @@ public class VenderView extends TelaInternaCustom {
 	private PizzasView pizzasView;
 	private LanchesView lanchesView;
 	private final ButtonGroup grupoBotoesLaterais = new ButtonGroup();
+	
+	private JButton btnPizzas;
+	private JButton btnPorcoes;
+	private JButton btnLanches;
+	private JButton btnEsfihas;
+	private JButton btnFogazzas;
+	private JButton btnPasteis;
+	private JButton btnSobremesas;
+	private JButton btnBebidas;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,42 +55,6 @@ public class VenderView extends TelaInternaCustom {
 
 	public VenderView() {
 		
-		JPanel panelCarrinho = new JPanel();
-		panelCarrinho.setPreferredSize(new Dimension(250, 55));
-		panelCarrinho.setBackground(Color.GRAY);
-		this.getContentPane().add(panelCarrinho, BorderLayout.EAST);
-		panelCarrinho.setLayout(new BorderLayout(0, 0));
-		
-		JLabel lblCarrinho = new JLabel("Carrinho");
-		lblCarrinho.setBorder(new EmptyBorder(8, 0, 8, 0));
-		lblCarrinho.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCarrinho.setFont(new Font("Leelawadee", Font.BOLD, 22));
-		lblCarrinho.setForeground(Color.WHITE);
-		panelCarrinho.add(lblCarrinho, BorderLayout.NORTH);
-		
-		JPanel panelDetalhesPedido = new JPanel();
-		panelCarrinho.add(panelDetalhesPedido, BorderLayout.CENTER);
-		
-		JPanel panelButtonFinalizar = new JPanel();
-		panelButtonFinalizar.setBackground(Color.GRAY);
-		panelButtonFinalizar.setPreferredSize(new Dimension(150, 70));
-		panelCarrinho.add(panelButtonFinalizar, BorderLayout.SOUTH);
-		panelButtonFinalizar.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JButton btnFinalizarPedido = new JButton("Finalizar pedido");
-		btnFinalizarPedido.setForeground(Color.WHITE);
-		btnFinalizarPedido.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		btnFinalizarPedido.setContentAreaFilled(false);
-		btnFinalizarPedido.setBackground(Color.WHITE);
-		btnFinalizarPedido.setBorderPainted(false);
-		btnFinalizarPedido.setFocusable(false);
-		btnFinalizarPedido.setPreferredSize(new Dimension(150, 50));
-		btnFinalizarPedido.setBorder(null);
-		btnFinalizarPedido.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnFinalizarPedido.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnFinalizarPedido.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panelButtonFinalizar.add(btnFinalizarPedido, BorderLayout.CENTER);
-		
 		JPanel panelProdutos = new JPanel();
 		getContentPane().add(panelProdutos, BorderLayout.CENTER);
 		panelProdutos.setLayout(new BorderLayout(0, 0));
@@ -95,23 +64,32 @@ public class VenderView extends TelaInternaCustom {
 		panelLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		panelLateral.setPreferredSize(new Dimension(120, 0));
 		panelLateral.setBackground(Color.GRAY);
-		panelLateral.setLayout(new GridLayout(5, 1));
+		panelLateral.setLayout(new GridLayout(9, 1));
 		
 		JScrollPane scrollPane = new JScrollPane(panelLateral);
 		scrollPane.setBorder(null);
 		getContentPane().add(scrollPane, BorderLayout.WEST);
 		
-		JButton btnPizzas = new JButton("Pizzas");
+		btnPizzas = new JButton("Pizzas");
 		btnPizzas.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				panelProdutos.removeAll();
 				
-				if(pizzasView == null) {
-					pizzasView = new PizzasView();
-				}
+				pizzasView = new PizzasView();
+				
 				panelProdutos.add(pizzasView);
 				pizzasView.setVisible(true);
+				
+				btnPizzas.setForeground(Color.BLACK);
+				btnPizzas.setBackground(Color.WHITE);
+				
+				btnLanches.setForeground(Color.WHITE);
+				btnLanches.setBackground(Color.GRAY);
+				
+				
 				
 				panelProdutos.repaint();
 				panelProdutos.validate();
@@ -145,8 +123,44 @@ public class VenderView extends TelaInternaCustom {
 		btnPizzas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnPizzas);
 		
-		JButton btnLanches = new JButton("Lanches");
+		btnPorcoes = new JButton("Porções");
+		btnPorcoes.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				btnPorcoes.setForeground(Color.BLACK);
+				btnPorcoes.setBackground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				btnPorcoes.setForeground(Color.WHITE);
+				btnPorcoes.setBackground(Color.GRAY);
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				
+			}
+		});
+		grupoBotoesLaterais.add(btnPorcoes);
+		btnPorcoes.setBorderPainted(false);
+		btnPorcoes.setForeground(Color.WHITE);
+		btnPorcoes.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		btnPorcoes.setBackground(Color.GRAY);
+		btnPorcoes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPorcoes.setFocusable(false);
+		btnPorcoes.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnPorcoes.setMargin(new Insets(0, 0, 0, 0));
+		panelLateral.add(btnPorcoes);
+		
+		btnLanches = new JButton("Lanches");
 		btnLanches.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				panelProdutos.removeAll();
@@ -188,41 +202,151 @@ public class VenderView extends TelaInternaCustom {
 		btnLanches.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnLanches);
 		
-		JButton btnPorcoes = new JButton("Porções");
-		btnPorcoes.addMouseListener(new MouseAdapter() {
+		btnEsfihas = new JButton("Esfihas");
+		btnEsfihas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnEsfihas.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				
-				btnPorcoes.setForeground(Color.BLACK);
-				btnPorcoes.setBackground(Color.WHITE);
+				btnEsfihas.setForeground(Color.BLACK);
+				btnEsfihas.setBackground(Color.WHITE);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				
-				btnPorcoes.setForeground(Color.WHITE);
-				btnPorcoes.setBackground(Color.GRAY);
+				btnEsfihas.setForeground(Color.WHITE);
+				btnEsfihas.setBackground(Color.GRAY);
 			}
+		});
+		grupoBotoesLaterais.add(btnEsfihas);
+		btnEsfihas.setBorderPainted(false);
+		btnEsfihas.setForeground(Color.WHITE);
+		btnEsfihas.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		btnEsfihas.setBackground(Color.GRAY);
+		btnEsfihas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnEsfihas.setFocusable(false);
+		btnEsfihas.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnEsfihas.setMargin(new Insets(0, 0, 0, 0));
+		panelLateral.add(btnEsfihas);
+		
+		btnFogazzas = new JButton("Fogazzas");
+		btnFogazzas.addActionListener(new ActionListener() {
 			
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				
 				
 			}
 		});
-		grupoBotoesLaterais.add(btnPorcoes);
-		btnPorcoes.setBorderPainted(false);
-		btnPorcoes.setForeground(Color.WHITE);
-		btnPorcoes.setFont(new Font("Leelawadee", Font.BOLD, 16));
-		btnPorcoes.setBackground(Color.GRAY);
-		btnPorcoes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPorcoes.setFocusable(false);
-		btnPorcoes.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnPorcoes.setMargin(new Insets(0, 0, 0, 0));
-		panelLateral.add(btnPorcoes);
+		btnFogazzas.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				btnFogazzas.setForeground(Color.BLACK);
+				btnFogazzas.setBackground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				btnFogazzas.setForeground(Color.WHITE);
+				btnFogazzas.setBackground(Color.GRAY);
+			}
+		});
+		grupoBotoesLaterais.add(btnFogazzas);
+		btnFogazzas.setBorderPainted(false);
+		btnFogazzas.setForeground(Color.WHITE);
+		btnFogazzas.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		btnFogazzas.setBackground(Color.GRAY);
+		btnFogazzas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnFogazzas.setFocusable(false);
+		btnFogazzas.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnFogazzas.setMargin(new Insets(0, 0, 0, 0));
+		panelLateral.add(btnFogazzas);
 		
-		JButton btnBebidas = new JButton("Bebidas");
+		btnPasteis = new JButton("Pasteis");
+		btnPasteis.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnPasteis.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				btnPasteis.setForeground(Color.BLACK);
+				btnPasteis.setBackground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				btnPasteis.setForeground(Color.WHITE);
+				btnPasteis.setBackground(Color.GRAY);
+			}
+		});
+		grupoBotoesLaterais.add(btnPasteis);
+		btnPasteis.setBorderPainted(false);
+		btnPasteis.setForeground(Color.WHITE);
+		btnPasteis.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		btnPasteis.setBackground(Color.GRAY);
+		btnPasteis.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPasteis.setFocusable(false);
+		btnPasteis.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnPasteis.setMargin(new Insets(0, 0, 0, 0));
+		panelLateral.add(btnPasteis);
+		
+		btnSobremesas = new JButton("Sobremesas");
+		btnSobremesas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnSobremesas.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				btnSobremesas.setForeground(Color.BLACK);
+				btnSobremesas.setBackground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				btnSobremesas.setForeground(Color.WHITE);
+				btnSobremesas.setBackground(Color.GRAY);
+			}
+		});
+		grupoBotoesLaterais.add(btnSobremesas);
+		btnSobremesas.setBorderPainted(false);
+		btnSobremesas.setForeground(Color.WHITE);
+		btnSobremesas.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		btnSobremesas.setBackground(Color.GRAY);
+		btnSobremesas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSobremesas.setFocusable(false);
+		btnSobremesas.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnSobremesas.setMargin(new Insets(0, 0, 0, 0));
+		panelLateral.add(btnSobremesas);
+		
+		btnBebidas = new JButton("Bebidas");
 		btnBebidas.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -249,5 +373,10 @@ public class VenderView extends TelaInternaCustom {
 		btnBebidas.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnBebidas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnBebidas);
+		
+		pizzasView = new PizzasView();
+		
+		panelProdutos.add(pizzasView);
+		pizzasView.setVisible(true);
 	}
 }
