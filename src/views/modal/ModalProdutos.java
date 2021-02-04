@@ -7,15 +7,20 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +30,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import model.dao.FabricaDao;
 import model.dao.ProdutoDao;
@@ -33,24 +43,37 @@ import model.entities.Produto;
 import model.table.ProdutosTableModel;
 import model.util.ImagensUtil;
 import model.util.ModalUtil;
+import views.CarregamentoView;
 import views.modal.enums.ModalAlertaEnum;
 
 public final class ModalProdutos extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField txtCaminhoImagem;
+	private ModalAlerta modalAlerta;
 	private JFileChooser jfcSelecaoImagem;
+	private File fImagem;
 	private JLabel lblImagem;
 	private JTextField txtNome;
 	private JTextArea txtDescricao;
 	private JTextField txtValorBroto;
 	private JComboBox<Object> cbxCategoria;
+	
+	private ImageIcon imi;
 			
 	private ProdutoDao produtoDao = FabricaDao.createProdutoDao();
+	SwingWorker<Boolean, Boolean> processamentoWorker;
+	
 	private JTextField txtValorTradicional;
 	private JTextField txtValorGrande;
 	private JTextField txtValorExtraGrande;
+	
+	private String miniaturaBase64;
+	private String extensao = "png";
+	
+	private Boolean imagemSelecionada = false;
+	
+	private CarregamentoView carregamento;
 	
 	public ModalProdutos(ProdutosTableModel produtosTableModel, Produto produto) {
 		
@@ -62,23 +85,11 @@ public final class ModalProdutos extends ModalCustom {
 		panelImagem.setBounds(0, 2, 556, 324);
 		panelDadosProdutos.add(panelImagem);
 		panelImagem.setLayout(null);
-
-		JLabel lblCaminhoImagem = new JLabel("Caminho da imagem:");
-		lblCaminhoImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCaminhoImagem.setBounds(10, 11, 536, 20);
-		panelImagem.add(lblCaminhoImagem);
-
-		txtCaminhoImagem = new JTextField();
-		txtCaminhoImagem.setEnabled(false);
-		txtCaminhoImagem.setSize(new Dimension(0, 60));
-		txtCaminhoImagem.setMinimumSize(new Dimension(7, 60));
-		txtCaminhoImagem.setPreferredSize(new Dimension(0, 60));
-		txtCaminhoImagem.setBounds(10, 40, 536, 36);
-		panelImagem.add(txtCaminhoImagem);
 		
 		lblImagem = new JLabel();
+		lblImagem.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblImagem.setBounds(159, 123, 230, 190);
+		lblImagem.setBounds(107, 63, 350, 250);
 		panelImagem.add(lblImagem);
 		
 		JButton btnSelecionarImagem = new JButton("Selecionar imagem");
@@ -87,45 +98,111 @@ public final class ModalProdutos extends ModalCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				String destino = System.getProperty("user.dir") + "//src//imagens//";
+				jfcSelecaoImagem = new JFileChooser();
 				
-				jfcSelecaoImagem = new JFileChooser(System.getProperty("user.dir"));
 				jfcSelecaoImagem.setApproveButtonText("Selecionar");
 				
 				if(jfcSelecaoImagem.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					
-					File fRemetenteImagem = jfcSelecaoImagem.getSelectedFile();
-					
-					txtCaminhoImagem.setText(fRemetenteImagem.getName());
-					
-					ImageIcon imgProduto = ImagensUtil.redimensionarImagem(new ImageIcon(fRemetenteImagem.getAbsolutePath()), 230, 190);
-					lblImagem.setIcon(imgProduto);
-					
-					try {
+					fImagem = jfcSelecaoImagem.getSelectedFile();
 						
-						File fDestinoImagem = new File(destino + fRemetenteImagem.getName());
+					if(FilenameUtils.getExtension(fImagem.getName()).equals("png") || FilenameUtils.getExtension(fImagem.getName()).equals("jpg") || FilenameUtils.getExtension(fImagem.getName()).equals("jpeg")) {
 						
-						if(Files.notExists(fDestinoImagem.toPath())) {
+						try {
 							
-							Files.copy(fRemetenteImagem.toPath(), fDestinoImagem.toPath());
+							imagemSelecionada = true;
+							
+							new SwingWorker<>() {
+
+								@Override
+								protected Void doInBackground() throws Exception {
+									
+									lblImagem.setIcon(new ImageIcon(getClass().getResource("/imagens/loads.gif")));
+									
+									imi = ImagensUtil.redimensionarImagem(new ImageIcon(fImagem.getAbsolutePath()), 300, 200);
+									lblImagem.setIcon(imi);
+									
+									return null;
+								}
+							}.execute();
+							
+							processamentoWorker = new SwingWorker<>() {
+
+								@Override
+								protected Boolean doInBackground() throws Exception {
+									
+									try {
+										
+										byte[] byteImagem = ImagensUtil.converteInputStream(new FileInputStream(fImagem));
+										
+										/* Criação da miniatura de uma imagem */
+										
+										/* 1° - Transformar a imagem em BufferedImage */
+										BufferedImage bi = ImageIO.read(new ByteArrayInputStream(byteImagem));
+										
+										/* 2° - Pegar o tipo da imagem */
+										int tipo = bi.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bi.getType();
+										
+										/* 3° - Redimensionar a imagem no tamanho desejado e criar imagem em miniatura com o Graphics */
+										BufferedImage redimensionarImagem = new BufferedImage(imi.getIconWidth(), imi.getIconHeight(), tipo);
+										Graphics2D g = redimensionarImagem.createGraphics();
+										g.drawImage(bi, 0, 0, imi.getIconWidth(), imi.getIconHeight(), null);
+										g.dispose();
+										
+										/* 4° - Reescrever a miniatura criada */
+										ByteArrayOutputStream b = new ByteArrayOutputStream();
+										ImageIO.write(redimensionarImagem, "png", b);
+										
+										/* Fim da criação */
+										
+										miniaturaBase64 = Base64.encodeBase64String(b.toByteArray());
+										
+										return true;
+									}
+									catch(IOException ioe) {
+										
+										modalAlerta = new ModalAlerta("Erro ao carregar imagem!", ModalAlertaEnum.ALERTA);
+										
+										ModalUtil.MovimentacaoModal(modalAlerta);
+										modalAlerta.setLocationRelativeTo(null);
+										modalAlerta.setVisible(true);
+										
+										return false;
+									}
+									catch(NullPointerException npe) {
+										
+										modalAlerta = new ModalAlerta("A imagem selecionada está com problema no formato ou corrompida e não pode ser processada!", ModalAlertaEnum.ALERTA);
+										
+										ModalUtil.MovimentacaoModal(modalAlerta);
+										modalAlerta.setLocationRelativeTo(null);
+										modalAlerta.setVisible(true);
+										
+										return false;
+									}
+								}
+							};
+							processamentoWorker.execute();
+						}
+						catch (Exception ex) {
+							
+							ex.printStackTrace();
 						}
 					}
-					catch (IOException e2) {
-
-						e2.printStackTrace();
+					else {
 						
-						ModalAlerta modalAlerta = new ModalAlerta("Erro ao copiar a imagem!", ModalAlertaEnum.ERRO);
-
+						modalAlerta = new ModalAlerta("A imagem selecionada não corresponde aos formatos suportados!", ModalAlertaEnum.ALERTA);
+						
 						ModalUtil.MovimentacaoModal(modalAlerta);
 						modalAlerta.setLocationRelativeTo(null);
 						modalAlerta.setVisible(true);
-						
 					}
 				}
+				
+				jfcSelecaoImagem = null;
 			}
 		});
 		btnSelecionarImagem.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		btnSelecionarImagem.setBounds(374, 87, 172, 30);
+		btnSelecionarImagem.setBounds(374, 11, 172, 30);
 		panelImagem.add(btnSelecionarImagem);
 
 		JPanel panelNome = new JPanel();
@@ -251,47 +328,78 @@ public final class ModalProdutos extends ModalCustom {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				if(produto == null) {
+				try {
 					
-					Produto produto = new Produto();
-					
-					produto.setImagem(txtCaminhoImagem.getText());
-					produto.setNome(txtNome.getText());
-					produto.setDescricao(txtDescricao.getText());
-					produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
-					produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
-					produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
-					produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
-					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
-					
-					produtosTableModel.adicionarProduto(produto);
+					new SwingWorker<Void, Void>() {
+
+						@Override
+						protected Void doInBackground() throws Exception {
+
+							carregamento = new CarregamentoView("Salvando...", Color.DARK_GRAY);
+							carregamento.setVisible(true);
+							
+							if(produto == null) {
+								
+								if(processamentoWorker.get()) {
+									
+									Produto produto = new Produto();
+									
+									produto.setMiniaturaBase64(miniaturaBase64);
+									produto.setExtensao(extensao);
+									produto.setNome(txtNome.getText());
+									produto.setDescricao(txtDescricao.getText());
+									produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
+									produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
+									produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
+									produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
+									produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
+									
+									produtosTableModel.adicionarProduto(produto);
+								}
+							}
+							else {
+								
+								if(imagemSelecionada) {
+									
+									if(processamentoWorker.get()) {
+										
+										produto.setMiniaturaBase64(miniaturaBase64);
+									}
+								}
+								produto.setNome(txtNome.getText());
+								produto.setDescricao(txtDescricao.getText());
+								produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
+								produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
+								produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
+								produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
+								produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
+								
+								produtosTableModel.alterarProduto(produto);
+							}
+							
+							carregamento.close();
+							
+							produtosTableModel.fireTableDataChanged();
+							
+							txtNome.setText("");
+							txtNome.setText("");
+							txtDescricao.setText("");
+							txtValorBroto.setText("");
+							txtValorTradicional.setText("");
+							txtValorGrande.setText("");
+							txtValorExtraGrande.setText("");
+							cbxCategoria.setSelectedIndex(0);
+							
+							dispose();
+							
+							return null;
+						}
+					}.execute();
 				}
-				else {
+				catch (Exception e2) {
 					
-					produto.setImagem(txtCaminhoImagem.getText());
-					produto.setNome(txtNome.getText());
-					produto.setDescricao(txtDescricao.getText());
-					produto.setValorBroto(Double.valueOf(txtValorBroto.getText()));
-					produto.setValorTradicional(Double.valueOf(txtValorTradicional.getText()));
-					produto.setValorGrande(Double.valueOf(txtValorGrande.getText()));
-					produto.setValorExtraGrande(Double.valueOf(txtValorExtraGrande.getText()));
-					produto.setCategoria((Categoria) cbxCategoria.getSelectedItem());
-					
-					produtosTableModel.alterarProduto(produto);
+					e2.printStackTrace();
 				}
-				
-				produtosTableModel.fireTableDataChanged();
-				
-				txtNome.setText("");
-				txtNome.setText("");
-				txtDescricao.setText("");
-				txtValorBroto.setText("");
-				txtValorTradicional.setText("");
-				txtValorGrande.setText("");
-				txtValorExtraGrande.setText("");
-				cbxCategoria.setSelectedIndex(0);
-				
-				dispose();
 			}
 		});
 		btnSalvar.addMouseListener(new MouseAdapter() {
@@ -358,8 +466,10 @@ public final class ModalProdutos extends ModalCustom {
 
 	protected void capturarDados(Produto produto) {
 
-		txtCaminhoImagem.setText(produto.getImagem());
-		lblImagem.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 230, 190));
+		byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
+		miniaturaBase64 = produto.getMiniaturaBase64();
+		
+		lblImagem.setIcon(new ImageIcon(bytesImagem));
 		txtNome.setText(produto.getNome());
 		txtDescricao.setText(produto.getDescricao());
 		txtValorBroto.setText(String.valueOf(produto.getValorBroto()));

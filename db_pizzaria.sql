@@ -12,8 +12,9 @@ create table categorias (
 create table produtos (
 
 	id integer not null auto_increment,
-	imagem varchar(100),
-	nome varchar(60) not null,
+    miniatura longtext,
+    extensao varchar(20),
+	nome varchar(150) not null,
 	descricao varchar(300),
 	valorBroto double(10, 2) not null,
     valorTradicional double(10, 2) not null,

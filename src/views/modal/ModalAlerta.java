@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import model.util.ViewsUtil;
 import views.modal.enums.ModalAlertaEnum;
@@ -34,9 +35,10 @@ public final class ModalAlerta extends ModalCustom {
 		lblIcon.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIcon.setPreferredSize(new Dimension(150, 0));
 		lblIcon.setIcon(new ImageIcon(ModalAlerta.class.getResource(tipoModal(tipo))));
+		lblIcon.setBorder(new EmptyBorder(0, 0, 0, 20));
 		getContentPane().add(lblIcon, BorderLayout.WEST);
 		
-		JLabel lblAlerta = new JLabel(textoAlerta);
+		JLabel lblAlerta = new JLabel("<html><p>" + textoAlerta + "</p></html>");
 		lblAlerta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlerta.setBorder(null);
 		lblAlerta.setFont(new Font("Leelawadee UI", Font.BOLD, 13));

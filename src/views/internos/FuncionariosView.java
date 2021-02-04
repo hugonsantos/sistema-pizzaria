@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import model.entities.Funcionario;
@@ -88,6 +89,9 @@ public class FuncionariosView extends TelaInternaCustom {
 		panelFuncionariosView.add(lblFuncionarios, BorderLayout.NORTH);
 
 		tableFuncionarios = new JTable();
+		tableFuncionarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableFuncionarios.setSelectionForeground(Color.WHITE);
+		tableFuncionarios.setSelectionBackground(Color.GRAY);
 		tableFuncionarios.setModel(funcionariosTableModel);
 		tableFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		tableFuncionarios.setBorder(null);

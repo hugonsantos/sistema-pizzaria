@@ -60,8 +60,8 @@ public class CarrinhoView extends JInternalFrame {
 		bi.setNorthPane(null);
 		
 		JPanel panelCarrinho = new JPanel();
-		panelCarrinho.setMinimumSize(new Dimension(350, 10));
-		panelCarrinho.setPreferredSize(new Dimension(350, 55));
+		panelCarrinho.setMinimumSize(new Dimension(250, 10));
+		panelCarrinho.setPreferredSize(new Dimension(260, 55));
 		panelCarrinho.setBackground(Color.GRAY);
 		this.getContentPane().add(panelCarrinho, BorderLayout.EAST);
 		panelCarrinho.setLayout(new BorderLayout(0, 0));
@@ -77,9 +77,9 @@ public class CarrinhoView extends JInternalFrame {
 		panelDetalhesPedido.setLayout(new BorderLayout());
 		
 		listDetalhesPedido = new JList<>();
-		listDetalhesPedido.setFont(new Font("Leelawadee UI", Font.BOLD, 13));
+		listDetalhesPedido.setFont(new Font("Leelawadee UI", Font.BOLD, 12));
 		listDetalhesPedido.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listDetalhesPedido.setFixedCellWidth(350);
+		listDetalhesPedido.setFixedCellWidth(260);
 		model.addAll(CarrinhoController.buscarTodos());
 		listDetalhesPedido.setModel(model);
 		panelDetalhesPedido.add(listDetalhesPedido, BorderLayout.CENTER);

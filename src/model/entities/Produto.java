@@ -3,7 +3,8 @@ package model.entities;
 public class Produto {
 
 	private Integer id;
-	private String imagem;
+	private String miniaturaBase64;
+	private String extensao;
 	private String nome;
 	private String descricao;
 	private Double valorBroto;
@@ -17,10 +18,11 @@ public class Produto {
 		
 	}
 
-	public Produto(Integer id, String imagem, String nome, String descricao, Double valorBroto, Double valorTradicional, Double valorGrande, Double valorExtraGrande, Categoria categoria) {
+	public Produto(Integer id, String miniaturaBase64, String extensao, String nome, String descricao, Double valorBroto, Double valorTradicional, Double valorGrande, Double valorExtraGrande, Categoria categoria) {
 		
 		this.id = id;
-		this.imagem = imagem;
+		this.miniaturaBase64 = miniaturaBase64;
+		this.extensao = extensao;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.valorBroto = valorBroto;
@@ -38,12 +40,20 @@ public class Produto {
 		this.id = id;
 	}
 
-	public String getImagem() {
-		return imagem;
+	public String getMiniaturaBase64() {
+		return miniaturaBase64;
 	}
 
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
+	public void setMiniaturaBase64(String miniaturaBase64) {
+		this.miniaturaBase64 = miniaturaBase64;
+	}
+
+	public String getExtensao() {
+		return extensao;
+	}
+
+	public void setExtensao(String extensao) {
+		this.extensao = extensao;
 	}
 
 	public String getNome() {

@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import model.util.ImagensUtil;
 import views.internos.ClientesView;
 import views.internos.FuncionariosView;
 import views.internos.ProdutosView;
@@ -146,7 +147,7 @@ public class MainView extends JFrame {
 		panelViewsInternas.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelLateral = new JPanel();
-		panelLateral.setPreferredSize(new Dimension(250, 55));
+		panelLateral.setPreferredSize(new Dimension(200, 55));
 		panelLateral.setBackground(Color.DARK_GRAY);
 		panelLateral.setLayout(new BorderLayout(0, 0));
 
@@ -208,7 +209,7 @@ public class MainView extends JFrame {
 		JLabel lblIconVender = new JLabel("");
 		lblIconVender.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblIconVender.setBorder(null);
-		lblIconVender.setIcon(new ImageIcon(getClass().getResource("/imagens/carrinho-de-compras-64.png")));
+		lblIconVender.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/carrinho-de-compras-64.png")), 48, 48));
 		lblIconVender.setFocusable(false);
 		lblIconVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha1.add(lblIconVender);
@@ -218,7 +219,7 @@ public class MainView extends JFrame {
 		lblVender.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblVender.setForeground(Color.WHITE);
 		lblVender.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblVender.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblVender.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		panelGridLinha1.add(lblVender);
 
 		// Linha 2 do GRID
@@ -263,7 +264,7 @@ public class MainView extends JFrame {
 
 		JLabel lblIconClientes = new JLabel("");
 		lblIconClientes.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblIconClientes.setIcon(new ImageIcon(getClass().getResource("/imagens/cliente-64.png")));
+		lblIconClientes.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/cliente-64.png")), 48, 48));
 		lblIconClientes.setFocusable(false);
 		lblIconClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha2.add(lblIconClientes);
@@ -273,7 +274,7 @@ public class MainView extends JFrame {
 		lblClientes.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblClientes.setForeground(Color.WHITE);
 		lblClientes.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblClientes.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblClientes.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		panelGridLinha2.add(lblClientes);
 
 		// Linha 3 do GRID
@@ -300,7 +301,7 @@ public class MainView extends JFrame {
 		panelGridLinha3.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconRelatorios = new JLabel("");
-		lblIconRelatorios.setIcon(new ImageIcon(getClass().getResource("/imagens/grafico-de-barras-64.png")));
+		lblIconRelatorios.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/grafico-de-barras-64.png")), 48, 48));
 		lblIconRelatorios.setFocusable(false);
 		lblIconRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha3.add(lblIconRelatorios);
@@ -310,7 +311,7 @@ public class MainView extends JFrame {
 		lblRelatorios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblRelatorios.setForeground(Color.WHITE);
 		lblRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblRelatorios.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblRelatorios.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		panelGridLinha3.add(lblRelatorios);
 
 		// Linha 4 do GRID
@@ -354,7 +355,7 @@ public class MainView extends JFrame {
 		panelGridLinha4.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconFuncionarios = new JLabel("");
-		lblIconFuncionarios.setIcon(new ImageIcon(getClass().getResource("/imagens/equipe-64.png")));
+		lblIconFuncionarios.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/equipe-64.png")), 48, 48));
 		lblIconFuncionarios.setFocusable(false);
 		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha4.add(lblIconFuncionarios);
@@ -364,7 +365,7 @@ public class MainView extends JFrame {
 		lblFuncionarios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblFuncionarios.setForeground(Color.WHITE);
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFuncionarios.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblFuncionarios.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		panelGridLinha4.add(lblFuncionarios);
 
 		// Linha 5 do GRID
@@ -408,7 +409,7 @@ public class MainView extends JFrame {
 		panelGridLinha5.setLayout(new GridLayout(1, 2));
 
 		JLabel lblIconProdutos = new JLabel("");
-		lblIconProdutos.setIcon(new ImageIcon(getClass().getResource("/imagens/inventario-64.png")));
+		lblIconProdutos.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/inventario-64.png")), 48, 48));
 		lblIconProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIconProdutos.setFocusable(false);
 		panelGridLinha5.add(lblIconProdutos);
@@ -417,7 +418,7 @@ public class MainView extends JFrame {
 		lblProdutos.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblProdutos.setForeground(Color.WHITE);
-		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 16));
+		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
 		panelGridLinha5.add(lblProdutos);
 		

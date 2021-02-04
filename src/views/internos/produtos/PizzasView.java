@@ -10,12 +10,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -32,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import controllers.CarrinhoController;
 import model.dao.BordaDao;
@@ -102,7 +105,6 @@ public final class PizzasView extends JInternalFrame {
 	private JLabel lblBordaSalgada;
 	private JLabel lblBordaDoce;
 	private JLabel lblObsTresSabores;
-	private JLabel lblMsgObsTresSabores;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -119,16 +121,13 @@ public final class PizzasView extends JInternalFrame {
 
 	public PizzasView() {
 		
-	 	setSize(new Dimension(900, 800));
-	 	setPreferredSize(new Dimension(900, 800));
-	 	setMinimumSize(new Dimension(600, 800));
-		
-		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
 		bi.setNorthPane(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		panelCentro = new JPanel();
+		panelCentro.setAutoscrolls(true);
 		panelCentro.setLayout(new BorderLayout());
 		getContentPane().add(panelCentro, BorderLayout.CENTER);
 		
@@ -187,7 +186,7 @@ public final class PizzasView extends JInternalFrame {
 				doClick();
 			}
 		});
-		checkboxConfigPizza.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		checkboxConfigPizza.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		checkboxConfigPizza.setBounds(10, 459, 451, 38);
 		panelConfigPizza.add(checkboxConfigPizza);
 		
@@ -202,7 +201,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoTamanhos.add(rdbtnBroto);
 		rdbtnBroto.setFocusable(false);
 		rdbtnBroto.setBorder(new EmptyBorder(0, 0, 0, 60));
-		rdbtnBroto.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnBroto.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelTamanho.add(rdbtnBroto);
 		
 		rdbtnTradicional = new JRadioButton("Tradicional");
@@ -210,7 +209,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoTamanhos.add(rdbtnTradicional);
 		rdbtnTradicional.setFocusable(false);
 		rdbtnTradicional.setBorder(new EmptyBorder(0, 60, 0, 60));
-		rdbtnTradicional.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnTradicional.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelTamanho.add(rdbtnTradicional);
 		
 		rdbtnGrande = new JRadioButton("Grande");
@@ -218,7 +217,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoTamanhos.add(rdbtnGrande);
 		rdbtnGrande.setFocusable(false);
 		rdbtnGrande.setBorder(new EmptyBorder(0, 60, 0, 0));
-		rdbtnGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelTamanho.add(rdbtnGrande);
 		
 		rdbtnExtraGrande = new JRadioButton("Extra grande");
@@ -226,7 +225,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoTamanhos.add(rdbtnExtraGrande);
 		rdbtnExtraGrande.setFocusable(false);
 		rdbtnExtraGrande.setBorder(new EmptyBorder(0, 60, 0, 0));
-		rdbtnExtraGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnExtraGrande.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelTamanho.add(rdbtnExtraGrande);
 		
 		grupoTamanhos.setSelected(rdbtnBroto.getModel(), true);
@@ -272,7 +271,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoBordas.add(rdbtnSemBorda);
 		rdbtnSemBorda.setFocusable(false);
 		rdbtnSemBorda.setBorder(new EmptyBorder(0, 0, 0, 60));
-		rdbtnSemBorda.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnSemBorda.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelBorda.add(rdbtnSemBorda);
 		
 		rdbtnComBorda = new JRadioButton("Com borda");
@@ -298,7 +297,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoBordas.add(rdbtnComBorda);
 		rdbtnComBorda.setFocusable(false);
 		rdbtnComBorda.setBorder(new EmptyBorder(0, 60, 0, 60));
-		rdbtnComBorda.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnComBorda.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelBorda.add(rdbtnComBorda);
 		
 		panelSelecaoBorda = new JPanel();
@@ -326,25 +325,28 @@ public final class PizzasView extends JInternalFrame {
 				
 				Borda borda = (Borda) cbxBordaSalgada.getSelectedItem();
 				
-				if(cbxBordaSalgada.getSelectedIndex() != 0) {
+				if(item.getBordas().size() < 2) {
 					
-					if(item.getBordas().size() == 0) {
+					if(cbxBordaSalgada.getSelectedIndex() != 0) {
 						
-						item.addBorda(0, borda);
+						item.addBorda(borda);
 					}
-					else if(item.getBordas().size() == 1) {
+				}
+				else if(item.getBordas().size() >= 2) {
+					
+					for(Borda b : item.getBordas()) {
 						
-						item.addBorda(1, borda);
-					}
-					else if(item.getBordas().size() >= 2) {
+						if(cbxBordaSalgada.getSelectedIndex() != 0) {
 						
-						for(int i = 0; i < item.getBordas().size(); i++) {
-							
-							if(item.getBordas().get(i).getTipoBorda().equals(borda.getTipoBorda())) {
+							if(b.getTipoBorda().equals(borda.getTipoBorda())) {
 								
-								item.getBordas().remove(i);
-								item.addBorda(i, borda);
+								item.removerBorda(b);
+								item.addBorda(borda);
 							}
+						}
+						else {
+							
+							item.removerBorda(b);
 						}
 					}
 				}
@@ -359,6 +361,7 @@ public final class PizzasView extends JInternalFrame {
 		lblBordaDoce.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblBordaDoce.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		lblBordaDoce.setVisible(false);
+		panelBordaDoce.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelBordaDoce.add(lblBordaDoce);
 		
 		cbxBordaDoce = new JComboBox<Object>();
@@ -371,25 +374,28 @@ public final class PizzasView extends JInternalFrame {
 				
 				Borda borda = (Borda) cbxBordaDoce.getSelectedItem();
 				
-				if(cbxBordaDoce.getSelectedIndex() != 0) {
+				if(item.getBordas().size() < 2) {
 					
-					if(item.getBordas().size() == 0) {
+					if(cbxBordaDoce.getSelectedIndex() != 0) {
 						
-						item.addBorda(0, borda);
+						item.addBorda(borda);
 					}
-					else if(item.getBordas().size() == 1) {
+				}
+				else if(item.getBordas().size() >= 2) {
+					
+					for(int i = 0; i < item.getBordas().size(); i++) {
 						
-						item.addBorda(1, borda);
-					}
-					else if(item.getBordas().size() >= 2) {
+						if(cbxBordaDoce.getSelectedIndex() != 0) {
 						
-						for(int i = 0; i < item.getBordas().size(); i++) {
-							
 							if(item.getBordas().get(i).getTipoBorda().equals(borda.getTipoBorda())) {
 								
-								item.getBordas().remove(i);
-								item.addBorda(i, borda);
+								item.removerBorda(item.getBordas().get(i));
+								item.addBorda(borda);
 							}
+						}
+						else {
+							
+							item.removerBorda(item.getBordas().get(i));
 						}
 					}
 				}
@@ -439,10 +445,10 @@ public final class PizzasView extends JInternalFrame {
 				if(lblObsTresSabores.isVisible()) {
 					
 					lblObsTresSabores.setVisible(false);
-					lblMsgObsTresSabores.setVisible(false);
 				}
 				
 				panelSelecionarSabor.removeAll();
+				panelSelecionarSabor.setLayout(new GridLayout(1, 4));
 				panelSelecionarSabor.add(lblSabor1);
 				panelSelecionarSabor.repaint();
 				panelSelecionarSabor.validate();
@@ -458,7 +464,7 @@ public final class PizzasView extends JInternalFrame {
 		rdbtnUmSabor.setFocusable(false);
 		rdbtnUmSabor.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rdbtnUmSabor.setBorder(new EmptyBorder(0, 0, 0, 30));
-		rdbtnUmSabor.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnUmSabor.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelQTDSabores.setLayout(new BoxLayout(panelQTDSabores, BoxLayout.X_AXIS));
 		panelQTDSabores.add(rdbtnUmSabor);
 		
@@ -493,10 +499,10 @@ public final class PizzasView extends JInternalFrame {
 				if(lblObsTresSabores.isVisible()) {
 					
 					lblObsTresSabores.setVisible(false);
-					lblMsgObsTresSabores.setVisible(false);
 				}
 				
 				panelSelecionarSabor.removeAll();
+				panelSelecionarSabor.setLayout(new GridLayout(1, 4));
 				panelSelecionarSabor.add(lblSabor1);
 				panelSelecionarSabor.add(lblSabor2);
 				panelSelecionarSabor.repaint();
@@ -512,7 +518,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoQTDSabores.add(rdbtnDoisSabores);
 		rdbtnDoisSabores.setFocusable(false);
 		rdbtnDoisSabores.setBorder(new EmptyBorder(0, 30, 0, 30));
-		rdbtnDoisSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnDoisSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelQTDSabores.add(rdbtnDoisSabores);
 		
 		rdbtnTresSabores = new JRadioButton("3 Sabores");
@@ -546,10 +552,10 @@ public final class PizzasView extends JInternalFrame {
 				if( ! lblObsTresSabores.isVisible()) {
 					
 					lblObsTresSabores.setVisible(true);
-					lblMsgObsTresSabores.setVisible(true);
 				}
 				
 				panelSelecionarSabor.removeAll();
+				panelSelecionarSabor.setLayout(new GridLayout(2, 2));
 				panelSelecionarSabor.add(lblSabor1);
 				panelSelecionarSabor.add(lblSabor2);
 				panelSelecionarSabor.add(lblSabor3);
@@ -566,7 +572,7 @@ public final class PizzasView extends JInternalFrame {
 		grupoQTDSabores.add(rdbtnTresSabores);
 		rdbtnTresSabores.setFocusable(false);
 		rdbtnTresSabores.setBorder(new EmptyBorder(0, 30, 0, 30));
-		rdbtnTresSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnTresSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelQTDSabores.add(rdbtnTresSabores);
 		
 		rdbtnQuatroSabores = new JRadioButton("4 Sabores");
@@ -600,10 +606,10 @@ public final class PizzasView extends JInternalFrame {
 				if(lblObsTresSabores.isVisible()) {
 					
 					lblObsTresSabores.setVisible(false);
-					lblMsgObsTresSabores.setVisible(false);
 				}
 				
 				panelSelecionarSabor.removeAll();
+				panelSelecionarSabor.setLayout(new GridLayout(2, 2));
 				panelSelecionarSabor.add(lblSabor1);
 				panelSelecionarSabor.add(lblSabor2);
 				panelSelecionarSabor.add(lblSabor3);
@@ -619,33 +625,28 @@ public final class PizzasView extends JInternalFrame {
 			}
 		});
 		grupoQTDSabores.add(rdbtnQuatroSabores);
-		rdbtnQuatroSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		rdbtnQuatroSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		rdbtnQuatroSabores.setFocusable(false);
 		rdbtnQuatroSabores.setBorder(new EmptyBorder(0, 30, 0, 0));
 		panelQTDSabores.add(rdbtnQuatroSabores);
 		
 		panelObersavacaoTresSabores = new JPanel();
 		panelPizzas.add(panelObersavacaoTresSabores);
+		panelObersavacaoTresSabores.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		lblObsTresSabores = new JLabel("*OBS.:");
+		lblObsTresSabores = new JLabel("<html>*OBS.: Na pizza de 3 sabores, o primeiro sabor selecionado será sempre a metade da pizza, <br> a outra metade será dividida entre os outros dois sabores!</html>");
 		lblObsTresSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblObsTresSabores.setVisible(false);
 		panelObersavacaoTresSabores.add(lblObsTresSabores);
-		
-		lblMsgObsTresSabores = new JLabel("Na pizza de 3 sabores, o primeiro sabor selecionado ser\u00E1 sempre a metade da pizza, a outra metade ser\u00E1 dividido entre os outros dois sabores!");
-		lblMsgObsTresSabores.setToolTipText("");
-		lblMsgObsTresSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblMsgObsTresSabores.setVisible(false);
-		panelObersavacaoTresSabores.add(lblMsgObsTresSabores);
 		
 		JLabel lblSelecionarSabores = new JLabel("Selecione o(s) sabor(es):");
 		lblSelecionarSabores.setPreferredSize(new Dimension(120, 80));
-		lblSelecionarSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lblSelecionarSabores.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		lblSelecionarSabores.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSelecionarSabores.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panelPizzas.add(lblSelecionarSabores);
 		
 		panelSelecionarSabor = new JPanel();
+		panelSelecionarSabor.setMaximumSize(new Dimension(900, 32767));
 		panelSelecionarSabor.setPreferredSize(new Dimension(10, 300));
 		panelPizzas.add(panelSelecionarSabor);
 		panelSelecionarSabor.setLayout(new GridLayout(1, 4));
@@ -716,7 +717,9 @@ public final class PizzasView extends JInternalFrame {
 							item.addProduto(0, produto);
 						}
 						
-						lblSabor1.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 128, 128));
+						byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
+						
+						lblSabor1.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 150, 150));
 						lblSabor1.setText(produto.getNome());
 						
 						checkboxConfigPizza.updateUI();
@@ -794,7 +797,9 @@ public final class PizzasView extends JInternalFrame {
 								item.addProduto(1, produto);
 							}
 							
-							lblSabor2.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 128, 128));
+							byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
+							
+							lblSabor2.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 120, 140));
 							lblSabor2.setText(produto.getNome());
 							
 							checkboxConfigPizza.updateUI();
@@ -873,7 +878,9 @@ public final class PizzasView extends JInternalFrame {
 								item.addProduto(2, produto);
 							}
 							
-							lblSabor3.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 128, 128));
+							byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
+							
+							lblSabor3.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 120, 140));
 							lblSabor3.setText(produto.getNome());
 							
 							checkboxConfigPizza.updateUI();
@@ -948,7 +955,9 @@ public final class PizzasView extends JInternalFrame {
 								item.addProduto(3, produto);
 							}
 							
-							lblSabor4.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/" + produto.getImagem())), 128, 128));
+							byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
+							
+							lblSabor4.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 120, 140));
 							lblSabor4.setText(produto.getNome());
 							
 							checkboxConfigPizza.updateUI();
@@ -973,41 +982,39 @@ public final class PizzasView extends JInternalFrame {
 		rdbtnUmSabor.doClick();
 		
 		panelInferior = new JPanel();
-		panelInferior.setPreferredSize(new Dimension(10, 350));
+		panelInferior.setPreferredSize(new Dimension(10, 200));
 		panelCentro.add(panelInferior, BorderLayout.SOUTH);
 		panelInferior.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		
 		panelObservacoes = new JPanel();
-		panelObservacoes.setMaximumSize(new Dimension(600, 32767));
-		panelObservacoes.setLocation(new Point(600, 0));
-		panelObservacoes.setSize(new Dimension(600, 0));
-		panelObservacoes.setPreferredSize(new Dimension(600, 200));
-		panelObservacoes.setMinimumSize(new Dimension(600, 10));
+		panelObservacoes.setPreferredSize(new Dimension(380, 180));
 		panelInferior.add(panelObservacoes);
 		panelObservacoes.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es:");
 		lblObservacoes.setPreferredSize(new Dimension(67, 60));
-		lblObservacoes.setFont(new Font("Leelawadee UI", Font.BOLD, 18));
+		lblObservacoes.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelObservacoes.add(lblObservacoes,BorderLayout.NORTH);
 		
 		txtAreaObservacoes = new JTextArea();
 		txtAreaObservacoes.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
+		txtAreaObservacoes.setLineWrap(true);
+		txtAreaObservacoes.setWrapStyleWord(true);
 		panelObservacoes.add(txtAreaObservacoes, BorderLayout.CENTER);
 		
 		panelQuantidade = new JPanel();
 		panelQuantidade.setSize(new Dimension(100, 0));
 		panelQuantidade.setMaximumSize(new Dimension(100, 32767));
-		panelQuantidade.setPreferredSize(new Dimension(300, 200));
-		panelQuantidade.setMinimumSize(new Dimension(300, 300));
+		panelQuantidade.setPreferredSize(new Dimension(280, 180));
+		panelQuantidade.setMinimumSize(new Dimension(300, 180));
 		panelInferior.add(panelQuantidade);
 		panelQuantidade.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 45));
 		
 		JLabel lblQuantidade = new JLabel("Quantidade:");
 		lblQuantidade.setMinimumSize(new Dimension(60, 30));
 		lblQuantidade.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblQuantidade.setFont(new Font("Leelawadee UI", Font.BOLD, 18));
-		lblQuantidade.setPreferredSize(new Dimension(160, 30));
+		lblQuantidade.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
+		lblQuantidade.setPreferredSize(new Dimension(120, 30));
 		lblQuantidade.setHorizontalAlignment(SwingConstants.CENTER);
 		panelQuantidade.add(lblQuantidade);
 		
@@ -1021,7 +1028,7 @@ public final class PizzasView extends JInternalFrame {
 		txtQuantidade.setMinimumSize(new Dimension(2, 30));
 		txtQuantidade.setPreferredSize(new Dimension(5, 30));
 		txtQuantidade.setBorder(null);
-		txtQuantidade.setFont(new Font("Leelawadee UI", Font.BOLD, 24));
+		txtQuantidade.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
 		txtQuantidade.setText("1");
 		panelQuantidade.add(txtQuantidade);
 		
@@ -1030,6 +1037,7 @@ public final class PizzasView extends JInternalFrame {
 		panelAddCarrinho.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JButton btnAddCarrinho = new JButton("Adicionar no carrinho");
+		btnAddCarrinho.setMargin(new Insets(0, 0, 0, 0));
 		btnAddCarrinho.addActionListener(new ActionListener() {
 			
 			@Override
@@ -1044,6 +1052,7 @@ public final class PizzasView extends JInternalFrame {
 				item.setObservacoes(txtAreaObservacoes.getText());
 				item.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
 				item.setPrecoTotal(item.calculoPrecoTotal());
+				item.setTipoProduto("Pizza");
 				
 				CarrinhoController.addProduto(item);
 				
@@ -1076,19 +1085,23 @@ public final class PizzasView extends JInternalFrame {
 		btnAddCarrinho.setBackground(Color.WHITE);
 		btnAddCarrinho.setBorderPainted(false);
 		btnAddCarrinho.setFocusable(false);
-		btnAddCarrinho.setPreferredSize(new Dimension(250, 60));
+		btnAddCarrinho.setPreferredSize(new Dimension(220, 55));
 		btnAddCarrinho.setMinimumSize(new Dimension(133, 60));
-		btnAddCarrinho.setMargin(new Insets(0, 14, 0, 14));
 		btnAddCarrinho.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnAddCarrinho.setFont(new Font("Leelawadee UI", Font.BOLD, 18));
+		btnAddCarrinho.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		btnAddCarrinho.setBorder(null);
 		panelAddCarrinho.add(btnAddCarrinho);
 		
-		panelLateral = new JPanel();
-		panelLateral.setLayout(new BorderLayout());
-		getContentPane().add(panelLateral, BorderLayout.EAST);
+		Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		panelLateral.add(carrinhoView, BorderLayout.CENTER);
-		carrinhoView.setVisible(true);
+		if(tamanhoTela.getWidth() >= 1366) {
+			
+			panelLateral = new JPanel();
+			panelLateral.setLayout(new BorderLayout());
+			getContentPane().add(panelLateral, BorderLayout.EAST);
+			
+			panelLateral.add(carrinhoView, BorderLayout.CENTER);
+			carrinhoView.setVisible(true);
+		}
 	}
 }

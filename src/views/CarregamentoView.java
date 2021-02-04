@@ -1,56 +1,49 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 
-public class CarregamentoView extends JFrame implements Runnable{
+public class CarregamentoView extends JWindow {
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel contentPane;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CarregamentoView frame = new CarregamentoView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public CarregamentoView() {
+		
+	}
+	
+	public CarregamentoView(String texto, Color cor) {
 		
 		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
-		setUndecorated(true);
-		setResizable(false);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-		contentPane = new JPanel(new BorderLayout());
-		contentPane.setBorder(null);
-		contentPane.setOpaque(false);
-		contentPane.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-		setContentPane(contentPane);
+		setBackground(new Color(0, 0, 0, 0f));
+		getContentPane().setLayout(new GridLayout(2, 1));
 		
-		JLabel lblCarregamento = new JLabel();
-		lblCarregamento.setIcon(new ImageIcon(getClass().getResource("/imagens/loads.gif")));
-		lblCarregamento.setOpaque(false);
-		contentPane.add(lblCarregamento, BorderLayout.CENTER);
+		JLabel lblCarregamentoImagem = new JLabel();
+		lblCarregamentoImagem.setIcon(new ImageIcon(getClass().getResource("/imagens/loads.gif")));
+		lblCarregamentoImagem.setHorizontalAlignment(SwingUtilities.CENTER);
+		lblCarregamentoImagem.setOpaque(false);
+		getContentPane().add(lblCarregamentoImagem);
+		
+		JLabel lblCarregamentoTexto = new JLabel();
+		lblCarregamentoTexto.setHorizontalAlignment(SwingUtilities.CENTER);
+		lblCarregamentoTexto.setText(texto);
+		lblCarregamentoTexto.setFont(new Font("Leelawadee UI", Font.BOLD, 20));
+		lblCarregamentoTexto.setForeground(cor);
+		lblCarregamentoTexto.setOpaque(false);
+		getContentPane().add(lblCarregamentoTexto);
+		
+		this.pack();
 	}
-
-	@Override
-	public void run() {
-
-		CarregamentoView.main(null);
+	
+	public void close() {
+		
+		this.setVisible(false);
+		this.dispose();
 	}
 }

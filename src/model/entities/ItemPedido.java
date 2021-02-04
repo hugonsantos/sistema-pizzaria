@@ -9,6 +9,7 @@ public class ItemPedido {
 	private String observacoes;
 	private Integer quantidade;
 	private Double precoTotal;
+	private String tipoProduto;
 	
 	private List<Produto> produtos = new ArrayList<>();
 	private List<Borda> bordas = new ArrayList<>();
@@ -17,12 +18,13 @@ public class ItemPedido {
 		
 	}
 
-	public ItemPedido(String tamanho, String observacoes, Integer quantidade, Double precoTotal) {
+	public ItemPedido(String tamanho, String observacoes, Integer quantidade, Double precoTotal, String tipoProduto) {
 		
 		this.tamanho = tamanho;
 		this.observacoes = observacoes;
 		this.quantidade = quantidade;
 		this.precoTotal = precoTotal;
+		this.tipoProduto = tipoProduto;
 	}
 
 	public String getTamanho() {
@@ -57,6 +59,14 @@ public class ItemPedido {
 		this.precoTotal = precoTotal;
 	}
 
+	public String getTipoProduto() {
+		return tipoProduto;
+	}
+
+	public void setTipoProduto(String tipoProduto) {
+		this.tipoProduto = tipoProduto;
+	}
+
 	public List<Produto> getProdutos() {
 		return produtos;
 	}
@@ -77,8 +87,8 @@ public class ItemPedido {
 		return bordas;
 	}
 	
-	public void addBorda(Integer indice, Borda borda) {
-		bordas.add(indice, borda);
+	public void addBorda(Borda borda) {
+		bordas.add(borda);
 	}
 	
 	public void removerBorda(Borda borda) {
@@ -145,6 +155,7 @@ public class ItemPedido {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("<html>");
+		sb.append("<p style='text-align: center;'>" + tipoProduto + "</p>");
 		sb.append("<p>Tamanho:</p>");
 		sb.append("<pre>    " + tamanho + "</pre>");
 		sb.append("<p>Sabor(es):</p>");
@@ -166,8 +177,8 @@ public class ItemPedido {
 		else sb.append("<pre>    Sem borda</pre>");
 		
 		sb.append("<br>");
-		sb.append("<p style='text-align: center;'>Qtd: " + quantidade + " ________________________ Preço: R$" + String.format("%.2f", precoTotal) + "</p>");
-		sb.append("---------------------------------------------------------------------");
+		sb.append("<p style='text-align: center;'>Qtd: " + quantidade + " ____________ Preço: R$" + String.format("%.2f", precoTotal) + "</p>");
+		sb.append("---------------------------------------------------");
 		sb.append("<br>");
 		sb.append("</html>");
 		 

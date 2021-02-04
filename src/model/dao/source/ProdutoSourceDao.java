@@ -29,21 +29,22 @@ public class ProdutoSourceDao implements ProdutoDao {
 		
 		int id = 0;
 
-		sql = "insert into produtos(imagem, nome, descricao, valorBroto, valorTradicional, valorGrande, valorExtraGrande, idCategoria) values(?, ?, ?, ?, ?, ?, ?, ?)";
+		sql = "insert into produtos(miniatura, extensao, nome, descricao, valorBroto, valorTradicional, valorGrande, valorExtraGrande, idCategoria) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 
 			con = DBConexao.connection();
 			prepared = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			prepared.setString(1, produto.getImagem());
-			prepared.setString(2, produto.getNome());
-			prepared.setString(3, produto.getDescricao());
-			prepared.setDouble(4, produto.getValorBroto());
-			prepared.setDouble(5, produto.getValorTradicional());
-			prepared.setDouble(6, produto.getValorGrande());
-			prepared.setDouble(7, produto.getValorExtraGrande());
-			prepared.setInt(8, produto.getCategoria().getId());
+			prepared.setString(1, produto.getMiniaturaBase64());
+			prepared.setString(2, produto.getExtensao());
+			prepared.setString(3, produto.getNome());
+			prepared.setString(4, produto.getDescricao());
+			prepared.setDouble(5, produto.getValorBroto());
+			prepared.setDouble(6, produto.getValorTradicional());
+			prepared.setDouble(7, produto.getValorGrande());
+			prepared.setDouble(8, produto.getValorExtraGrande());
+			prepared.setInt(9, produto.getCategoria().getId());
 
 			prepared.executeUpdate();
 			resultSet = prepared.getGeneratedKeys();
@@ -81,22 +82,23 @@ public class ProdutoSourceDao implements ProdutoDao {
 	@Override
 	public void alterar(Produto produto) {
 		
-		sql = "update produtos set imagem = ?, nome = ?, descricao = ?, valorBroto = ?, valorTradicional = ?, valorGrande = ?, valorExtraGrande = ?, idCategoria = ? where id = ?";
+		sql = "update produtos set miniatura = ?, extensao = ?, nome = ?, descricao = ?, valorBroto = ?, valorTradicional = ?, valorGrande = ?, valorExtraGrande = ?, idCategoria = ? where id = ?";
 
 		try {
 
 			con = DBConexao.connection();
 			prepared = con.prepareStatement(sql);
 
-			prepared.setString(1, produto.getImagem());
-			prepared.setString(2, produto.getNome());
-			prepared.setString(3, produto.getDescricao());
-			prepared.setDouble(4, produto.getValorBroto());
-			prepared.setDouble(5, produto.getValorTradicional());
-			prepared.setDouble(6, produto.getValorGrande());
-			prepared.setDouble(7, produto.getValorExtraGrande());
-			prepared.setInt(8, produto.getCategoria().getId());
-			prepared.setInt(9, produto.getId());
+			prepared.setString(1, produto.getMiniaturaBase64());
+			prepared.setString(2, produto.getExtensao());
+			prepared.setString(3, produto.getNome());
+			prepared.setString(4, produto.getDescricao());
+			prepared.setDouble(5, produto.getValorBroto());
+			prepared.setDouble(6, produto.getValorTradicional());
+			prepared.setDouble(7, produto.getValorGrande());
+			prepared.setDouble(8, produto.getValorExtraGrande());
+			prepared.setInt(9, produto.getCategoria().getId());
+			prepared.setInt(10, produto.getId());
 
 			prepared.executeUpdate();
 			
@@ -180,7 +182,8 @@ public class ProdutoSourceDao implements ProdutoDao {
 				produto = new Produto();
 
 				produto.setId(resultSet.getInt("id"));
-				produto.setImagem(resultSet.getString("imagem"));
+				produto.setMiniaturaBase64(resultSet.getString("miniatura"));
+				produto.setExtensao(resultSet.getString("extensao"));
 				produto.setNome(resultSet.getString("nome"));
 				produto.setDescricao(resultSet.getString("descricao"));
 				produto.setValorBroto(Double.parseDouble(resultSet.getString("valorBroto")));
@@ -230,7 +233,8 @@ public class ProdutoSourceDao implements ProdutoDao {
 				produto = new Produto();
 
 				produto.setId(resultSet.getInt("id"));
-				produto.setImagem(resultSet.getString("imagem"));
+				produto.setMiniaturaBase64(resultSet.getString("miniatura"));
+				produto.setExtensao(resultSet.getString("extensao"));
 				produto.setNome(resultSet.getString("nome"));
 				produto.setDescricao(resultSet.getString("descricao"));
 				produto.setValorBroto(Double.parseDouble(resultSet.getString("valorBroto")));
@@ -318,7 +322,8 @@ public class ProdutoSourceDao implements ProdutoDao {
 				produto = new Produto();
 
 				produto.setId(resultSet.getInt("id"));
-				produto.setImagem(resultSet.getString("imagem"));
+				produto.setMiniaturaBase64(resultSet.getString("miniatura"));
+				produto.setExtensao(resultSet.getString("extensao"));
 				produto.setNome(resultSet.getString("nome"));
 				produto.setDescricao(resultSet.getString("descricao"));
 				produto.setValorBroto(Double.parseDouble(resultSet.getString("valorBroto")));

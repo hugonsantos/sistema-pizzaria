@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,19 +17,25 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.JList;
-import javax.swing.BoxLayout;
-import java.awt.Rectangle;
-import java.awt.GridLayout;
+
+import model.table.CarrinhoTableModel;
+import model.util.TableCelulasCustomizadas;
+import javax.swing.border.EmptyBorder;
 
 public final class ModalDetalhesPedido extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
+	
+	private TableCelulasCustomizadas cel = new TableCelulasCustomizadas();
+	private CarrinhoTableModel model = new CarrinhoTableModel();
+	private JTable tableProdutos;
 
 	public ModalDetalhesPedido() {
 		
-		setBounds(100, 100, 1150, 900);
+		setBounds(100, 100, 1024, 738);
 		
 		JPanel panelDetalhesPedido = new JPanel();
 		panelDetalhesPedido.setBackground(Color.WHITE);
@@ -36,6 +43,9 @@ public final class ModalDetalhesPedido extends ModalCustom {
 		panelDetalhesPedido.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblDetalhesPedido = new JLabel("Detalhes do pedido");
+		lblDetalhesPedido.setBackground(Color.WHITE);
+		lblDetalhesPedido.setPreferredSize(new Dimension(92, 70));
+		lblDetalhesPedido.setBounds(new Rectangle(0, 0, 0, 50));
 		lblDetalhesPedido.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		lblDetalhesPedido.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDetalhesPedido.setEnabled(true);
@@ -46,9 +56,35 @@ public final class ModalDetalhesPedido extends ModalCustom {
 		panelDetalhesPedido.add(panelListPrdodutos, BorderLayout.CENTER);
 		panelListPrdodutos.setLayout(null);
 		
-		JList list = new JList();
-		list.setBounds(10, 61, 1130, 152);
-		panelListPrdodutos.add(list);
+		tableProdutos = new JTable();
+		tableProdutos.setModel(model);
+		tableProdutos.setFont(new Font("Leelawadee UI", Font.PLAIN, 12));
+		tableProdutos.setBorder(null);
+		tableProdutos.setShowVerticalLines(false);
+		tableProdutos.setFocusable(false);
+		tableProdutos.getColumnModel().getColumn(0).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(0).setPreferredWidth(10);
+		tableProdutos.getColumnModel().getColumn(1).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(1).setPreferredWidth(10);
+		tableProdutos.getColumnModel().getColumn(2).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(3).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tableProdutos.getColumnModel().getColumn(4).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(4).setPreferredWidth(300);
+		tableProdutos.getColumnModel().getColumn(5).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(5).setPreferredWidth(10);
+		tableProdutos.getColumnModel().getColumn(6).setCellRenderer(cel);
+		tableProdutos.getColumnModel().getColumn(6).setPreferredWidth(20);
+		
+		JScrollPane spTableProdutos = new JScrollPane(tableProdutos);
+		spTableProdutos.setColumnHeaderView(tableProdutos.getTableHeader());
+		spTableProdutos.getColumnHeader().setVisible(false);
+		spTableProdutos.getViewport().setBackground(Color.WHITE);
+		spTableProdutos.setFont(new Font("Leelawadee UI", Font.PLAIN, 14));
+		spTableProdutos.setBorder(new EmptyBorder(0, 0, 0, 0));
+		spTableProdutos.setFocusable(false);
+		spTableProdutos.setBounds(10, 11, 1024, 425);
+		panelListPrdodutos.add(spTableProdutos);
 		
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBorder(null);
@@ -65,7 +101,6 @@ public final class ModalDetalhesPedido extends ModalCustom {
 				
 
 				btnLimparSelecao.setBackground(Color.DARK_GRAY);
-				dispose();
 			}
 		});
 		btnLimparSelecao.addMouseListener(new MouseAdapter() {
@@ -138,6 +173,8 @@ public final class ModalDetalhesPedido extends ModalCustom {
 			public void actionPerformed(ActionEvent e) {
 
 				
+				
+				btnLimparSelecao.setBackground(Color.DARK_GRAY);
 				dispose();
 			}
 		});

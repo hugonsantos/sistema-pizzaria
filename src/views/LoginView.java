@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import model.dao.FabricaDao;
@@ -38,6 +39,8 @@ public class LoginView extends JFrame {
 	
 	private static LoginView frame;
 	private static Point point = new Point();
+	
+	private CarregamentoView carregamento;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -167,28 +170,45 @@ public class LoginView extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				Funcionario funcionario = new Funcionario();
-				funcionario.setUsuario(txtUsuario.getText());
-				funcionario.setSenha(String.valueOf(ptxtSenha.getPassword()));
-				
-				LoginDao loginDao = FabricaDao.createLoginDao();
-				
-				if(loginDao.AutenticacaoLogin(funcionario)) {
-					
-					MainView.main(null);
-					dispose();
-				}
-				else {
-					
-					txtUsuario.setText("");
-					ptxtSenha.setText("");
-					
-					ModalAlerta modalAlerta = new ModalAlerta("O seu usuário ou senha está incorreto!", ModalAlertaEnum.ALERTA);
-					
-					ModalUtil.MovimentacaoModal(modalAlerta);
-					modalAlerta.setLocationRelativeTo(null);
-					modalAlerta.setVisible(true);
-				}
+				SwingWorker<Void, Void> autenticacaoWorker = new SwingWorker<>() {
+
+					@Override
+					protected Void doInBackground() throws Exception {
+
+						carregamento = new CarregamentoView("Autenticando...", Color.WHITE);
+						carregamento.setVisible(true);
+						
+						Funcionario funcionario = new Funcionario();
+						funcionario.setUsuario(txtUsuario.getText());
+						funcionario.setSenha(String.valueOf(ptxtSenha.getPassword()));
+						
+						LoginDao loginDao = FabricaDao.createLoginDao();
+						
+						if(loginDao.AutenticacaoLogin(funcionario)) {
+							
+							MainView.main(null);
+							dispose();
+							
+							carregamento.close();
+						}
+						else {
+							
+							txtUsuario.setText("");
+							ptxtSenha.setText("");
+							
+							ModalAlerta modalAlerta = new ModalAlerta("O seu usuário ou senha está incorreto!", ModalAlertaEnum.ALERTA);
+							
+							ModalUtil.MovimentacaoModal(modalAlerta);
+							modalAlerta.setLocationRelativeTo(null);
+							modalAlerta.setVisible(true);
+							
+							carregamento.close();
+						}
+						
+						return null;
+					}
+				};
+				autenticacaoWorker.execute();
 			}
 		});
 		btnLogin.addMouseListener(new MouseAdapter() {

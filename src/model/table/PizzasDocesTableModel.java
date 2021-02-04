@@ -5,6 +5,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import model.dao.FabricaDao;
 import model.dao.ProdutoDao;
 import model.entities.Produto;
@@ -12,8 +14,6 @@ import model.entities.Produto;
 public final class PizzasDocesTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	
-	private String[] colunas = {"Imagem", "Nome", "Valor"};
 	
 	private ProdutoDao produtosDao = FabricaDao.createProdutoDao();
 	private List<Produto> list = produtosDao.buscarProdutosCategoria("Pizza doce");
@@ -25,48 +25,39 @@ public final class PizzasDocesTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return colunas.length;
-	}
-	
-	@Override
-	public String getColumnName(int coluna) {
-		
-		return null;
+		return 3;
 	}
 
 	@Override
 	public Object getValueAt(int linha, int coluna) {
 		
-		Produto produtos = list.get(linha);
+		Produto produto = list.get(linha);
+		
+		byte[] bytesMiniatura = Base64.decodeBase64(produto.getMiniaturaBase64());
 		
 		switch(coluna) {
 		case 0:
-			return new ImageIcon(getClass().getResource("/imagens/" + produtos.getImagem()));
+			return new ImageIcon(bytesMiniatura);
 		case 1:
-			return produtos.getNome();
+			return produto.getNome();
 		case 2:
 			
 			StringBuilder str = new StringBuilder();
 			
 			str.append("<html>");
-			str.append("Broto: R$" + String.format("%.2f", produtos.getValorBroto()));
+			str.append("Broto: R$" + String.format("%.2f", produto.getValorBroto()));
 			str.append("<br>");
-			str.append("Tradicional: R$" + String.format("%.2f", produtos.getValorTradicional()));
+			str.append("Tradicional: R$" + String.format("%.2f", produto.getValorTradicional()));
 			str.append("<br>");
-			str.append("Grande: R$" + String.format("%.2f", produtos.getValorGrande()));
+			str.append("Grande: R$" + String.format("%.2f", produto.getValorGrande()));
 			str.append("<br>");
-			str.append("Extra grande: R$" + String.format("%.2f", produtos.getValorExtraGrande()));
+			str.append("Extra grande: R$" + String.format("%.2f", produto.getValorExtraGrande()));
 			str.append("</html>");
 			
 			return str.toString();
 		default:
 			return "";
-		}	
-	}
-	
-	public final void mostrarProduto(Produto produtos) {
-		
-		
+		}
 	}
 	
 	public Produto capturarSelecionado(Integer linha) {

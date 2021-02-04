@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import java.awt.Component;
@@ -34,6 +35,8 @@ public abstract class TelaInternaCustom extends JInternalFrame {
 		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
 		bi.setNorthPane(null);
+		
+		UIManager.put("Button.select", Color.GRAY);
 		
 		JPanel jifPanelTopo = new JPanel();
 		jifPanelTopo.setAlignmentY(Component.TOP_ALIGNMENT);

@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
@@ -82,6 +83,9 @@ public class ProdutosView extends TelaInternaCustom {
 		panelProdutos.add(panelListaProdutos, BorderLayout.CENTER);
 		
 		tableProdutos = new JTable();
+		tableProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableProdutos.setSelectionForeground(Color.WHITE);
+		tableProdutos.setSelectionBackground(Color.GRAY);
 		tableProdutos.setModel(produtosTableModel);
 		tableProdutos.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		tableProdutos.setBorder(null);

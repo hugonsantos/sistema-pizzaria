@@ -10,15 +10,16 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import model.util.MouseListenerUtil;
 import views.internos.produtos.LanchesView;
 import views.internos.produtos.PizzasView;
 
@@ -29,7 +30,7 @@ public class VenderView extends TelaInternaCustom {
 	private static VenderView frame;
 	private PizzasView pizzasView;
 	private LanchesView lanchesView;
-	private final ButtonGroup grupoBotoesLaterais = new ButtonGroup();
+	private final List<JButton> listBotoesLaterais = new ArrayList<>();
 	
 	private JButton btnPizzas;
 	private JButton btnPorcoes;
@@ -76,6 +77,8 @@ public class VenderView extends TelaInternaCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				estadoButton(btnPizzas);
+				
 				panelProdutos.removeAll();
 				
 				pizzasView = new PizzasView();
@@ -83,70 +86,22 @@ public class VenderView extends TelaInternaCustom {
 				panelProdutos.add(pizzasView);
 				pizzasView.setVisible(true);
 				
-				btnPizzas.setForeground(Color.BLACK);
-				btnPizzas.setBackground(Color.WHITE);
-				
-				btnLanches.setForeground(Color.WHITE);
-				btnLanches.setBackground(Color.GRAY);
-				
-				
-				
 				panelProdutos.repaint();
 				panelProdutos.validate();
 			}
 		});
-		btnPizzas.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnPizzas.setForeground(Color.BLACK);
-				btnPizzas.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnPizzas.setForeground(Color.WHITE);
-				btnPizzas.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnPizzas);
-		btnPizzas.setFocusPainted(false);
-		btnPizzas.setBorderPainted(false);
+		listBotoesLaterais.add(btnPizzas);
 		btnPizzas.setForeground(Color.WHITE);
 		btnPizzas.setFont(new Font("Leelawadee", Font.BOLD, 16));
 		btnPizzas.setBackground(Color.GRAY);
 		btnPizzas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPizzas.setFocusable(false);
-		btnPizzas.setBorder(null);
+		btnPizzas.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnPizzas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnPizzas);
 		
 		btnPorcoes = new JButton("Porções");
-		btnPorcoes.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnPorcoes.setForeground(Color.BLACK);
-				btnPorcoes.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnPorcoes.setForeground(Color.WHITE);
-				btnPorcoes.setBackground(Color.GRAY);
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-				
-			}
-		});
-		grupoBotoesLaterais.add(btnPorcoes);
+		listBotoesLaterais.add(btnPorcoes);
 		btnPorcoes.setBorderPainted(false);
 		btnPorcoes.setForeground(Color.WHITE);
 		btnPorcoes.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -163,6 +118,8 @@ public class VenderView extends TelaInternaCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				estadoButton(btnLanches);
+				
 				panelProdutos.removeAll();
 				
 				if(lanchesView == null) {
@@ -175,23 +132,7 @@ public class VenderView extends TelaInternaCustom {
 				panelProdutos.validate();
 			}
 		});
-		btnLanches.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnLanches.setForeground(Color.BLACK);
-				btnLanches.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnLanches.setForeground(Color.WHITE);
-				btnLanches.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnLanches);
+		listBotoesLaterais.add(btnLanches);
 		btnLanches.setBorderPainted(false);
 		btnLanches.setForeground(Color.WHITE);
 		btnLanches.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -211,23 +152,7 @@ public class VenderView extends TelaInternaCustom {
 				
 			}
 		});
-		btnEsfihas.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnEsfihas.setForeground(Color.BLACK);
-				btnEsfihas.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnEsfihas.setForeground(Color.WHITE);
-				btnEsfihas.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnEsfihas);
+		listBotoesLaterais.add(btnEsfihas);
 		btnEsfihas.setBorderPainted(false);
 		btnEsfihas.setForeground(Color.WHITE);
 		btnEsfihas.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -247,23 +172,7 @@ public class VenderView extends TelaInternaCustom {
 				
 			}
 		});
-		btnFogazzas.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnFogazzas.setForeground(Color.BLACK);
-				btnFogazzas.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnFogazzas.setForeground(Color.WHITE);
-				btnFogazzas.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnFogazzas);
+		listBotoesLaterais.add(btnFogazzas);
 		btnFogazzas.setBorderPainted(false);
 		btnFogazzas.setForeground(Color.WHITE);
 		btnFogazzas.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -283,23 +192,7 @@ public class VenderView extends TelaInternaCustom {
 				
 			}
 		});
-		btnPasteis.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnPasteis.setForeground(Color.BLACK);
-				btnPasteis.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnPasteis.setForeground(Color.WHITE);
-				btnPasteis.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnPasteis);
+		listBotoesLaterais.add(btnPasteis);
 		btnPasteis.setBorderPainted(false);
 		btnPasteis.setForeground(Color.WHITE);
 		btnPasteis.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -319,23 +212,7 @@ public class VenderView extends TelaInternaCustom {
 				
 			}
 		});
-		btnSobremesas.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnSobremesas.setForeground(Color.BLACK);
-				btnSobremesas.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnSobremesas.setForeground(Color.WHITE);
-				btnSobremesas.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnSobremesas);
+		listBotoesLaterais.add(btnSobremesas);
 		btnSobremesas.setBorderPainted(false);
 		btnSobremesas.setForeground(Color.WHITE);
 		btnSobremesas.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -347,23 +224,7 @@ public class VenderView extends TelaInternaCustom {
 		panelLateral.add(btnSobremesas);
 		
 		btnBebidas = new JButton("Bebidas");
-		btnBebidas.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				btnBebidas.setForeground(Color.BLACK);
-				btnBebidas.setBackground(Color.WHITE);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				btnBebidas.setForeground(Color.WHITE);
-				btnBebidas.setBackground(Color.GRAY);
-			}
-		});
-		grupoBotoesLaterais.add(btnBebidas);
+		listBotoesLaterais.add(btnBebidas);
 		btnBebidas.setBorderPainted(false);
 		btnBebidas.setForeground(Color.WHITE);
 		btnBebidas.setFont(new Font("Leelawadee", Font.BOLD, 16));
@@ -378,5 +239,42 @@ public class VenderView extends TelaInternaCustom {
 		
 		panelProdutos.add(pizzasView);
 		pizzasView.setVisible(true);
+		
+		estadoButton(btnPizzas);
+	}
+	
+	private void estadoButton(JButton button) {
+		
+		for(JButton b : listBotoesLaterais) {
+			
+			MouseListenerUtil ms = new MouseListenerUtil(b);
+			
+			MouseListener[] ma = b.getMouseListeners();
+			
+			if(b.equals(button)) {
+				
+				b.setSelected(true);
+				
+				b.setForeground(Color.BLACK);
+				b.setBackground(Color.WHITE);
+				
+				if(ma.length >= 2) {
+					
+					b.removeMouseListener(ma[1]);
+				}
+			}
+			else {
+				
+				b.setSelected(false);
+				
+				b.setForeground(Color.WHITE);
+				b.setBackground(Color.GRAY);
+				
+				if(ma.length == 1) {
+					
+					b.addMouseListener(ms);
+				}
+			}
+		}
 	}
 }

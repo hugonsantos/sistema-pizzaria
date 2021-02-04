@@ -31,6 +31,7 @@ import views.modal.ModalAlerta;
 import views.modal.ModalCliente;
 import views.modal.ModalDeletar;
 import views.modal.enums.ModalAlertaEnum;
+import javax.swing.ListSelectionModel;
 
 public class ClientesView extends TelaInternaCustom {
 
@@ -90,6 +91,9 @@ public class ClientesView extends TelaInternaCustom {
 		panelClientesView.add(lblFuncionarios, BorderLayout.NORTH);
 
 		tableClientes = new JTable();
+		tableClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableClientes.setSelectionForeground(Color.WHITE);
+		tableClientes.setSelectionBackground(Color.GRAY);
 		tableClientes.setModel(clientesTableModel);
 		tableClientes.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		tableClientes.setBorder(null);

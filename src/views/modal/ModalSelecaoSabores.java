@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableRowSorter;
 
 import model.entities.Produto;
@@ -45,6 +47,10 @@ public class ModalSelecaoSabores extends ModalCustom {
 	private Produto produto;
 
 	private JPanel panelCabecalho;
+	private JPanel panelCabecalhoSalgada;
+	private JPanel panelCabecalhoDoce;
+	private JPanel panelPesquisarPizzaSalgada;
+	private JPanel panelPesquisarPizzaDoce;
 	private JPanel panelSelecaoSabores;
 	private JPanel panelPizzasSalgadas;
 	private JPanel panelPizzasDoces;
@@ -80,7 +86,7 @@ public class ModalSelecaoSabores extends ModalCustom {
 
 	public ModalSelecaoSabores() {
 
-		setBounds(100, 100, 1500, 738);
+		setBounds(100, 100, 1024, 738);
 		
 		JPanel panelSelecao = new JPanel();
 		panelSelecao.setBackground(Color.WHITE);
@@ -91,6 +97,7 @@ public class ModalSelecaoSabores extends ModalCustom {
 		panelSelecaoSabores.setBorder(null);
 		panelSelecaoSabores.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		panelSelecaoSabores.setAlignmentY(Component.CENTER_ALIGNMENT);
+		panelSelecaoSabores.setLayout(new BoxLayout(panelSelecaoSabores, BoxLayout.X_AXIS));
 		panelSelecao.add(panelSelecaoSabores);
 
 		panelCabecalho = new JPanel();
@@ -98,86 +105,24 @@ public class ModalSelecaoSabores extends ModalCustom {
 		panelCabecalho.setBounds(new Rectangle(0, 0, 0, 100));
 		panelCabecalho.setMinimumSize(new Dimension(10, 100));
 		panelSelecao.add(panelCabecalho, BorderLayout.NORTH);
-		panelCabecalho.setLayout(null);
-
-		lblPizzasSalgadas = new JLabel("Salgadas");
-		lblPizzasSalgadas.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
-		lblPizzasSalgadas.setBounds(333, 89, 84, 30);
-		panelCabecalho.add(lblPizzasSalgadas);
-		panelSelecaoSabores.setLayout(new BoxLayout(panelSelecaoSabores, BoxLayout.X_AXIS));
-
-		panelPizzasSalgadas = new JPanel();
-		panelSelecaoSabores.add(panelPizzasSalgadas);
+		panelCabecalho.setLayout(new BoxLayout(panelCabecalho, BoxLayout.X_AXIS));
 		
-		tablePizzasSalgadas = new JTable();
-		tablePizzasSalgadas.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-				if (tablePizzasDoces.getSelectedRow() != -1)
-					tablePizzasDoces.clearSelection();
-			}
-		});
-		tablePizzasSalgadas.setModel(pizzasSalgadasTableModel);
-		tablePizzasSalgadas.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		tablePizzasSalgadas.setShowVerticalLines(false);
-		tablePizzasSalgadas.setBorder(null);
-		tablePizzasSalgadas.setFocusable(false);
-		tablePizzasSalgadas.setRowHeight(180);
-		tablePizzasSalgadas.getColumnModel().getColumn(0).setCellRenderer(new ImagensUtil());
-		tablePizzasSalgadas.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tablePizzasSalgadas.getColumnModel().getColumn(2).setPreferredWidth(10);
-		TableModelUtil.customizarTable(tablePizzasSalgadas.getTableHeader());
-		panelPizzasSalgadas.setLayout(new BoxLayout(panelPizzasSalgadas, BoxLayout.X_AXIS));
-
-		spPizzasSalgadas = new JScrollPane(tablePizzasSalgadas);
-		spPizzasSalgadas.setViewportBorder(null);
-		spPizzasSalgadas.setBorder(null);
-		panelPizzasSalgadas.add(spPizzasSalgadas);
-
-		lblPizzasDoces = new JLabel("Doces");
-		lblPizzasDoces.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
-		lblPizzasDoces.setBounds(1095, 89, 60, 30);
-		panelCabecalho.add(lblPizzasDoces);
-
-		panelPizzasDoces = new JPanel();
-		panelSelecaoSabores.add(panelPizzasDoces);
-		
-		tablePizzasDoces = new JTable();
-		tablePizzasDoces.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-				if (tablePizzasSalgadas.getSelectedRow() != -1)
-					tablePizzasSalgadas.clearSelection();
-			}
-		});
-		tablePizzasDoces.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		tablePizzasDoces.setModel(pizzasDocesTableModel);
-		tablePizzasDoces.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		tablePizzasDoces.setShowVerticalLines(false);
-		tablePizzasDoces.setBorder(null);
-		tablePizzasDoces.setFocusable(false);
-		tablePizzasDoces.setRowHeight(180);
-		tablePizzasDoces.getColumnModel().getColumn(0).setCellRenderer(new ImagensUtil());
-		tablePizzasDoces.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tablePizzasDoces.getColumnModel().getColumn(2).setPreferredWidth(10);
-		TableModelUtil.customizarTable(tablePizzasDoces.getTableHeader());
-		panelPizzasDoces.setLayout(new BoxLayout(panelPizzasDoces, BoxLayout.X_AXIS));
-
-		spPizzasDoces = new JScrollPane(tablePizzasDoces);
-		spPizzasDoces.setViewportBorder(null);
-		spPizzasDoces.setBorder(null);
-		panelPizzasDoces.add(spPizzasDoces);
+		panelCabecalhoSalgada = new JPanel();
+		panelCabecalho.add(panelCabecalhoSalgada);
+		panelCabecalhoSalgada.setLayout(new BorderLayout());
 
 		lblPesquisarSalgada = new JLabel("Pesquisar pizza salgada:");
+		lblPesquisarSalgada.setBorder(new EmptyBorder(0, 0, 0, 100));
+		lblPesquisarSalgada.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPesquisarSalgada.setFont(new Font("Leelawadee UI", Font.BOLD, 11));
-		lblPesquisarSalgada.setBounds(530, 11, 200, 14);
-		panelCabecalho.add(lblPesquisarSalgada);
+		panelCabecalhoSalgada.add(lblPesquisarSalgada, BorderLayout.NORTH);
 
+		panelPesquisarPizzaSalgada = new JPanel();
+		panelPesquisarPizzaSalgada.setPreferredSize(new Dimension(230, 10));
+		panelCabecalhoSalgada.add(panelPesquisarPizzaSalgada, BorderLayout.EAST);
+		
 		txtPesquisarPizzaSalgada = new JTextField();
+		txtPesquisarPizzaSalgada.setPreferredSize(new Dimension(220, 25));
 		txtPesquisarPizzaSalgada.addKeyListener(new KeyAdapter() {
 
 			private void doClick() {
@@ -198,22 +143,37 @@ public class ModalSelecaoSabores extends ModalCustom {
 						tablePizzasSalgadas.setRowSorter(null);
 						tablePizzasSalgadas.revalidate();
 					}
-				} else if (txtPesquisarPizzaSalgada.getText().length() + 1 > 0)
+				}
+				else if (txtPesquisarPizzaSalgada.getText().length() + 1 > 0)
 					doClick();
 			}
 		});
 		txtPesquisarPizzaSalgada.setBorder(null);
 		txtPesquisarPizzaSalgada.setToolTipText("Pesquise pelo nome da pizza salgada!");
-		txtPesquisarPizzaSalgada.setBounds(530, 31, 200, 24);
-		panelCabecalho.add(txtPesquisarPizzaSalgada);
-		txtPesquisarPizzaSalgada.setColumns(10);
+		panelPesquisarPizzaSalgada.add(txtPesquisarPizzaSalgada);
+		
+		lblPizzasSalgadas = new JLabel("Salgadas");
+		lblPizzasSalgadas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPizzasSalgadas.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblPizzasSalgadas.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		panelCabecalhoSalgada.add(lblPizzasSalgadas, BorderLayout.SOUTH);
 
+		panelCabecalhoDoce = new JPanel();
+		panelCabecalho.add(panelCabecalhoDoce);
+		panelCabecalhoDoce.setLayout(new BorderLayout());
+		
 		lblPesquisarDoce = new JLabel("Pesquisar pizza doce:");
+		lblPesquisarDoce.setBorder(new EmptyBorder(0, 0, 0, 115));
+		lblPesquisarDoce.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPesquisarDoce.setFont(new Font("Leelawadee UI", Font.BOLD, 11));
-		lblPesquisarDoce.setBounds(1280, 11, 200, 14);
-		panelCabecalho.add(lblPesquisarDoce);
+		panelCabecalhoDoce.add(lblPesquisarDoce, BorderLayout.NORTH);
 
+		panelPesquisarPizzaDoce = new JPanel();
+		panelPesquisarPizzaDoce.setPreferredSize(new Dimension(230, 10));
+		panelCabecalhoDoce.add(panelPesquisarPizzaDoce, BorderLayout.EAST);
+		
 		txtPesquisarPizzaDoce = new JTextField();
+		txtPesquisarPizzaDoce.setPreferredSize(new Dimension(220, 25));
 		txtPesquisarPizzaDoce.addKeyListener(new KeyAdapter() {
 
 			private void doClick() {
@@ -240,9 +200,82 @@ public class ModalSelecaoSabores extends ModalCustom {
 		});
 		txtPesquisarPizzaDoce.setBorder(null);
 		txtPesquisarPizzaDoce.setToolTipText("Pesquise pelo nome da pizza doce!");
-		txtPesquisarPizzaDoce.setColumns(10);
-		txtPesquisarPizzaDoce.setBounds(1280, 31, 200, 24);
-		panelCabecalho.add(txtPesquisarPizzaDoce);
+		panelPesquisarPizzaDoce.add(txtPesquisarPizzaDoce);
+		
+		lblPizzasDoces = new JLabel("Doces");
+		lblPizzasDoces.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPizzasDoces.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		panelCabecalhoDoce.add(lblPizzasDoces, BorderLayout.SOUTH);
+
+		panelPizzasSalgadas = new JPanel();
+		panelSelecaoSabores.add(panelPizzasSalgadas);
+		
+		tablePizzasSalgadas = new JTable();
+		tablePizzasSalgadas.setSelectionForeground(Color.WHITE);
+		tablePizzasSalgadas.setSelectionBackground(Color.DARK_GRAY);
+		tablePizzasSalgadas.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				if (tablePizzasDoces.getSelectedRow() != -1)
+					tablePizzasDoces.clearSelection();
+			}
+		});
+		tablePizzasSalgadas.setModel(pizzasSalgadasTableModel);
+		tablePizzasSalgadas.setFont(new Font("Leelawadee UI", Font.BOLD, 12));
+		tablePizzasSalgadas.setShowVerticalLines(false);
+		tablePizzasSalgadas.setBorder(null);
+		tablePizzasSalgadas.setFocusable(false);
+		tablePizzasSalgadas.setRowHeight(180);
+		tablePizzasSalgadas.getColumnModel().getColumn(0).setCellRenderer(new ImagensUtil());
+		tablePizzasSalgadas.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablePizzasSalgadas.getColumnModel().getColumn(2).setPreferredWidth(10);
+		panelPizzasSalgadas.setLayout(new BoxLayout(panelPizzasSalgadas, BoxLayout.X_AXIS));
+
+		spPizzasSalgadas = new JScrollPane(tablePizzasSalgadas);
+		spPizzasSalgadas.setColumnHeaderView(tablePizzasSalgadas.getTableHeader());
+		spPizzasSalgadas.getColumnHeader().setVisible(false);
+		spPizzasSalgadas.getViewport().setBackground(Color.WHITE);
+		spPizzasSalgadas.setViewportBorder(null);
+		spPizzasSalgadas.setBorder(null);
+		panelPizzasSalgadas.add(spPizzasSalgadas);
+
+		panelPizzasDoces = new JPanel();
+		panelSelecaoSabores.add(panelPizzasDoces);
+		
+		tablePizzasDoces = new JTable();
+		tablePizzasDoces.setSelectionForeground(Color.WHITE);
+		tablePizzasDoces.setSelectionBackground(Color.DARK_GRAY);
+		tablePizzasDoces.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				if (tablePizzasSalgadas.getSelectedRow() != -1)
+					tablePizzasSalgadas.clearSelection();
+			}
+		});
+		tablePizzasDoces.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tablePizzasDoces.setModel(pizzasDocesTableModel);
+		tablePizzasDoces.setFont(new Font("Leelawadee UI", Font.BOLD, 12));
+		tablePizzasDoces.setShowVerticalLines(false);
+		tablePizzasDoces.setBorder(null);
+		tablePizzasDoces.setFocusable(false);
+		tablePizzasDoces.setRowHeight(180);
+		tablePizzasDoces.getColumnModel().getColumn(0).setCellRenderer(new ImagensUtil());
+		tablePizzasDoces.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablePizzasDoces.getColumnModel().getColumn(2).setPreferredWidth(10);
+		TableModelUtil.customizarTable(tablePizzasDoces.getTableHeader());
+		panelPizzasDoces.setLayout(new BoxLayout(panelPizzasDoces, BoxLayout.X_AXIS));
+
+		spPizzasDoces = new JScrollPane(tablePizzasDoces);
+		spPizzasDoces.setColumnHeaderView(tablePizzasDoces.getTableHeader());
+		spPizzasDoces.getColumnHeader().setVisible(false);
+		spPizzasDoces.getViewport().setBackground(Color.WHITE);
+		spPizzasDoces.setViewportBorder(null);
+		spPizzasDoces.setBorder(null);
+		panelPizzasDoces.add(spPizzasDoces);
 
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBorder(null);
@@ -473,23 +506,10 @@ public class ModalSelecaoSabores extends ModalCustom {
 		if(ativarTableSalagada && ativarTableDoce) {
 			
 			spPizzasDoces.setVisible(ativarTableDoce);
-			
-			lblPesquisarDoce.setVisible(ativarTableDoce);
-			txtPesquisarPizzaDoce.setVisible(ativarTableDoce);
-			
-			lblPizzasDoces.setBounds(1095, 89, 60, 30);
-			lblPizzasDoces.setVisible(ativarTableDoce);
+			panelCabecalhoDoce.setVisible(ativarTableDoce);
 			
 			spPizzasSalgadas.setVisible(ativarTableSalagada);
-			
-			lblPesquisarSalgada.setBounds(530, 11, 200, 14);
-			lblPesquisarSalgada.setVisible(ativarTableSalagada);
-			
-			txtPesquisarPizzaSalgada.setBounds(530, 31, 200, 24);
-			txtPesquisarPizzaSalgada.setVisible(ativarTableSalagada);
-			
-			lblPizzasSalgadas.setBounds(333, 89, 84, 30);
-			lblPizzasSalgadas.setVisible(ativarTableSalagada);
+			panelCabecalhoSalgada.setVisible(ativarTableSalagada);
 			
 			panelCabecalho.revalidate();
 		}
@@ -548,19 +568,8 @@ public class ModalSelecaoSabores extends ModalCustom {
 		spPizzasDoces.setVisible(false);
 		spPizzasSalgadas.setVisible(true);
 		
-		lblPesquisarDoce.setVisible(false);
-		txtPesquisarPizzaDoce.setVisible(false);
-		
-		lblPizzasDoces.setVisible(false);
-		
-		lblPesquisarSalgada.setBounds(1280, 11, 200, 14);
-		lblPesquisarSalgada.setVisible(true);
-		
-		txtPesquisarPizzaSalgada.setBounds(1280, 31, 200, 24);
-		txtPesquisarPizzaSalgada.setVisible(true);
-		
-		lblPizzasSalgadas.setBounds(708, 89, 84, 30);
-		lblPizzasSalgadas.setVisible(true);
+		panelCabecalhoDoce.setVisible(false);
+		panelCabecalhoSalgada.setVisible(true);
 		
 		panelCabecalho.revalidate();
 	}
@@ -570,16 +579,8 @@ public class ModalSelecaoSabores extends ModalCustom {
 		spPizzasDoces.setVisible(true);
 		spPizzasSalgadas.setVisible(false);
 		
-		lblPesquisarDoce.setVisible(true);
-		txtPesquisarPizzaDoce.setVisible(true);
-		
-		lblPizzasDoces.setBounds(708, 89, 84, 30);
-		lblPizzasDoces.setVisible(true);
-		
-		lblPesquisarSalgada.setVisible(false);
-		txtPesquisarPizzaSalgada.setVisible(false);
-		
-		lblPizzasSalgadas.setVisible(false);
+		panelCabecalhoDoce.setVisible(true);
+		panelCabecalhoSalgada.setVisible(false);
 		
 		panelCabecalho.revalidate();
 	}
