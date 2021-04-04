@@ -10,7 +10,6 @@ public class CarrinhoController {
 	private static List<ItemPedido> carrinho = new ArrayList<>();
 	
 	public CarrinhoController() {
-		
 	}
 
 	public static void addProduto(ItemPedido itemPedido) {

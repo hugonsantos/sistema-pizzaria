@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import views.internos.produtos.PizzasView;
+import views.internos.PizzasView;
 
 public class ViewsUtil {
 

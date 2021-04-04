@@ -28,7 +28,7 @@ public abstract class ModalCustom extends JDialog {
 		setBounds(100, 100, 950, 600);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.SOUTH);
-		contentPanel.setLayout(new BorderLayout(0, 0));
+		contentPanel.setLayout(new BorderLayout(1, 1));
 		
 		JPanel panelTopo = new JPanel();
 		panelTopo.setBackground(Color.DARK_GRAY);

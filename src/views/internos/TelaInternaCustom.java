@@ -23,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 public abstract class TelaInternaCustom extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	public TelaInternaCustom() {
 		
 		getContentPane().setBackground(Color.WHITE);

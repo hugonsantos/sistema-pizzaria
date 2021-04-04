@@ -178,7 +178,7 @@ public class ItemPedido {
 		
 		sb.append("<br>");
 		sb.append("<p style='text-align: center;'>Qtd: " + quantidade + " ____________ Preço: R$" + String.format("%.2f", precoTotal) + "</p>");
-		sb.append("---------------------------------------------------");
+		sb.append("-----------------------------------------------------------------");
 		sb.append("<br>");
 		sb.append("</html>");
 		 

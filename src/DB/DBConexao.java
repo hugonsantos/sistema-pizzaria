@@ -86,8 +86,8 @@ public class DBConexao {
 			
 			Properties properties = new Properties();
 
-			properties.setProperty("user", "hugonsantos");
-			properties.setProperty("password", "1234");
+			properties.setProperty("user", "root");
+			properties.setProperty("password", "admin");
 			properties.setProperty("url", "jdbc:mysql://localhost:3306/pizzariadb?useTimezone=true&serverTimezone=UTC");
 			properties.setProperty("useSSL", "false");
 			properties.setProperty("allowPublicKeyRetrieval", "true");

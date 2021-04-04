@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -14,22 +13,21 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import model.util.ImagensUtil;
 import model.util.MouseListenerUtil;
-import views.internos.produtos.LanchesView;
-import views.internos.produtos.PizzasView;
 
 public class VenderView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static VenderView frame;
 	private PizzasView pizzasView;
-	private LanchesView lanchesView;
+	private DemaisProdutosView lanchesView;
 	private final List<JButton> listBotoesLaterais = new ArrayList<>();
 	
 	private JButton btnPizzas;
@@ -40,19 +38,6 @@ public class VenderView extends TelaInternaCustom {
 	private JButton btnPasteis;
 	private JButton btnSobremesas;
 	private JButton btnBebidas;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new VenderView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public VenderView() {
 		
@@ -63,7 +48,7 @@ public class VenderView extends TelaInternaCustom {
 		JPanel panelLateral = new JPanel();
 		panelLateral.setFocusable(false);
 		panelLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		panelLateral.setPreferredSize(new Dimension(120, 0));
+		panelLateral.setPreferredSize(new Dimension(60, 0));
 		panelLateral.setBackground(Color.GRAY);
 		panelLateral.setLayout(new GridLayout(9, 1));
 		
@@ -71,7 +56,8 @@ public class VenderView extends TelaInternaCustom {
 		scrollPane.setBorder(null);
 		getContentPane().add(scrollPane, BorderLayout.WEST);
 		
-		btnPizzas = new JButton("Pizzas");
+		btnPizzas = new JButton("");
+		btnPizzas.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/pedaco-pizza-64.png")), 34, 34));
 		btnPizzas.addActionListener(new ActionListener() {
 			
 			@Override
@@ -81,7 +67,9 @@ public class VenderView extends TelaInternaCustom {
 				
 				panelProdutos.removeAll();
 				
-				pizzasView = new PizzasView();
+				if(pizzasView == null) {
+					pizzasView = new PizzasView();
+				}
 				
 				panelProdutos.add(pizzasView);
 				pizzasView.setVisible(true);
@@ -100,7 +88,8 @@ public class VenderView extends TelaInternaCustom {
 		btnPizzas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnPizzas);
 		
-		btnPorcoes = new JButton("Porções");
+		btnPorcoes = new JButton("");
+		btnPorcoes.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/porcao-64.png")), 34, 34));
 		listBotoesLaterais.add(btnPorcoes);
 		btnPorcoes.setBorderPainted(false);
 		btnPorcoes.setForeground(Color.WHITE);
@@ -112,7 +101,8 @@ public class VenderView extends TelaInternaCustom {
 		btnPorcoes.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnPorcoes);
 		
-		btnLanches = new JButton("Lanches");
+		btnLanches = new JButton("");
+		btnLanches.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/lanche-64.png")), 34, 34));
 		btnLanches.addActionListener(new ActionListener() {
 			
 			@Override
@@ -123,7 +113,7 @@ public class VenderView extends TelaInternaCustom {
 				panelProdutos.removeAll();
 				
 				if(lanchesView == null) {
-					lanchesView = new LanchesView();
+					lanchesView = new DemaisProdutosView();
 				}
 				panelProdutos.add(lanchesView);
 				lanchesView.setVisible(true);
@@ -143,7 +133,8 @@ public class VenderView extends TelaInternaCustom {
 		btnLanches.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnLanches);
 		
-		btnEsfihas = new JButton("Esfihas");
+		btnEsfihas = new JButton("");
+		btnEsfihas.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/esfiha-64.png")), 34, 34));
 		btnEsfihas.addActionListener(new ActionListener() {
 			
 			@Override
@@ -163,7 +154,8 @@ public class VenderView extends TelaInternaCustom {
 		btnEsfihas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnEsfihas);
 		
-		btnFogazzas = new JButton("Fogazzas");
+		btnFogazzas = new JButton("");
+		btnFogazzas.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/fogazza-64.png")), 34, 34));
 		btnFogazzas.addActionListener(new ActionListener() {
 			
 			@Override
@@ -183,7 +175,8 @@ public class VenderView extends TelaInternaCustom {
 		btnFogazzas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnFogazzas);
 		
-		btnPasteis = new JButton("Pasteis");
+		btnPasteis = new JButton("");
+		btnPasteis.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/salgado-64.png")), 34, 34));
 		btnPasteis.addActionListener(new ActionListener() {
 			
 			@Override
@@ -203,7 +196,8 @@ public class VenderView extends TelaInternaCustom {
 		btnPasteis.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnPasteis);
 		
-		btnSobremesas = new JButton("Sobremesas");
+		btnSobremesas = new JButton("");
+		btnSobremesas.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/sobremesa-64.png")), 34, 34));
 		btnSobremesas.addActionListener(new ActionListener() {
 			
 			@Override
@@ -223,7 +217,8 @@ public class VenderView extends TelaInternaCustom {
 		btnSobremesas.setMargin(new Insets(0, 0, 0, 0));
 		panelLateral.add(btnSobremesas);
 		
-		btnBebidas = new JButton("Bebidas");
+		btnBebidas = new JButton("");
+		btnBebidas.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/bebida-64.png")), 34, 34));
 		listBotoesLaterais.add(btnBebidas);
 		btnBebidas.setBorderPainted(false);
 		btnBebidas.setForeground(Color.WHITE);

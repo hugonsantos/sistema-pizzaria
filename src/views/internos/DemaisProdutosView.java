@@ -1,4 +1,4 @@
-package views.internos.produtos;
+package views.internos;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
-public class LanchesView extends JInternalFrame {
+public class DemaisProdutosView extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
@@ -18,7 +18,7 @@ public class LanchesView extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LanchesView frame = new LanchesView();
+					DemaisProdutosView frame = new DemaisProdutosView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class LanchesView extends JInternalFrame {
 		});
 	}
 
-	public LanchesView() {
+	public DemaisProdutosView() {
 		
 		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();

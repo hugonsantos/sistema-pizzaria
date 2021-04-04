@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -35,6 +36,17 @@ public class MainView extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
+	private JPanel panelLateral;
+	private JLabel lblIconVender;
+	private JLabel lblVender;
+	private JLabel lblIconClientes;
+	private JLabel lblClientes;
+	private JLabel lblIconRelatorios;
+	private JLabel lblRelatorios;
+	private JLabel lblIconFuncionarios;
+	private JLabel lblFuncionarios;
+	private JLabel lblIconProdutos;
+	private JLabel lblProdutos;
 
 	private VenderView vender;
 	private ClientesView clientes;
@@ -44,25 +56,30 @@ public class MainView extends JFrame {
 	private static MainView frame;
 
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
 			public void run() {
+				
 				try {
 
 					frame = new MainView();
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}	
 		});
 	}
 
 	public MainView() {
 
 		setMinimumSize(new Dimension(1024, 768));
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		/* setExtendedState(JFrame.MAXIMIZED_BOTH); */
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,14 +108,7 @@ public class MainView extends JFrame {
 				btnMinimizar.setBackground(Color.DARK_GRAY);
 			}
 		});
-		btnMinimizar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				frame.setState(Frame.ICONIFIED);
-			}
-		});
+		btnMinimizar.addActionListener(e -> frame.setState(Frame.ICONIFIED));
 		btnMinimizar.setFocusable(false);
 		btnMinimizar.setForeground(Color.WHITE);
 		btnMinimizar.setBackground(Color.DARK_GRAY);
@@ -125,10 +135,8 @@ public class MainView extends JFrame {
 			}
 		});
 		btnExit.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				System.exit(0);
 			}
 		});
@@ -146,7 +154,7 @@ public class MainView extends JFrame {
 		contentPane.add(panelViewsInternas, BorderLayout.CENTER);
 		panelViewsInternas.setLayout(new BorderLayout(0, 0));
 
-		JPanel panelLateral = new JPanel();
+		panelLateral = new JPanel();
 		panelLateral.setPreferredSize(new Dimension(200, 55));
 		panelLateral.setBackground(Color.DARK_GRAY);
 		panelLateral.setLayout(new BorderLayout(0, 0));
@@ -191,9 +199,11 @@ public class MainView extends JFrame {
 			public void mousePressed(MouseEvent e) {
 
 				panelViewsInternas.removeAll();
-
-				vender = new VenderView();
-
+				
+				if(vender == null) {
+					vender = new VenderView();
+				}
+				
 				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
 
@@ -206,15 +216,14 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha1);
 		panelGridLinha1.setLayout(new GridLayout(1, 2));
 
-		JLabel lblIconVender = new JLabel("");
-		lblIconVender.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		lblIconVender = new JLabel("");
 		lblIconVender.setBorder(null);
 		lblIconVender.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/carrinho-de-compras-64.png")), 48, 48));
 		lblIconVender.setFocusable(false);
 		lblIconVender.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha1.add(lblIconVender);
 
-		JLabel lblVender = new JLabel("Vender");
+		lblVender = new JLabel("Vender");
 		lblVender.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblVender.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblVender.setForeground(Color.WHITE);
@@ -246,7 +255,6 @@ public class MainView extends JFrame {
 				panelViewsInternas.removeAll();
 
 				if (clientes == null) {
-
 					clientes = new ClientesView();
 				}
 
@@ -262,14 +270,13 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha2);
 		panelGridLinha2.setLayout(new GridLayout(1, 2));
 
-		JLabel lblIconClientes = new JLabel("");
-		lblIconClientes.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblIconClientes = new JLabel("");
 		lblIconClientes.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/cliente-64.png")), 48, 48));
 		lblIconClientes.setFocusable(false);
 		lblIconClientes.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha2.add(lblIconClientes);
 
-		JLabel lblClientes = new JLabel("Clientes");
+		lblClientes = new JLabel("Clientes");
 		lblClientes.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblClientes.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblClientes.setForeground(Color.WHITE);
@@ -300,13 +307,13 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha3);
 		panelGridLinha3.setLayout(new GridLayout(1, 2));
 
-		JLabel lblIconRelatorios = new JLabel("");
+		lblIconRelatorios = new JLabel("");
 		lblIconRelatorios.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/grafico-de-barras-64.png")), 48, 48));
 		lblIconRelatorios.setFocusable(false);
 		lblIconRelatorios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha3.add(lblIconRelatorios);
 
-		JLabel lblRelatorios = new JLabel("Relatórios");
+		lblRelatorios = new JLabel("Relatórios");
 		lblRelatorios.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblRelatorios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblRelatorios.setForeground(Color.WHITE);
@@ -338,7 +345,6 @@ public class MainView extends JFrame {
 				panelViewsInternas.removeAll();
 
 				if (funcionarios == null) {
-
 					funcionarios = new FuncionariosView();
 				}
 
@@ -354,13 +360,13 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha4);
 		panelGridLinha4.setLayout(new GridLayout(1, 2));
 
-		JLabel lblIconFuncionarios = new JLabel("");
+		lblIconFuncionarios = new JLabel("");
 		lblIconFuncionarios.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/equipe-64.png")), 48, 48));
 		lblIconFuncionarios.setFocusable(false);
 		lblIconFuncionarios.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelGridLinha4.add(lblIconFuncionarios);
 
-		JLabel lblFuncionarios = new JLabel("Funcionários");
+		lblFuncionarios = new JLabel("Funcionários");
 		lblFuncionarios.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblFuncionarios.setBorder(new EmptyBorder(0, 0, 10, 15));
 		lblFuncionarios.setForeground(Color.WHITE);
@@ -392,7 +398,6 @@ public class MainView extends JFrame {
 				panelViewsInternas.removeAll();
 
 				if (produtos == null) {
-					
 					produtos = new ProdutosView();
 				}
 				
@@ -408,19 +413,37 @@ public class MainView extends JFrame {
 		panelGrid.add(panelGridLinha5);
 		panelGridLinha5.setLayout(new GridLayout(1, 2));
 
-		JLabel lblIconProdutos = new JLabel("");
+		lblIconProdutos = new JLabel("");
 		lblIconProdutos.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/inventario-64.png")), 48, 48));
 		lblIconProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblIconProdutos.setFocusable(false);
 		panelGridLinha5.add(lblIconProdutos);
 
-		JLabel lblProdutos = new JLabel("Produtos");
+		lblProdutos = new JLabel("Produtos");
 		lblProdutos.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblProdutos.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblProdutos.setForeground(Color.WHITE);
 		lblProdutos.setFont(new Font("Leelawadee", Font.BOLD, 14));
 		lblProdutos.setBorder(new EmptyBorder(0, 0, 10, 15));
 		panelGridLinha5.add(lblProdutos);
+		
+		Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		if(1200 < 1366) {
+			
+			panelLateral.setPreferredSize(new Dimension(80, 55));
+			
+			panelGridLinha1.remove(lblVender);
+			lblIconVender.setHorizontalAlignment(SwingConstants.CENTER);
+			panelGridLinha2.remove(lblClientes);
+			lblIconClientes.setHorizontalAlignment(SwingConstants.CENTER);
+			panelGridLinha3.remove(lblRelatorios);
+			lblIconRelatorios.setHorizontalAlignment(SwingConstants.CENTER);
+			panelGridLinha4.remove(lblFuncionarios);
+			lblIconFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
+			panelGridLinha5.remove(lblProdutos);
+			lblIconProdutos.setHorizontalAlignment(SwingConstants.CENTER);
+		}
 		
 		vender = new VenderView();
 		panelViewsInternas.add(vender, BorderLayout.CENTER);

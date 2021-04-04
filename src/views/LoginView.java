@@ -43,8 +43,12 @@ public class LoginView extends JFrame {
 	private CarregamentoView carregamento;
 
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
+			
+			@Override
 			public void run() {
+				
 				try {
 					
 					frame = new LoginView();
@@ -168,6 +172,7 @@ public class LoginView extends JFrame {
 		JButton btnLogin = new JButton("Logar");
 		btnLogin.addActionListener(new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				SwingWorker<Void, Void> autenticacaoWorker = new SwingWorker<>() {
@@ -186,12 +191,14 @@ public class LoginView extends JFrame {
 						
 						if(loginDao.AutenticacaoLogin(funcionario)) {
 							
+							carregamento.close();
+							
 							MainView.main(null);
 							dispose();
-							
-							carregamento.close();
 						}
 						else {
+							
+							carregamento.close();
 							
 							txtUsuario.setText("");
 							ptxtSenha.setText("");
@@ -201,15 +208,13 @@ public class LoginView extends JFrame {
 							ModalUtil.MovimentacaoModal(modalAlerta);
 							modalAlerta.setLocationRelativeTo(null);
 							modalAlerta.setVisible(true);
-							
-							carregamento.close();
 						}
 						
 						return null;
 					}
 				};
 				autenticacaoWorker.execute();
-			}
+			}	
 		});
 		btnLogin.addMouseListener(new MouseAdapter() {
 			

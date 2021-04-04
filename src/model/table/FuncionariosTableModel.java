@@ -15,7 +15,7 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private String[] colunas = {"Id", "Nome", "Email", "Data de Nascimento", "CPF", "Usuário", "Administrador"};
+	private String[] colunas = {"Id", "Nome", "Email", "Usuário", "Administrador"};
 	
 	private FuncionarioDao funcionariosDao = FabricaDao.createFuncionarioDao();
 	private List<Funcionario> list = funcionariosDao.listarTodos();
@@ -45,10 +45,6 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 			return colunas[3];
 		case 4:
 			return colunas[4];
-		case 5:
-			return colunas[5];
-		case 6:
-			return colunas[6];
 		default:
 			return "";
 		}
@@ -68,12 +64,8 @@ public final class FuncionariosTableModel extends AbstractTableModel{
 		case 2:
 			return funcionarios.getEmail();
 		case 3:
-			return sdf.format(funcionarios.getDataNascimento());
-		case 4:
-			return funcionarios.getCpf();
-		case 5:
 			return funcionarios.getUsuario();
-		case 6:
+		case 4:
 			return funcionarios.getAdministrador();
 		default:
 			return "";

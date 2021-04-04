@@ -12,7 +12,7 @@ public final class ProdutosTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String[] colunas = {"Id", "Nome", "Descricao", "Valor Broto", "Valor Tradicional", "Valor Grande", "Valor Extra Grande", "Categoria"};
+	private String[] colunas = {"Id", "Nome", "R$ Broto", "R$ Tradicional", "R$ Grande", "R$ Extra Grande", "Categoria"};
 	
 	private ProdutoDao produtosDao = FabricaDao.createProdutoDao();
 	private List<Produto> list = produtosDao.listarProdutos();
@@ -46,8 +46,6 @@ public final class ProdutosTableModel extends AbstractTableModel {
 			return colunas[5];
 		case 6:
 			return colunas[6];
-		case 7:
-			return colunas[7];
 		default:
 			return "";
 		}
@@ -65,16 +63,14 @@ public final class ProdutosTableModel extends AbstractTableModel {
 		case 1:
 			return produtos.getNome();
 		case 2:
-			return produtos.getDescricao();
-		case 3:
 			return String.format("%.2f", produtos.getValorBroto());
-		case 4:
+		case 3:
 			return String.format("%.2f", produtos.getValorTradicional());
-		case 5:
+		case 4:
 			return String.format("%.2f", produtos.getValorGrande());
-		case 6:
+		case 5:
 			return String.format("%.2f", produtos.getValorExtraGrande());
-		case 7:
+		case 6:
 			return produtos.getCategoria().getCategoria();
 		default:
 			return "";

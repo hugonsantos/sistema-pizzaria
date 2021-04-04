@@ -92,10 +92,7 @@ public class ProdutosView extends TelaInternaCustom {
 		tableProdutos.setShowVerticalLines(false);
 		tableProdutos.setFocusable(false);
 		tableProdutos.getColumnModel().getColumn(0).setPreferredWidth(10);
-		tableProdutos.getColumnModel().getColumn(1).setPreferredWidth(300);
-		tableProdutos.getColumnModel().getColumn(2).setPreferredWidth(600);
-		tableProdutos.getColumnModel().getColumn(4).setPreferredWidth(100);
-		tableProdutos.getColumnModel().getColumn(6).setPreferredWidth(100);
+		tableProdutos.getColumnModel().getColumn(1).setPreferredWidth(200);
 		TableModelUtil.customizarTable(tableProdutos.getTableHeader());
 		panelListaProdutos.add(tableProdutos);
 		

@@ -1,4 +1,4 @@
-package views.internos.produtos;
+package views.internos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,7 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,7 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -49,26 +48,25 @@ import views.modal.ModalAlerta;
 import views.modal.ModalSelecaoSabores;
 import views.modal.enums.ModalAlertaEnum;
 
-public final class PizzasView extends JInternalFrame {
+public final class PizzasView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private ButtonGroup grupoTamanhos = new ButtonGroup();
 	private ButtonGroup grupoQTDSabores = new ButtonGroup();
 	private ButtonGroup grupoBordas = new ButtonGroup();
 
 	private BordaDao bordaDao = FabricaDao.createBordaDao();
-	
+
 	private ModalAlerta modalAlerta;
 	private ModalSelecaoSabores modalSelecaoSabores = new ModalSelecaoSabores();
-	
-	private CarrinhoView carrinhoView = new CarrinhoView();
+
+	protected static CarrinhoView carrinhoView;
 	
 	private ItemPedido item = new ItemPedido();
 	private Produto produto;
 
 	private JPanel panelCentro;
-	private JPanel panelLateral;
 	private JPanel panelPizzas;
 	private JPanel panelConfigPizza;
 	private JPanel panelTamanho;
@@ -81,6 +79,7 @@ public final class PizzasView extends JInternalFrame {
 	private JPanel panelObservacoes;
 	private JPanel panelQuantidade;
 	private JPanel panelAddCarrinho;
+	private JPanel panelLateral;
 	private JLabel lblSabor1;
 	private JLabel lblSabor2;
 	private JLabel lblSabor3;
@@ -208,7 +207,7 @@ public final class PizzasView extends JInternalFrame {
 		rdbtnTradicional.setContentAreaFilled(false);
 		grupoTamanhos.add(rdbtnTradicional);
 		rdbtnTradicional.setFocusable(false);
-		rdbtnTradicional.setBorder(new EmptyBorder(0, 60, 0, 60));
+		rdbtnTradicional.setBorder(new EmptyBorder(0, 0, 0, 0));
 		rdbtnTradicional.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		panelTamanho.add(rdbtnTradicional);
 		
@@ -719,7 +718,7 @@ public final class PizzasView extends JInternalFrame {
 						
 						byte[] bytesImagem = Base64.decodeBase64(produto.getMiniaturaBase64());
 						
-						lblSabor1.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 150, 150));
+						lblSabor1.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(bytesImagem), 120, 140));
 						lblSabor1.setText(produto.getNome());
 						
 						checkboxConfigPizza.updateUI();
@@ -984,23 +983,33 @@ public final class PizzasView extends JInternalFrame {
 		panelInferior = new JPanel();
 		panelInferior.setPreferredSize(new Dimension(10, 200));
 		panelCentro.add(panelInferior, BorderLayout.SOUTH);
-		panelInferior.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		panelInferior.setLayout(new BoxLayout(panelInferior, BoxLayout.X_AXIS));
+		
+		JLabel espacamento = new JLabel("");
+		espacamento.setPreferredSize(new Dimension(28, 30));
+		panelInferior.add(espacamento);
 		
 		panelObservacoes = new JPanel();
+		panelObservacoes.setBounds(new Rectangle(20, 0, 0, 0));
 		panelObservacoes.setPreferredSize(new Dimension(380, 180));
 		panelInferior.add(panelObservacoes);
-		panelObservacoes.setLayout(new BorderLayout(0, 0));
+		panelObservacoes.setLayout(new BoxLayout(panelObservacoes, BoxLayout.Y_AXIS));
 		
-		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es:");
-		lblObservacoes.setPreferredSize(new Dimension(67, 60));
+		JLabel lblObservacoes = new JLabel("Observa\u00E7\u00F5es");
+		lblObservacoes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblObservacoes.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblObservacoes.setSize(new Dimension(300, 20));
+		lblObservacoes.setPreferredSize(new Dimension(500, 40));
 		lblObservacoes.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
-		panelObservacoes.add(lblObservacoes,BorderLayout.NORTH);
+		panelObservacoes.add(lblObservacoes);
 		
 		txtAreaObservacoes = new JTextArea();
+		txtAreaObservacoes.setMinimumSize(new Dimension(5, 60));
+		txtAreaObservacoes.setPreferredSize(new Dimension(300, 150));
 		txtAreaObservacoes.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
 		txtAreaObservacoes.setLineWrap(true);
 		txtAreaObservacoes.setWrapStyleWord(true);
-		panelObservacoes.add(txtAreaObservacoes, BorderLayout.CENTER);
+		panelObservacoes.add(txtAreaObservacoes);
 		
 		panelQuantidade = new JPanel();
 		panelQuantidade.setSize(new Dimension(100, 0));
@@ -1092,16 +1101,15 @@ public final class PizzasView extends JInternalFrame {
 		btnAddCarrinho.setBorder(null);
 		panelAddCarrinho.add(btnAddCarrinho);
 		
-		Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
+		panelLateral = new JPanel();
+		panelLateral.setLayout(new BorderLayout());
+		getContentPane().add(panelLateral, BorderLayout.EAST);
 		
-		if(tamanhoTela.getWidth() >= 1366) {
-			
-			panelLateral = new JPanel();
-			panelLateral.setLayout(new BorderLayout());
-			getContentPane().add(panelLateral, BorderLayout.EAST);
-			
-			panelLateral.add(carrinhoView, BorderLayout.CENTER);
-			carrinhoView.setVisible(true);
+		if(carrinhoView == null) {
+			carrinhoView = new CarrinhoView();
 		}
+		
+		panelLateral.add(carrinhoView, BorderLayout.CENTER);
+		carrinhoView.setVisible(true);
 	}
 }

@@ -1,11 +1,10 @@
-package views.internos.produtos;
+package views.internos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,7 +28,7 @@ import controllers.CarrinhoController;
 import model.util.ModalUtil;
 import views.modal.ModalDetalhesPedido;
 
-public class CarrinhoView extends JInternalFrame {
+public final class CarrinhoView extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -40,19 +39,6 @@ public class CarrinhoView extends JInternalFrame {
 	
 	private ModalDetalhesPedido modalDetalhesPedido;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CarrinhoView frame = new CarrinhoView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
 	public CarrinhoView() {
 		
 		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -60,7 +46,7 @@ public class CarrinhoView extends JInternalFrame {
 		bi.setNorthPane(null);
 		
 		JPanel panelCarrinho = new JPanel();
-		panelCarrinho.setMinimumSize(new Dimension(250, 10));
+		panelCarrinho.setMinimumSize(new Dimension(200, 10));
 		panelCarrinho.setPreferredSize(new Dimension(260, 55));
 		panelCarrinho.setBackground(Color.GRAY);
 		this.getContentPane().add(panelCarrinho, BorderLayout.EAST);
