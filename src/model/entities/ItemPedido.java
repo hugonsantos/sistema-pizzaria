@@ -8,22 +8,22 @@ public class ItemPedido {
 	private String tamanho;
 	private String observacoes;
 	private Integer quantidade;
-	private Double precoTotal;
+	private Double preco;
 	private String tipoProduto;
 	
 	private List<Produto> produtos = new ArrayList<>();
-	private List<Borda> bordas = new ArrayList<>();
+	private Borda bordas[] = new Borda[2];
 	
 	public ItemPedido() {
 		
 	}
 
-	public ItemPedido(String tamanho, String observacoes, Integer quantidade, Double precoTotal, String tipoProduto) {
+	public ItemPedido(String tamanho, String observacoes, Integer quantidade, Double preco, String tipoProduto) {
 		
 		this.tamanho = tamanho;
 		this.observacoes = observacoes;
 		this.quantidade = quantidade;
-		this.precoTotal = precoTotal;
+		this.preco = preco;
 		this.tipoProduto = tipoProduto;
 	}
 
@@ -51,12 +51,12 @@ public class ItemPedido {
 		this.quantidade = quantidade;
 	}
 
-	public Double getPrecoTotal() {
-		return precoTotal;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setPrecoTotal(Double precoTotal) {
-		this.precoTotal = precoTotal;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
 
 	public String getTipoProduto() {
@@ -83,23 +83,23 @@ public class ItemPedido {
 		produtos.removeAll(produtos);
 	}
 	
-	public List<Borda> getBordas() {
+	public Borda[] getBordas() {
 		return bordas;
 	}
 	
-	public void addBorda(Borda borda) {
-		bordas.add(borda);
+	public void addBorda(int index, Borda borda) {
+		bordas[index] = borda;
 	}
 	
-	public void removerBorda(Borda borda) {
-		bordas.remove(borda);
+	public void removerBorda(int index, Borda borda) {
+		bordas[index] = null;
 	}
 	
 	public void removerBordas() {
-		bordas.removeAll(bordas);
+		
 	}
 
-	public Double calculoPrecoTotal() {
+	public Double definirPreco() {
 		
 		Double maiorValor = 0.0;
 		
@@ -167,17 +167,12 @@ public class ItemPedido {
 		
 		sb.append("<p>Borda(s):</p>");
 		
-		if(bordas.size() != 0) {
-			
-			for(Borda b : bordas) {
-				
-				sb.append("<pre>    " + b.getBorda() + "</pre>");
-			}
-		}
-		else sb.append("<pre>    Sem borda</pre>");
+		if(bordas[0] == null && bordas[1] == null) sb.append("<pre>    Sem borda</pre>");
+		if(bordas[0] != null) sb.append("<pre>    " + bordas[0].getBorda() + "</pre>");
+		if(bordas[1] != null) sb.append("<pre>    " + bordas[1].getBorda() + "</pre>");
 		
 		sb.append("<br>");
-		sb.append("<p style='text-align: center;'>Qtd: " + quantidade + " ____________ Preço: R$" + String.format("%.2f", precoTotal) + "</p>");
+		sb.append("<p style='text-align: center;'>Qtd: " + quantidade + " ____________ Preço: R$" + String.format("%.2f", preco) + "</p>");
 		sb.append("-----------------------------------------------------------------");
 		sb.append("<br>");
 		sb.append("</html>");

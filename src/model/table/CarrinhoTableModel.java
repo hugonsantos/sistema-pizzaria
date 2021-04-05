@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import controllers.CarrinhoController;
-import model.entities.Borda;
 import model.entities.ItemPedido;
 import model.entities.Produto;
 
@@ -52,13 +51,11 @@ public final class CarrinhoTableModel extends AbstractTableModel {
 		case 3:
 			sb = new StringBuilder();
 			
-			if(item.getBordas().size() != 0) {
-				for(Borda b : item.getBordas()) {
-					sb.append(b.getBorda() + "\n");
-				}
-				return sb;
-			}
-			else return "Sem borda";
+			if(item.getBordas()[0] == null && item.getBordas()[1] == null) sb.append("Sem borda");
+			if(item.getBordas()[0] != null) sb.append(item.getBordas()[0].getBorda() + "\n");
+			if(item.getBordas()[1] != null) sb.append(item.getBordas()[1].getBorda() + "\n");
+			
+			return sb;
 		case 4:
 			sb = new StringBuilder();
 			
@@ -77,7 +74,7 @@ public final class CarrinhoTableModel extends AbstractTableModel {
 		case 6:
 			sb = new StringBuilder();
 			
-			sb.append(item.getPrecoTotal());
+			sb.append(String.format("%.2f", item.getPreco()));
 			return sb;
 		default:
 			return null;

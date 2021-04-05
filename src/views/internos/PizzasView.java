@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -16,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -24,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -48,7 +47,7 @@ import views.modal.ModalAlerta;
 import views.modal.ModalSelecaoSabores;
 import views.modal.enums.ModalAlertaEnum;
 
-public final class PizzasView extends TelaInternaCustom {
+public final class PizzasView extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +60,7 @@ public final class PizzasView extends TelaInternaCustom {
 	private ModalAlerta modalAlerta;
 	private ModalSelecaoSabores modalSelecaoSabores = new ModalSelecaoSabores();
 
-	protected static CarrinhoView carrinhoView;
+	protected CarrinhoView carrinhoView;
 	
 	private ItemPedido item = new ItemPedido();
 	private Produto produto;
@@ -104,26 +103,12 @@ public final class PizzasView extends TelaInternaCustom {
 	private JLabel lblBordaSalgada;
 	private JLabel lblBordaDoce;
 	private JLabel lblObsTresSabores;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PizzasView frame = new PizzasView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	public PizzasView() {
 		
-		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
 		bi.setNorthPane(null);
-		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		panelCentro = new JPanel();
 		panelCentro.setAutoscrolls(true);
@@ -254,7 +239,7 @@ public final class PizzasView extends TelaInternaCustom {
 					panelSelecaoBorda.validate();
 				}
 				
-				if(item.getBordas().size() != 0) {
+				if(item.getBordas().length != 0) {
 					
 					item.removerBordas();
 				}
@@ -324,29 +309,23 @@ public final class PizzasView extends TelaInternaCustom {
 				
 				Borda borda = (Borda) cbxBordaSalgada.getSelectedItem();
 				
-				if(item.getBordas().size() < 2) {
+				if(item.getBordas()[0] == null) {
 					
 					if(cbxBordaSalgada.getSelectedIndex() != 0) {
 						
-						item.addBorda(borda);
+						item.addBorda(0, borda);
 					}
 				}
-				else if(item.getBordas().size() >= 2) {
+				else {
 					
-					for(Borda b : item.getBordas()) {
+					if(cbxBordaSalgada.getSelectedIndex() != 0) {
 						
-						if(cbxBordaSalgada.getSelectedIndex() != 0) {
+						item.removerBorda(0, item.getBordas()[0]);
+						item.addBorda(0, borda);
+					}
+					else {
 						
-							if(b.getTipoBorda().equals(borda.getTipoBorda())) {
-								
-								item.removerBorda(b);
-								item.addBorda(borda);
-							}
-						}
-						else {
-							
-							item.removerBorda(b);
-						}
+						item.removerBorda(0, item.getBordas()[0]);
 					}
 				}
 			}
@@ -373,29 +352,23 @@ public final class PizzasView extends TelaInternaCustom {
 				
 				Borda borda = (Borda) cbxBordaDoce.getSelectedItem();
 				
-				if(item.getBordas().size() < 2) {
+				if(item.getBordas()[1] == null) {
 					
 					if(cbxBordaDoce.getSelectedIndex() != 0) {
 						
-						item.addBorda(borda);
+						item.addBorda(1, borda);
 					}
 				}
-				else if(item.getBordas().size() >= 2) {
+				else {
 					
-					for(int i = 0; i < item.getBordas().size(); i++) {
+					if(cbxBordaDoce.getSelectedIndex() != 0) {
 						
-						if(cbxBordaDoce.getSelectedIndex() != 0) {
+						item.removerBorda(1, item.getBordas()[1]);
+						item.addBorda(1, borda);
+					}
+					else {
 						
-							if(item.getBordas().get(i).getTipoBorda().equals(borda.getTipoBorda())) {
-								
-								item.removerBorda(item.getBordas().get(i));
-								item.addBorda(borda);
-							}
-						}
-						else {
-							
-							item.removerBorda(item.getBordas().get(i));
-						}
+						item.removerBorda(1, item.getBordas()[1]);
 					}
 				}
 			}
@@ -1060,10 +1033,10 @@ public final class PizzasView extends TelaInternaCustom {
 				
 				item.setObservacoes(txtAreaObservacoes.getText());
 				item.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
-				item.setPrecoTotal(item.calculoPrecoTotal());
+				item.setPreco(item.definirPreco());
 				item.setTipoProduto("Pizza");
 				
-				CarrinhoController.addProduto(item);
+				CarrinhoController.addItem(item);
 				
 				item = new ItemPedido();
 				

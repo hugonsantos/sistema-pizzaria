@@ -1,15 +1,12 @@
 package views.internos;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
-public class DemaisProdutosView extends JInternalFrame {
+public class DemaisProdutosView extends TelaInternaCustom {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
@@ -28,14 +25,6 @@ public class DemaisProdutosView extends JInternalFrame {
 	}
 
 	public DemaisProdutosView() {
-		
-		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
-		bi.setNorthPane(null);
-		
-		setSize(new Dimension(900, 800));
-	 	setPreferredSize(new Dimension(900, 800));
-	 	setMinimumSize(new Dimension(600, 800));
 		
 	 	table = new JTable();
 	 	

@@ -27,7 +27,7 @@ public class VenderView extends TelaInternaCustom {
 	private static final long serialVersionUID = 1L;
 	
 	private PizzasView pizzasView;
-	private DemaisProdutosView lanchesView;
+	private DemaisProdutosView demaisProdutosView;
 	private final List<JButton> listBotoesLaterais = new ArrayList<>();
 	
 	private JButton btnPizzas;
@@ -90,6 +90,25 @@ public class VenderView extends TelaInternaCustom {
 		
 		btnPorcoes = new JButton("");
 		btnPorcoes.setIcon(ImagensUtil.redimensionarImagem(new ImageIcon(getClass().getResource("/imagens/porcao-64.png")), 34, 34));
+		btnPorcoes.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				demaisProdutosView = null;
+				
+				estadoButton(btnPorcoes);
+				panelProdutos.removeAll();
+				
+				demaisProdutosView = new DemaisProdutosView();
+				
+				panelProdutos.add(demaisProdutosView);
+				demaisProdutosView.setVisible(true);
+				
+				panelProdutos.repaint();
+				panelProdutos.validate();
+			}
+		});
 		listBotoesLaterais.add(btnPorcoes);
 		btnPorcoes.setBorderPainted(false);
 		btnPorcoes.setForeground(Color.WHITE);
@@ -108,15 +127,15 @@ public class VenderView extends TelaInternaCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				estadoButton(btnLanches);
+				demaisProdutosView = null;
 				
+				estadoButton(btnLanches);
 				panelProdutos.removeAll();
 				
-				if(lanchesView == null) {
-					lanchesView = new DemaisProdutosView();
-				}
-				panelProdutos.add(lanchesView);
-				lanchesView.setVisible(true);
+				demaisProdutosView = new DemaisProdutosView();
+				
+				panelProdutos.add(demaisProdutosView);
+				demaisProdutosView.setVisible(true);
 				
 				panelProdutos.repaint();
 				panelProdutos.validate();

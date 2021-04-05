@@ -26,11 +26,6 @@ public abstract class TelaInternaCustom extends JInternalFrame {
 	
 	public TelaInternaCustom() {
 		
-		getContentPane().setBackground(Color.WHITE);
-		
-		setSize(new Dimension(1000, 768));
-		setMinimumSize(new Dimension(1000, 768));
-		
 		setAutoscrolls(true);
 		setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();

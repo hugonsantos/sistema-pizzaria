@@ -2,6 +2,7 @@ package model.util;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -16,6 +17,7 @@ public class TableCelulasCustomizadas extends JTextArea implements TableCellRend
 		setLineWrap(true);
         setWrapStyleWord(true);
         setFont(new Font("Leelawadee UI", Font.BOLD, 12));
+        setMargin(new Insets(15, 10, 2, 10));
 	}
 	
 	@Override
