@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,207 +16,171 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableRowSorter;
 
-import model.entities.Cliente;
-import model.table.ClientesTableModel;
+import model.entities.Produto;
+import model.table.PizzasSalgadasTableModel;
+import model.util.ImagensUtil;
+import model.util.ModalUtil;
+import model.util.TableModelUtil;
 
-public final class ModalSelecaoCliente extends ModalCustom {
+public class ModalSelecaoCliente extends ModalCustom {
 
 	private static final long serialVersionUID = 1L;
-	
-	private ClientesTableModel modelTable = new ClientesTableModel();
-	private DefaultListModel<Object> model = new DefaultListModel<>();
 
-	private JTextField txtEndereco;
-	private JTextField txtNumero;
-	private JTextField txtBairro;
-	private JTextField txtComplemento;
-	private JTextField txtCep;
-	private JTextField txtCidade;
-	private JComboBox<Object> cbxEstado;
-	private JTextField txtPesquisar;
+	private JTable tableClientes;
+
+	private PizzasSalgadasTableModel pizzasSalgadasTableModel = new PizzasSalgadasTableModel();
 	
-	private JList<Object> listClientes;
-	private JList<Object> listEnderecos;
+	private Produto produto;
+
+	private JPanel panelCabecalho;
+	private JPanel panelCabecalhoCliente;
+	private JPanel panelPesquisarCliente;
+	private JPanel panelSelecaoCliente;
+	private JPanel panelClientes;
+	
+	private JScrollPane spCliente;
+	private JTextField txtPesquisarCliente;
+	private JLabel lblClientes;
+	private JLabel lblPesquisarCliente;
+
+	private static Boolean confirmacao = false;
+
+	private Boolean selecaoSabor;
+
+	private Integer quantSabores;
+
+	private String catSabor1 = "";
+	private String catSabor2 = "";
+	private String catSabor3 = "";
+	private String catSabor4 = "";
+
+	public static void main(String[] args) {
+
+		ModalSelecaoSabores ss = new ModalSelecaoSabores();
+
+		ModalUtil.MovimentacaoModal(ss);
+		ss.setLocationRelativeTo(null);
+		ss.setVisible(true);
+	}
 
 	public ModalSelecaoCliente() {
+
+		setBounds(100, 100, 800, 600);
 		
-		JPanel panelEnderecoPrincipal = new JPanel();
-		panelEnderecoPrincipal.setPreferredSize(new Dimension(471, 10));
-		getContentPane().add(panelEnderecoPrincipal);
-		panelEnderecoPrincipal.setLayout(null);
+		JPanel panelSelecao = new JPanel();
+		panelSelecao.setBackground(Color.WHITE);
+		getContentPane().add(panelSelecao, BorderLayout.CENTER);
+		panelSelecao.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblEntrega = new JLabel("Entrega");
-		lblEntrega.setFont(new Font("Leelawadee UI", Font.BOLD, 16));
-		lblEntrega.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEntrega.setBounds(10, 11, 930, 47);
-		panelEnderecoPrincipal.add(lblEntrega);
+		panelCabecalho = new JPanel();
+		panelCabecalho.setPreferredSize(new Dimension(10, 130));
+		panelCabecalho.setBounds(new Rectangle(0, 0, 0, 100));
+		panelCabecalho.setMinimumSize(new Dimension(10, 100));
+		panelSelecao.add(panelCabecalho, BorderLayout.NORTH);
+		panelCabecalho.setLayout(new BoxLayout(panelCabecalho, BoxLayout.X_AXIS));
+		
+		panelCabecalhoCliente = new JPanel();
+		panelCabecalho.add(panelCabecalhoCliente);
+		panelCabecalhoCliente.setLayout(new BorderLayout());
 
-		JLabel lblCepEP = new JLabel("Cep:");
-		lblCepEP.setSize(new Dimension(30, 0));
-		lblCepEP.setPreferredSize(new Dimension(30, 14));
-		lblCepEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCepEP.setBounds(10, 58, 46, 30);
-		panelEnderecoPrincipal.add(lblCepEP);
+		lblPesquisarCliente = new JLabel("Pesquisar cliente:");
+		lblPesquisarCliente.setBorder(new EmptyBorder(0, 0, 0, 130));
+		lblPesquisarCliente.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPesquisarCliente.setFont(new Font("Leelawadee UI", Font.BOLD, 11));
+		panelCabecalhoCliente.add(lblPesquisarCliente, BorderLayout.NORTH);
 
-		txtCep = new JTextField();
-		txtCep.addKeyListener(new KeyAdapter() {
-			
+		panelPesquisarCliente = new JPanel();
+		panelPesquisarCliente.setPreferredSize(new Dimension(230, 10));
+		panelCabecalhoCliente.add(panelPesquisarCliente, BorderLayout.EAST);
+		
+		txtPesquisarCliente = new JTextField();
+		txtPesquisarCliente.setPreferredSize(new Dimension(220, 25));
+		txtPesquisarCliente.addKeyListener(new KeyAdapter() {
+
+			private void doClick() {
+
+				@SuppressWarnings("unchecked")
+				final TableRowSorter<PizzasSalgadasTableModel> sorter = (TableRowSorter<PizzasSalgadasTableModel>) TableModelUtil
+						.filtrarTabela(tableClientes, txtPesquisarCliente.getText(), 1);
+				tableClientes.setRowSorter(sorter);
+			}
+
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
-				if(listClientes.getSelectedIndex() != -1) {
-					
-					listClientes.clearSelection();
-					
-					listEnderecos.setModel(new DefaultListModel<>());
-					listEnderecos.revalidate();
+
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+
+					if (txtPesquisarCliente.getText().length() - 1 == 0) {
+
+						tableClientes.setRowSorter(null);
+						tableClientes.revalidate();
+					}
 				}
+				else if (txtPesquisarCliente.getText().length() + 1 > 0)
+					doClick();
 			}
 		});
-		txtCep.setColumns(10);
-		txtCep.setBounds(10, 88, 150, 30);
-		panelEnderecoPrincipal.add(txtCep);
-
-		JLabel lblEnderecoEP = new JLabel("Endere\u00E7o:");
-		lblEnderecoEP.setSize(new Dimension(30, 0));
-		lblEnderecoEP.setPreferredSize(new Dimension(30, 14));
-		lblEnderecoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblEnderecoEP.setBounds(10, 129, 76, 30);
-		panelEnderecoPrincipal.add(lblEnderecoEP);
-
-		txtEndereco = new JTextField();
-		txtEndereco.setBounds(10, 159, 451, 30);
-		panelEnderecoPrincipal.add(txtEndereco);
-		txtEndereco.setColumns(10);
-
-		JLabel lblNumeroEP = new JLabel("N\u00B0:");
-		lblNumeroEP.setSize(new Dimension(30, 0));
-		lblNumeroEP.setPreferredSize(new Dimension(30, 14));
-		lblNumeroEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNumeroEP.setBounds(485, 129, 37, 30);
-		panelEnderecoPrincipal.add(lblNumeroEP);
-
-		txtNumero = new JTextField();
-		txtNumero.setColumns(10);
-		txtNumero.setBounds(485, 159, 76, 30);
-		panelEnderecoPrincipal.add(txtNumero);
-
-		JLabel lblBairroEP = new JLabel("Bairro:");
-		lblBairroEP.setSize(new Dimension(30, 0));
-		lblBairroEP.setPreferredSize(new Dimension(30, 14));
-		lblBairroEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblBairroEP.setBounds(583, 129, 58, 30);
-		panelEnderecoPrincipal.add(lblBairroEP);
-
-		txtBairro = new JTextField();
-		txtBairro.setColumns(10);
-		txtBairro.setBounds(583, 159, 357, 30);
-		panelEnderecoPrincipal.add(txtBairro);
-
-		JLabel lblComplementoEP = new JLabel("Complemento:");
-		lblComplementoEP.setSize(new Dimension(30, 0));
-		lblComplementoEP.setPreferredSize(new Dimension(30, 14));
-		lblComplementoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblComplementoEP.setBounds(10, 200, 117, 30);
-		panelEnderecoPrincipal.add(lblComplementoEP);
-
-		txtComplemento = new JTextField();
-		txtComplemento.setColumns(10);
-		txtComplemento.setBounds(10, 230, 451, 30);
-		panelEnderecoPrincipal.add(txtComplemento);
-
-		JLabel lblCidadeEP = new JLabel("Cidade:");
-		lblCidadeEP.setSize(new Dimension(30, 0));
-		lblCidadeEP.setPreferredSize(new Dimension(30, 14));
-		lblCidadeEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblCidadeEP.setBounds(485, 200, 117, 30);
-		panelEnderecoPrincipal.add(lblCidadeEP);
-
-		txtCidade = new JTextField();
-		txtCidade.setColumns(10);
-		txtCidade.setBounds(485, 229, 357, 30);
-		panelEnderecoPrincipal.add(txtCidade);
-
-		JLabel lblEstadoEP = new JLabel("Estado:");
-		lblEstadoEP.setSize(new Dimension(30, 0));
-		lblEstadoEP.setPreferredSize(new Dimension(30, 14));
-		lblEstadoEP.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblEstadoEP.setBounds(860, 200, 58, 30);
-		panelEnderecoPrincipal.add(lblEstadoEP);
-
-		cbxEstado = new JComboBox<>();
-		cbxEstado.setModel(new DefaultComboBoxModel<Object>(
-				new String[] { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB",
-						"PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO" }));
-		cbxEstado.setBounds(860, 229, 80, 30);
-		panelEnderecoPrincipal.add(cbxEstado);
+		txtPesquisarCliente.setBorder(null);
+		txtPesquisarCliente.setToolTipText("Pesquise pelo nome da pizza salgada!");
+		panelPesquisarCliente.add(txtPesquisarCliente);
 		
-		txtPesquisar = new JTextField();
-		txtPesquisar.setColumns(10);
-		txtPesquisar.setBounds(681, 309, 259, 30);
-		panelEnderecoPrincipal.add(txtPesquisar);
+		lblClientes = new JLabel("Clientes");
+		lblClientes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblClientes.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblClientes.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		panelCabecalhoCliente.add(lblClientes, BorderLayout.SOUTH);
+
+		panelSelecaoCliente = new JPanel();
+		panelSelecaoCliente.setBorder(null);
+		panelSelecaoCliente.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		panelSelecaoCliente.setAlignmentY(Component.CENTER_ALIGNMENT);
+		panelSelecaoCliente.setLayout(new BoxLayout(panelSelecaoCliente, BoxLayout.X_AXIS));
+		panelSelecao.add(panelSelecaoCliente);
 		
-		JLabel lblPesquisa = new JLabel("Pesquisar:");
-		lblPesquisa.setSize(new Dimension(30, 0));
-		lblPesquisa.setPreferredSize(new Dimension(30, 14));
-		lblPesquisa.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblPesquisa.setBounds(607, 309, 76, 28);
-		panelEnderecoPrincipal.add(lblPesquisa);
+		panelClientes = new JPanel();
+		panelSelecaoCliente.add(panelClientes);
 		
-		listClientes = new JList<>();
-		listClientes.addMouseListener(new MouseAdapter() {
-			
+		tableClientes = new JTable();
+		tableClientes.setSelectionForeground(Color.WHITE);
+		tableClientes.setSelectionBackground(Color.DARK_GRAY);
+		tableClientes.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mousePressed(MouseEvent e) {
+
 				
-				if(listClientes.getSelectedIndex() != -1) {
-					
-					txtCep.setText("");
-					txtEndereco.setText("");
-					txtNumero.setText("");
-					txtBairro.setText("");
-					txtComplemento.setText("");
-					txtCidade.setText("");
-					cbxEstado.setSelectedIndex(0);
-					
-					Cliente cliente = (Cliente) listClientes.getSelectedValue();
-					
-					DefaultListModel<Object> model = new DefaultListModel<>();
-					model.addAll(modelTable.capturarEnderecos(cliente.getId()));
-					
-					listEnderecos.setModel(model);
-					listEnderecos.revalidate();
-				}
 			}
 		});
-		model.addAll(modelTable.capturarClientes());
-		listClientes.setModel(model);
-		
-		JScrollPane scrollListClientes = new JScrollPane(listClientes);
-		scrollListClientes.setBounds(10, 348, 306, 184);
-		scrollListClientes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollListClientes.getVerticalScrollBar().setUnitIncrement(30);
-		panelEnderecoPrincipal.add(scrollListClientes);
-		
-		listEnderecos = new JList<>();
-		
-		JScrollPane scrollListEnderecos = new JScrollPane(listEnderecos);
-		scrollListEnderecos.setBounds(326, 348, 614, 184);
-		scrollListEnderecos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollListEnderecos.getVerticalScrollBar().setUnitIncrement(30);
-		panelEnderecoPrincipal.add(scrollListEnderecos);
-		
+		tableClientes.setModel(pizzasSalgadasTableModel);
+		tableClientes.setFont(new Font("Leelawadee UI", Font.BOLD, 12));
+		tableClientes.setShowVerticalLines(false);
+		tableClientes.setBorder(null);
+		tableClientes.setFocusable(false);
+		tableClientes.setRowHeight(180);
+		tableClientes.getColumnModel().getColumn(0).setCellRenderer(new ImagensUtil());
+		tableClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tableClientes.getColumnModel().getColumn(2).setPreferredWidth(10);
+		panelClientes.setLayout(new BoxLayout(panelClientes, BoxLayout.X_AXIS));
+
+		spCliente = new JScrollPane(tableClientes);
+		spCliente.setColumnHeaderView(tableClientes.getTableHeader());
+		spCliente.getColumnHeader().setVisible(false);
+		spCliente.getViewport().setBackground(Color.WHITE);
+		spCliente.setViewportBorder(null);
+		spCliente.setBorder(null);
+		panelClientes.add(spCliente);
+
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBorder(null);
 		panelAcoes.setBackground(Color.DARK_GRAY);
@@ -227,25 +192,17 @@ public final class ModalSelecaoCliente extends ModalCustom {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				txtCep.setText("");
-				txtEndereco.setText("");
-				txtNumero.setText("");
-				txtBairro.setText("");
-				txtComplemento.setText("");
-				txtCidade.setText("");
-				cbxEstado.setSelectedIndex(0);
 				
-				if(listClientes.getSelectedIndex() != -1) {
-					
-					listClientes.clearSelection();
+				if (tableClientes.getSelectedRow() != -1) tableClientes.clearSelection();
 
-					listEnderecos.setModel(new DefaultListModel<>());
-					listEnderecos.revalidate();
+				if ( ! txtPesquisarCliente.getText().equals("")) {
+					
+					txtPesquisarCliente.setText("");
+					tableClientes.setRowSorter(null);
+					tableClientes.revalidate();
 				}
 
 				btnLimparSelecao.setBackground(Color.DARK_GRAY);
-				dispose();
 			}
 		});
 		btnLimparSelecao.addMouseListener(new MouseAdapter() {
@@ -279,7 +236,24 @@ public final class ModalSelecaoCliente extends ModalCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				
+				if(tableClientes.getSelectedRow() != -1) {
+
+					if (tableClientes.getRowSorter() != null) {
+
+						produto = pizzasSalgadasTableModel.capturarSelecionado(tableClientes.getRowSorter()
+								.convertRowIndexToModel(tableClientes.getSelectedRow()));
+					}
+					else {
+
+						produto = pizzasSalgadasTableModel.capturarSelecionado(tableClientes.getSelectedRow());
+					}
+					
+					confirmacao = true;
+				}
+
+				tableClientes.clearSelection();
+
+				if (!txtPesquisarCliente.getText().equals("")) txtPesquisarCliente.setText(""); tableClientes.setRowSorter(null); tableClientes.revalidate();
 				
 				btnSelecionar.setBackground(Color.DARK_GRAY);
 				dispose();
@@ -317,7 +291,13 @@ public final class ModalSelecaoCliente extends ModalCustom {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				
+				confirmacao = false;
+
+				tableClientes.clearSelection();
+
+				if (!txtPesquisarCliente.getText().equals("")) txtPesquisarCliente.setText(""); tableClientes.setRowSorter(null); tableClientes.revalidate();
+
+				btnCancelar.setBackground(Color.DARK_GRAY);
 				dispose();
 			}
 		});
@@ -346,5 +326,171 @@ public final class ModalSelecaoCliente extends ModalCustom {
 		btnCancelar.setBorderPainted(false);
 		btnCancelar.setBorder(null);
 		panelAcoes.add(btnCancelar);
+	}
+
+	public Boolean getSelecaoSabor() {
+		return selecaoSabor;
+	}
+
+	public void setSelecaoSabor(Boolean selecaoSabor) {
+		this.selecaoSabor = selecaoSabor;
+	}
+
+	public Integer getQuantSabores() {
+		return quantSabores;
+	}
+
+	public void setQuantSabores(Integer quantSabores) {
+		this.quantSabores = quantSabores;
+	}
+
+	public String getCatSabor1() {
+		return catSabor1;
+	}
+
+	public void setCatSabor1(String catSabor1) {
+		this.catSabor1 = catSabor1;
+	}
+
+	public String getCatSabor2() {
+		return catSabor2;
+	}
+
+	public void setCatSabor2(String catSabor2) {
+		this.catSabor2 = catSabor2;
+	}
+
+	public String getCatSabor3() {
+		return catSabor3;
+	}
+
+	public void setCatSabor3(String catSabor3) {
+		this.catSabor3 = catSabor3;
+	}
+
+	public String getCatSabor4() {
+		return catSabor4;
+	}
+
+	public void setCatSabor4(String catSabor4) {
+		this.catSabor4 = catSabor4;
+	}
+
+	public void ativarTabelas(Boolean ativarTableSalagada, Boolean ativarTableDoce) {
+		
+		if(ativarTableSalagada && ativarTableDoce) {
+			
+			spCliente.setVisible(ativarTableSalagada);
+			panelCabecalhoCliente.setVisible(ativarTableSalagada);
+			
+			panelCabecalho.revalidate();
+		}
+		else if(ativarTableSalagada) {
+			
+			alinharCabecalhoSalgada();
+		}
+		else {
+			
+			alinharCabecalhoDoce();
+		}
+	}
+	
+	public void controleTablePizzas(Boolean check) {
+		
+		if (check) {
+
+			if (quantSabores == 4) {
+
+				if ( ! catSabor1.equals("")) {
+
+					if(catSabor1.equals("Pizza salgada") && catSabor2.equals("Pizza salgada") && catSabor3.equals("Pizza salgada")) {
+						
+						alinharCabecalhoDoce();
+					}
+					else if(catSabor1.equals("Pizza doce") && catSabor2.equals("Pizza doce") && catSabor3.equals("Pizza doce")) {
+						
+						alinharCabecalhoSalgada();
+					}
+				}
+			}
+			else if (quantSabores == 3 || quantSabores == 2) {
+
+				if (catSabor1.equals("Pizza salgada")) {
+
+					alinharCabecalhoDoce();
+				}
+				else if (catSabor1.equals("Pizza doce")) {
+
+					alinharCabecalhoSalgada();
+				}
+			}
+		}
+		else if (catSabor1.equals("Pizza doce")) {
+
+			alinharCabecalhoDoce();
+		}
+		else if (catSabor1.equals("Pizza salgada")) {
+
+			alinharCabecalhoSalgada();
+		}
+	}
+	
+	private void alinharCabecalhoSalgada() {
+		
+		spCliente.setVisible(true);
+		
+		panelCabecalhoCliente.setVisible(true);
+		
+		panelCabecalho.revalidate();
+	}
+	
+	private void alinharCabecalhoDoce() {
+		
+		spCliente.setVisible(false);
+		
+		panelCabecalhoCliente.setVisible(false);
+		
+		panelCabecalho.revalidate();
+	}
+
+	public void limparConfirmacao() {
+
+		confirmacao = false;
+	}
+
+	public Boolean produtoSelecionado() {
+		
+		if (confirmacao) return confirmacao; else return false;
+	}
+
+	public Produto retornarProdutoSelecionado() {
+
+		return produto;
+	}
+	
+	public String verificarCategorias(Boolean check, Produto p) {
+		
+		String confirmacao = "";
+		
+		if(check) {
+			
+			if(p != null) {
+				
+				if(getCatSabor1().equals(p.getCategoria().getCategoria()) && getCatSabor2().equals(p.getCategoria().getCategoria()) && 
+						getCatSabor3().equals(p.getCategoria().getCategoria()) && getCatSabor4().equals(p.getCategoria().getCategoria())) {
+					
+					if(p.getCategoria().getCategoria().equals("Pizza salgada")) {
+						
+						confirmacao = "Desculpe, pelo menos um sabor deve ser doce!";
+					}
+					else {
+						
+						confirmacao = "Desculpe, pelo menos um sabor deve ser salgada!";
+					}
+				}
+			}
+		}
+		
+		return confirmacao;
 	}
 }

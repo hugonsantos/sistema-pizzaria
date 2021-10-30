@@ -15,8 +15,8 @@ public final class PizzasDocesTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ProdutoDao produtosDao = FabricaDao.createProdutoDao();
-	private List<Produto> list = produtosDao.buscarProdutosCategoria("Pizza doce");
+	private ProdutoDao produtoDao = FabricaDao.createProdutoDao();
+	private List<Produto> list = produtoDao.buscarProdutosCategoria("Pizza doce");
 	
 	@Override
 	public int getRowCount() {
@@ -64,5 +64,10 @@ public final class PizzasDocesTableModel extends AbstractTableModel {
 		
 		Produto produto = list.get(linha);
 		return produto;
+	}
+	
+	public void atualizar() {
+		
+		list = produtoDao.buscarProdutosCategoria("Pizza doce");
 	}
 }

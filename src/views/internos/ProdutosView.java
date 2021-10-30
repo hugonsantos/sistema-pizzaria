@@ -73,7 +73,7 @@ public class ProdutosView extends TelaInternaCustom {
 		
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setBackground(Color.WHITE);
-		lblProdutos.setPreferredSize(new Dimension(43, 100));
+		lblProdutos.setPreferredSize(new Dimension(43, 50));
 		lblProdutos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProdutos.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
 		panelProdutos.add(lblProdutos, BorderLayout.NORTH);

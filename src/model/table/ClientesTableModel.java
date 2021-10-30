@@ -14,7 +14,7 @@ public final class ClientesTableModel extends AbstractTableModel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String[] colunas = {"Id", "Nome", "CPF"};
+	private String[] colunas = {"Id", "Nome", "Telefone fixo", "Celular"};
 	
 	private ClienteDao clientesDao = FabricaDao.createClienteDao();
 	private EnderecoDao enderecosDao = FabricaDao.createEnderecoDao();
@@ -41,6 +41,8 @@ public final class ClientesTableModel extends AbstractTableModel{
 			return colunas[1];
 		case 2:
 			return colunas[2];
+		case 3:
+			return colunas[3];
 		default:
 			return "";
 		}
@@ -58,7 +60,9 @@ public final class ClientesTableModel extends AbstractTableModel{
 		case 1: 
 			return clientes.getNome();
 		case 2:
-			return clientes.getCpf();
+			return clientes.getTelfixo();
+		case 3:
+			return clientes.getCelular();
 		default:
 			return "";
 		}	

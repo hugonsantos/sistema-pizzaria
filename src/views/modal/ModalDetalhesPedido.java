@@ -15,15 +15,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import model.table.CarrinhoTableModel;
-import model.util.TableCelulasCustomizadas;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import controllers.CarrinhoController;
+import model.table.CarrinhoTableModel;
+import model.util.CalculoFreteUtil;
+import model.util.ModalUtil;
+import model.util.TableCelulasCustomizadas;
 
 public final class ModalDetalhesPedido extends ModalCustom {
 
@@ -31,7 +37,18 @@ public final class ModalDetalhesPedido extends ModalCustom {
 	
 	private TableCelulasCustomizadas cel = new TableCelulasCustomizadas();
 	private CarrinhoTableModel model = new CarrinhoTableModel();
+	
+	private ModalPagamento modalPagamento = null;
+	
 	private JTable tableProdutos;
+	private JTextField txtCep;
+	private JTextField txtEndereco;
+	private JTextField txtNumero;
+	private JTextField txtBairro;
+	private JTextField txtComplemento;
+	private JTextField txtCidade;
+	private JTextField txtNome;
+	private JTextField txtTelefone;
 
 	public ModalDetalhesPedido() {
 		
@@ -44,7 +61,7 @@ public final class ModalDetalhesPedido extends ModalCustom {
 		
 		JLabel lblDetalhesPedido = new JLabel("Detalhes do pedido");
 		lblDetalhesPedido.setBackground(Color.WHITE);
-		lblDetalhesPedido.setPreferredSize(new Dimension(92, 70));
+		lblDetalhesPedido.setPreferredSize(new Dimension(92, 50));
 		lblDetalhesPedido.setBounds(new Rectangle(0, 0, 0, 50));
 		lblDetalhesPedido.setFont(new Font("Leelawadee UI", Font.BOLD, 17));
 		lblDetalhesPedido.setHorizontalAlignment(SwingConstants.CENTER);
@@ -85,8 +102,205 @@ public final class ModalDetalhesPedido extends ModalCustom {
 		spTableProdutos.setFont(new Font("Leelawadee UI", Font.PLAIN, 14));
 		spTableProdutos.setBorder(new EmptyBorder(0, 0, 0, 0));
 		spTableProdutos.setFocusable(false);
-		spTableProdutos.setBounds(10, 11, 1024, 425);
+		spTableProdutos.setBounds(10, 11, 1004, 366);
 		panelListPrdodutos.add(spTableProdutos);
+		
+		JPanel panelDadosCliente = new JPanel();
+		panelDadosCliente.setBackground(Color.WHITE);
+		panelDadosCliente.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelDadosCliente.setPreferredSize(new Dimension(10, 250));
+		panelDetalhesPedido.add(panelDadosCliente, BorderLayout.SOUTH);
+		panelDadosCliente.setLayout(null);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setSize(new Dimension(37, 25));
+		lblNome.setPreferredSize(new Dimension(30, 20));
+		lblNome.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNome.setBounds(11, 11, 50, 25);
+		panelDadosCliente.add(lblNome);
+		
+		txtNome = new JTextField();
+		txtNome.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+		txtNome.setColumns(10);
+		txtNome.setBounds(10, 39, 214, 25);
+		panelDadosCliente.add(txtNome);
+		
+		JLabel lblTelefone = new JLabel("Telefone:");
+		lblTelefone.setSize(new Dimension(37, 25));
+		lblTelefone.setPreferredSize(new Dimension(30, 20));
+		lblTelefone.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblTelefone.setBounds(251, 11, 73, 25);
+		panelDadosCliente.add(lblTelefone);
+		
+		txtTelefone = new JTextField();
+		txtTelefone.setColumns(10);
+		txtTelefone.setBounds(251, 39, 155, 25);
+		panelDadosCliente.add(txtTelefone);
+		
+		JLabel lblCep = new JLabel("Cep:");
+		lblCep.setLocation(499, 11);
+		lblCep.setSize(new Dimension(37, 25));
+		lblCep.setPreferredSize(new Dimension(30, 20));
+		lblCep.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblCep);
+		
+		txtCep = new JTextField();
+		txtCep.setBounds(499, 39, 120, 25);
+		txtCep.setColumns(10);
+		panelDadosCliente.add(txtCep);
+		
+		JLabel lblEndereco = new JLabel("Endere\u00E7o:");
+		lblEndereco.setLocation(10, 87);
+		lblEndereco.setSize(new Dimension(81, 25));
+		lblEndereco.setPreferredSize(new Dimension(30, 20));
+		lblEndereco.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblEndereco);
+		
+		txtEndereco = new JTextField();
+		txtEndereco.setBounds(10, 114, 351, 25);
+		txtEndereco.setColumns(10);
+		panelDadosCliente.add(txtEndereco);
+		
+		JLabel lblNumero = new JLabel("N\u00B0:");
+		lblNumero.setLocation(388, 87);
+		lblNumero.setSize(new Dimension(30, 25));
+		lblNumero.setPreferredSize(new Dimension(30, 20));
+		lblNumero.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblNumero);
+		
+		txtNumero = new JTextField();
+		txtNumero.setBounds(388, 114, 86, 25);
+		txtNumero.setColumns(10);
+		panelDadosCliente.add(txtNumero);
+		
+		JLabel lblBairro = new JLabel("Bairro:");
+		lblBairro.setLocation(499, 87);
+		lblBairro.setSize(new Dimension(56, 25));
+		lblBairro.setPreferredSize(new Dimension(30, 20));
+		lblBairro.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblBairro);
+		
+		txtBairro = new JTextField();
+		txtBairro.setBounds(499, 114, 238, 25);
+		txtBairro.setColumns(10);
+		panelDadosCliente.add(txtBairro);
+		
+		JLabel lblComplemento = new JLabel("Complemento:");
+		lblComplemento.setLocation(10, 165);
+		lblComplemento.setSize(new Dimension(108, 25));
+		lblComplemento.setPreferredSize(new Dimension(30, 20));
+		lblComplemento.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblComplemento);
+		
+		txtComplemento = new JTextField();
+		txtComplemento.setBounds(10, 193, 351, 25);
+		txtComplemento.setColumns(10);
+		panelDadosCliente.add(txtComplemento);
+		
+		JLabel lblCidade = new JLabel("Cidade:");
+		lblCidade.setLocation(388, 165);
+		lblCidade.setSize(new Dimension(61, 25));
+		lblCidade.setPreferredSize(new Dimension(30, 20));
+		lblCidade.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblCidade);
+		
+		txtCidade = new JTextField();
+		txtCidade.setBounds(388, 193, 263, 25);
+		txtCidade.setColumns(10);
+		panelDadosCliente.add(txtCidade);
+		
+		JLabel lblEstado = new JLabel("Estado:");
+		lblEstado.setLocation(681, 165);
+		lblEstado.setSize(new Dimension(56, 25));
+		lblEstado.setPreferredSize(new Dimension(30, 20));
+		lblEstado.setFont(new Font("Dialog", Font.BOLD, 14));
+		panelDadosCliente.add(lblEstado);
+		
+		JComboBox<Object> cbxEstado = new JComboBox<Object>();
+		cbxEstado.setBounds(681, 193, 56, 25);
+		panelDadosCliente.add(cbxEstado);
+		
+		JButton btnSelecionarCliente = new JButton("Buscar cliente");
+		btnSelecionarCliente.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSelecionarCliente.setFocusable(false);
+		btnSelecionarCliente.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		btnSelecionarCliente.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+
+				btnSelecionarCliente.setForeground(Color.BLACK);
+				btnSelecionarCliente.setBackground(new Color(173, 216, 230));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+				btnSelecionarCliente.setForeground(Color.WHITE);
+				btnSelecionarCliente.setBackground(Color.DARK_GRAY);
+			}
+		});
+		btnSelecionarCliente.setForeground(Color.WHITE);
+		btnSelecionarCliente.setBorder(null);
+		btnSelecionarCliente.setBackground(Color.GRAY);
+		btnSelecionarCliente.setFont(new Font("Leelawadee", Font.BOLD, 12));
+		btnSelecionarCliente.setBounds(671, 10, 113, 30);
+		panelDadosCliente.add(btnSelecionarCliente);
+		
+		JPanel panelValores = new JPanel();
+		panelValores.setBackground(Color.WHITE);
+		panelValores.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelValores.setBounds(794, 0, 230, 250);
+		panelDadosCliente.add(panelValores);
+		panelValores.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
+		
+		JLabel lblSubTotal = new JLabel("Sub total:");
+		lblSubTotal.setIconTextGap(15);
+		lblSubTotal.setBounds(new Rectangle(5, 0, 0, 0));
+		lblSubTotal.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblSubTotal.setPreferredSize(new Dimension(210, 14));
+		lblSubTotal.setFont(new Font("Leelawadee", Font.BOLD, 15));
+		panelValores.add(lblSubTotal);
+		
+		JLabel lblValorSubTotal = new JLabel("R$" + String.format("%.2f", CarrinhoController.total()));
+		lblValorSubTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		lblValorSubTotal.setPreferredSize(new Dimension(210, 14));
+		lblValorSubTotal.setFont(new Font("Leelawadee", Font.BOLD, 15));
+		panelValores.add(lblValorSubTotal);
+		
+		JLabel lblFrete = new JLabel("Frete:");
+		lblFrete.setPreferredSize(new Dimension(210, 14));
+		lblFrete.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblFrete.setFont(new Font("Leelawadee", Font.BOLD, 15));
+		panelValores.add(lblFrete);
+		
+		JLabel lblValorFrete = new JLabel((CalculoFreteUtil.calcularFrete() == 0)? "Gratis" : "R$" + String.format("%.2f", CalculoFreteUtil.calcularFrete()));
+		lblValorFrete.setPreferredSize(new Dimension(210, 14));
+		lblValorFrete.setHorizontalAlignment(SwingConstants.CENTER);
+		lblValorFrete.setFont(new Font("Leelawadee", Font.BOLD, 15));
+		lblValorFrete.setAlignmentX(0.5f);
+		panelValores.add(lblValorFrete);
+		
+		JLabel lblTotal = new JLabel("Total:");
+		lblTotal.setPreferredSize(new Dimension(210, 14));
+		lblTotal.setFont(new Font("Leelawadee", Font.BOLD, 18));
+		lblTotal.setAlignmentX(0.5f);
+		panelValores.add(lblTotal);
+		
+		JLabel lblValorTotal = new JLabel("R$" + String.format("%.2f", CarrinhoController.total() + CalculoFreteUtil.calcularFrete()));
+		lblValorTotal.setPreferredSize(new Dimension(210, 20));
+		lblValorTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		lblValorTotal.setFont(new Font("Leelawadee", Font.BOLD, 18));
+		lblValorTotal.setAlignmentX(0.5f);
+		panelValores.add(lblValorTotal);
 		
 		JPanel panelAcoes = new JPanel();
 		panelAcoes.setBorder(null);
@@ -94,116 +308,80 @@ public final class ModalDetalhesPedido extends ModalCustom {
 		panelAcoes.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(panelAcoes, BorderLayout.SOUTH);
 
-		JButton btnLimparSelecao = new JButton("Limpar sele\u00E7\u00E3o");
-		btnLimparSelecao.addActionListener(new ActionListener() {
+		JButton btnContinuar = new JButton("Continuar");
+		btnContinuar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				dispose();
 				
-
-				btnLimparSelecao.setBackground(Color.DARK_GRAY);
+				modalPagamento = new ModalPagamento();
+				ModalUtil.MovimentacaoModal(modalPagamento);
+				modalPagamento.setLocationRelativeTo(null);
+				modalPagamento.setVisible(true);
 			}
 		});
-		btnLimparSelecao.addMouseListener(new MouseAdapter() {
+		btnContinuar.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 
-				btnLimparSelecao.setBackground(new Color(173, 216, 230));
+				btnContinuar.setBackground(Color.GREEN);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				btnLimparSelecao.setBackground(Color.DARK_GRAY);
+				btnContinuar.setBackground(Color.DARK_GRAY);
 			}
 		});
-		btnLimparSelecao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnLimparSelecao.setPreferredSize(new Dimension(100, 23));
-		btnLimparSelecao.setMargin(new Insets(0, 0, 0, 0));
-		btnLimparSelecao.setForeground(Color.WHITE);
-		btnLimparSelecao.setFont(new Font("Leelawadee", Font.BOLD, 12));
-		btnLimparSelecao.setFocusable(false);
-		btnLimparSelecao.setBorder(null);
-		btnLimparSelecao.setBackground(Color.DARK_GRAY);
-		btnLimparSelecao.setLayout(new FlowLayout(FlowLayout.LEFT));
-		panelAcoes.add(btnLimparSelecao);
+		btnContinuar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnContinuar.setMargin(new Insets(0, 0, 0, 0));
+		btnContinuar.setFocusable(false);
+		btnContinuar.setFont(new Font("Leelawadee", Font.BOLD, 12));
+		btnContinuar.setForeground(Color.WHITE);
+		btnContinuar.setBackground(Color.DARK_GRAY);
+		btnContinuar.setPreferredSize(new Dimension(70, 23));
+		btnContinuar.setBorder(null);
+		btnContinuar.setActionCommand("OK");
+		panelAcoes.add(btnContinuar);
+		getRootPane().setDefaultButton(btnContinuar);
 
-		JButton btnSelecionar = new JButton("Selecionar");
-		btnSelecionar.addActionListener(new ActionListener() {
+		JButton btnReverItens = new JButton("Rever itens");
+		btnReverItens.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				
-				
-				btnSelecionar.setBackground(Color.DARK_GRAY);
+				btnReverItens.setBackground(Color.DARK_GRAY);
 				dispose();
 			}
 		});
-		btnSelecionar.addMouseListener(new MouseAdapter() {
+		btnReverItens.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnReverItens.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnReverItens.setMargin(new Insets(0, 0, 0, 0));
+		btnReverItens.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 
-				btnSelecionar.setBackground(new Color(173, 216, 230));
+				btnReverItens.setBackground(Color.RED);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				btnSelecionar.setBackground(Color.DARK_GRAY);
+				btnReverItens.setBackground(Color.DARK_GRAY);
 			}
 		});
-		btnSelecionar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSelecionar.setMargin(new Insets(0, 0, 0, 0));
-		btnSelecionar.setFocusable(false);
-		btnSelecionar.setFont(new Font("Leelawadee", Font.BOLD, 12));
-		btnSelecionar.setForeground(Color.WHITE);
-		btnSelecionar.setBackground(Color.DARK_GRAY);
-		btnSelecionar.setPreferredSize(new Dimension(70, 23));
-		btnSelecionar.setBorder(null);
-		btnSelecionar.setActionCommand("OK");
-		panelAcoes.add(btnSelecionar);
-		getRootPane().setDefaultButton(btnSelecionar);
-
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				
-				
-				btnLimparSelecao.setBackground(Color.DARK_GRAY);
-				dispose();
-			}
-		});
-		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnCancelar.setMargin(new Insets(0, 0, 0, 0));
-		btnCancelar.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				btnCancelar.setBackground(Color.RED);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-				btnCancelar.setBackground(Color.DARK_GRAY);
-			}
-		});
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("Leelawadee", Font.BOLD, 12));
-		btnCancelar.setFocusable(false);
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setPreferredSize(new Dimension(70, 23));
-		btnCancelar.setBorderPainted(false);
-		btnCancelar.setBorder(null);
-		panelAcoes.add(btnCancelar);
+		btnReverItens.setForeground(Color.WHITE);
+		btnReverItens.setFont(new Font("Leelawadee", Font.BOLD, 12));
+		btnReverItens.setFocusable(false);
+		btnReverItens.setBackground(Color.DARK_GRAY);
+		btnReverItens.setPreferredSize(new Dimension(80, 23));
+		btnReverItens.setBorderPainted(false);
+		btnReverItens.setBorder(null);
+		panelAcoes.add(btnReverItens);
 	}
 }

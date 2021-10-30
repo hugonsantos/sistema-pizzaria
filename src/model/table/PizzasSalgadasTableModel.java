@@ -65,4 +65,9 @@ public final class PizzasSalgadasTableModel extends AbstractTableModel {
 		Produto produto = list.get(linha);
 		return produto;
 	}
+	
+	public void atualizar() {
+		
+		list = produtoDao.buscarProdutosCategoria("Pizza salgada");
+	}
 }

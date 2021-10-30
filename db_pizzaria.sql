@@ -41,6 +41,8 @@ create table clientes (
 	nome varchar(60) not null,
 	genero varchar(10) not null,
 	cpf varchar(13),
+    telfixo varchar(10),
+    celular varchar(11),
 
 	primary key(id)
 );

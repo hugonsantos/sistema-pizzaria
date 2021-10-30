@@ -27,7 +27,7 @@ public class ClienteSourceDao implements ClienteDao{
 
 		int id = 0;
 		
-		sql = "insert into clientes(nome, genero, cpf) values(?, ?, ?)";
+		sql = "insert into clientes(nome, genero, cpf, telfixo, celular) values(?, ?, ?, ?, ?)";
 		
 		try {
 			
@@ -37,6 +37,8 @@ public class ClienteSourceDao implements ClienteDao{
 			prepared.setString(1, clientes.getNome());
 			prepared.setString(2, clientes.getGenero());
 			prepared.setString(3, clientes.getCpf());
+			prepared.setString(4, clientes.getTelfixo());
+			prepared.setString(5, clientes.getCelular());
 			
 			prepared.executeUpdate();
 			resultSet = prepared.getGeneratedKeys();
@@ -73,7 +75,7 @@ public class ClienteSourceDao implements ClienteDao{
 	@Override
 	public void alterar(Cliente clientes) {
 
-		sql = "update clientes set nome = ?, genero = ?, cpf = ? where id = ?";
+		sql = "update clientes set nome = ?, genero = ?, cpf = ?, telfixo = ?, celular = ? where id = ?";
 		
 		try {
 			
@@ -82,7 +84,9 @@ public class ClienteSourceDao implements ClienteDao{
 			prepared.setString(1, clientes.getNome());
 			prepared.setString(2, clientes.getGenero());
 			prepared.setString(3, clientes.getCpf());
-			prepared.setInt(4, clientes.getId());
+			prepared.setString(4, clientes.getTelfixo());
+			prepared.setString(5, clientes.getCelular());
+			prepared.setInt(6, clientes.getId());
 			
 			prepared.executeUpdate();
 			
@@ -162,6 +166,8 @@ public class ClienteSourceDao implements ClienteDao{
 				cliente.setNome(resultSet.getString("nome"));
 				cliente.setGenero(resultSet.getString("genero"));
 				cliente.setCpf(resultSet.getString("cpf"));
+				cliente.setTelfixo(resultSet.getString("telfixo"));
+				cliente.setCelular(resultSet.getString("celular"));
 				
 				lista.add(cliente);
 			}
@@ -201,6 +207,8 @@ public class ClienteSourceDao implements ClienteDao{
 				cliente.setNome(resultSet.getString("nome"));
 				cliente.setGenero(resultSet.getString("genero"));
 				cliente.setCpf(resultSet.getString("cpf"));
+				cliente.setTelfixo(resultSet.getString("telfixo"));
+				cliente.setCelular(resultSet.getString("celular"));
 			}
 			
 			return cliente;

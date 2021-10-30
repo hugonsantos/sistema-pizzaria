@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 public abstract class ModalCustom extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
 	private final JPanel contentPanel = new JPanel();
 	
 	public ModalCustom() {

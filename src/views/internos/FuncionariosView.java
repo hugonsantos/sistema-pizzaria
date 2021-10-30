@@ -83,7 +83,7 @@ public class FuncionariosView extends TelaInternaCustom {
 
 		JLabel lblFuncionarios = new JLabel("Funcion\u00E1rios");
 		lblFuncionarios.setBackground(Color.WHITE);
-		lblFuncionarios.setPreferredSize(new Dimension(60, 60));
+		lblFuncionarios.setPreferredSize(new Dimension(60, 50));
 		lblFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
 		panelFuncionariosView.add(lblFuncionarios, BorderLayout.NORTH);

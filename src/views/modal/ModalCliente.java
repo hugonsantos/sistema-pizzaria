@@ -62,6 +62,8 @@ public final class ModalCliente extends ModalCustom {
 	private ClientesTableModel clientesTableModel;
 	
 	private ButtonGroup generoBtns = new ButtonGroup();
+	private JTextField txtTelefone;
+	private JTextField txtCelular;
 
 	public ModalCliente(ClientesTableModel clientesTableModel, Cliente cliente) {
 		
@@ -81,11 +83,11 @@ public final class ModalCliente extends ModalCustom {
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(new Rectangle(0, 0, 30, 0));
 		lblNome.setFont(new Font("Leelawadee UI", Font.BOLD, 14));
-		lblNome.setBounds(10, 11, 55, 30);
+		lblNome.setBounds(10, 25, 55, 30);
 		panelNome.add(lblNome);
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(10, 41, 455, 30);
+		txtNome.setBounds(10, 55, 455, 30);
 		panelNome.add(txtNome);
 		txtNome.setColumns(10);
 		
@@ -130,6 +132,37 @@ public final class ModalCliente extends ModalCustom {
 		txtCpf.setBounds(10, 54, 258, 30);
 		panelCpf.add(txtCpf);
 		
+		JPanel panelTelefone = new JPanel();
+		panelTelefone.setLayout(null);
+		panelTelefone.setBounds(475, 121, 475, 120);
+		panelDadosCadastrais.add(panelTelefone);
+		
+		JLabel lblTelefone = new JLabel("Telefone fixo:");
+		lblTelefone.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblTelefone.setBounds(10, 24, 102, 30);
+		panelTelefone.add(lblTelefone);
+		
+		txtTelefone = new JTextField();
+		txtTelefone.setSize(new Dimension(0, 60));
+		txtTelefone.setPreferredSize(new Dimension(0, 60));
+		txtTelefone.setMinimumSize(new Dimension(7, 60));
+		txtTelefone.setColumns(10);
+		txtTelefone.setBounds(10, 54, 169, 30);
+		panelTelefone.add(txtTelefone);
+		
+		txtCelular = new JTextField();
+		txtCelular.setSize(new Dimension(0, 60));
+		txtCelular.setPreferredSize(new Dimension(0, 60));
+		txtCelular.setMinimumSize(new Dimension(7, 60));
+		txtCelular.setColumns(10);
+		txtCelular.setBounds(213, 54, 169, 30);
+		panelTelefone.add(txtCelular);
+		
+		JLabel lblCelular = new JLabel("Celular:");
+		lblCelular.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCelular.setBounds(213, 24, 62, 30);
+		panelTelefone.add(lblCelular);
+		
 		JPanel panelEnderecos = new JPanel();
 		panelEnderecos.setBounds(0, 241, 950, 598);
 		panelDadosCadastrais.add(panelEnderecos);
@@ -160,6 +193,7 @@ public final class ModalCliente extends ModalCustom {
 		panelEnderecoPrincipal.add(lblCepEP);
 		
 		txtCepEP = new JTextField();
+		txtCepEP.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		txtCepEP.setColumns(10);
 		txtCepEP.setBounds(10, 99, 150, 30);
 		panelEnderecoPrincipal.add(txtCepEP);
@@ -422,6 +456,8 @@ public final class ModalCliente extends ModalCustom {
 					cliente.setNome(txtNome.getText());
 					cliente.setCpf(txtCpf.getText());
 					if(rdbtnMasculino.isSelected()) cliente.setGenero(rdbtnMasculino.getText()); else cliente.setGenero(rdbtnFeminino.getText());
+					cliente.setTelfixo(txtTelefone.getText());
+					cliente.setCelular(txtCelular.getText());
 					
 					List<Endereco> enderecos = new ArrayList<>();
 					Endereco endereco = new Endereco();
@@ -460,6 +496,8 @@ public final class ModalCliente extends ModalCustom {
 					cliente.setNome(txtNome.getText());
 					cliente.setCpf(txtCpf.getText());
 					if(rdbtnMasculino.isSelected()) cliente.setGenero(rdbtnMasculino.getText()); else cliente.setGenero(rdbtnFeminino.getText());
+					cliente.setTelfixo(txtTelefone.getText());
+					cliente.setCelular(txtCelular.getText());
 					
 					List<Endereco> enderecos = clientesTableModel.capturarEnderecos(cliente.getId());
 					Endereco endereco = enderecos.get(0);
@@ -587,6 +625,8 @@ public final class ModalCliente extends ModalCustom {
 		txtNome.setText(cliente.getNome());
 		txtCpf.setText(cliente.getCpf());
 		if(cliente.getGenero().equals("Masculino")) rdbtnMasculino.setSelected(true); else rdbtnFeminino.setSelected(true);
+		txtTelefone.setText(cliente.getTelfixo());
+		txtCelular.setText(cliente.getCelular());
 		
 		enderecos = clientesTableModel.capturarEnderecos(cliente.getId());
 		

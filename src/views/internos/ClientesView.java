@@ -85,7 +85,7 @@ public class ClientesView extends TelaInternaCustom {
 
 		JLabel lblFuncionarios = new JLabel("Clientes");
 		lblFuncionarios.setBackground(Color.WHITE);
-		lblFuncionarios.setPreferredSize(new Dimension(60, 60));
+		lblFuncionarios.setPreferredSize(new Dimension(60, 50));
 		lblFuncionarios.setFont(new Font("Leelawadee UI", Font.BOLD, 22));
 		lblFuncionarios.setHorizontalAlignment(SwingConstants.CENTER);
 		panelClientesView.add(lblFuncionarios, BorderLayout.NORTH);
@@ -100,7 +100,7 @@ public class ClientesView extends TelaInternaCustom {
 		tableClientes.setShowVerticalLines(false);
 		tableClientes.setFocusable(false);
 		tableClientes.getColumnModel().getColumn(0).setPreferredWidth(20);
-		tableClientes.getColumnModel().getColumn(1).setPreferredWidth(500);
+		tableClientes.getColumnModel().getColumn(1).setPreferredWidth(400);
 		TableModelUtil.customizarTable(tableClientes.getTableHeader());
 
 		JScrollPane scrollPanetableClientes = new JScrollPane(tableClientes);

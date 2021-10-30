@@ -6,6 +6,8 @@ public class Cliente {
 	private String nome;
 	private String genero;
 	private String cpf;
+	private String telfixo;
+	private String celular;
 	
 	public Cliente() {
 		
@@ -49,6 +51,22 @@ public class Cliente {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public String getTelfixo() {
+		return telfixo;
+	}
+
+	public void setTelfixo(String telfixo) {
+		this.telfixo = telfixo;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	@Override

@@ -48,11 +48,6 @@ public class MainView extends JFrame {
 	private JLabel lblIconProdutos;
 	private JLabel lblProdutos;
 
-	private VenderView vender;
-	private ClientesView clientes;
-	private FuncionariosView funcionarios;
-	private ProdutosView produtos;
-
 	private static MainView frame;
 
 	public static void main(String[] args) {
@@ -200,9 +195,7 @@ public class MainView extends JFrame {
 
 				panelViewsInternas.removeAll();
 				
-				if(vender == null) {
-					vender = new VenderView();
-				}
+				VenderView vender = new VenderView();
 				
 				panelViewsInternas.add(vender, BorderLayout.CENTER);
 				vender.setVisible(true);
@@ -254,9 +247,7 @@ public class MainView extends JFrame {
 
 				panelViewsInternas.removeAll();
 
-				if (clientes == null) {
-					clientes = new ClientesView();
-				}
+				ClientesView clientes = new ClientesView();
 
 				panelViewsInternas.add(clientes, BorderLayout.CENTER);
 				clientes.setVisible(true);
@@ -344,9 +335,7 @@ public class MainView extends JFrame {
 
 				panelViewsInternas.removeAll();
 
-				if (funcionarios == null) {
-					funcionarios = new FuncionariosView();
-				}
+				FuncionariosView funcionarios = new FuncionariosView();
 
 				panelViewsInternas.add(funcionarios, BorderLayout.CENTER);
 				funcionarios.setVisible(true);
@@ -397,9 +386,7 @@ public class MainView extends JFrame {
 
 				panelViewsInternas.removeAll();
 
-				if (produtos == null) {
-					produtos = new ProdutosView();
-				}
+				ProdutosView produtos = new ProdutosView();
 				
 				panelViewsInternas.add(produtos, BorderLayout.CENTER);
 				produtos.setVisible(true);
@@ -444,9 +431,5 @@ public class MainView extends JFrame {
 			panelGridLinha5.remove(lblProdutos);
 			lblIconProdutos.setHorizontalAlignment(SwingConstants.CENTER);
 		}
-		
-		vender = new VenderView();
-		panelViewsInternas.add(vender, BorderLayout.CENTER);
-		vender.setVisible(true);
 	}
 }
